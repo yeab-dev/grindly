@@ -10,6 +10,6 @@ void setupLocator() {
 
   //Repository
   getIt.registerLazySingleton(
-    () => AuthRepository(auth: getIt<FirebaseAuth>()),
+    () => AuthRepository(firebaseAuth: getIt<FirebaseAuth>()),
   );
 }
