@@ -25,14 +25,14 @@ class TField extends StatelessWidget {
       child: TextFormField(
         errorBuilder: (context, error) {
           return Text(
-            error ?? '',
+            error.toString(),
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           );
         },
         controller: controller,
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
         keyboardType: keyboardType,
         obscureText: obscureText,
@@ -40,7 +40,7 @@ class TField extends StatelessWidget {
             validator ??
             (value) {
               if (value == null || value.isEmpty) {
-                return '$labelText is required';
+                return 'required';
               }
               return null;
             },

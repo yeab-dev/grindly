@@ -1,13 +1,13 @@
 class UserModel {
-  final String id;
+  final String? id;
   final String email;
-  final String username;
+  final String? username;
   final String password;
 
   const UserModel({
-    required this.id,
+    this.id,
     required this.email,
-    required this.username,
+    this.username,
     required this.password,
   });
 }

@@ -14,4 +14,23 @@ class AuthRepository {
       password: password,
     );
   }
+
+  Future<UserCredential> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    return await firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
+  Future<void> signOut() async {
+    await firebaseAuth.signOut();
+  }
+
+  Future<UserCredential> continueWithGoogle() async {
+    // Implement Google Sign-In logic here
+    throw UnimplementedError('Google Sign-In not implemented yet');
+  }
 }
