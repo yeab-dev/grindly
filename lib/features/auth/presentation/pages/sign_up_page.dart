@@ -15,31 +15,43 @@ class SignUp extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
-            context.read<AuthCubit>().resetState();
+          if (state is AuthFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.failure.message)));
+          }
+          if (state is AuthRegistrationLoading) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: MediaQuery.sizeOf(context).width * 0.01),
+                      Text('Signing you up'),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+          if (state is! AuthRegistrationLoading) {
+            Navigator.of(context, rootNavigator: true).pop();
+          }
+
+          if (state is AuthRegistrationSuccess) {
             context.go(Routes.login);
           }
         },
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            switch (state) {
-              case AuthInitial():
-                return SignUpPage();
-              case AuthSuccess():
-              case AuthLoading():
-                return Center(child: CircularProgressIndicator());
-              case AuthFailure():
-                return Center(child: Text('Error: ${state.message}'));
-            }
-          },
-        ),
+        child: SignUpForm(),
       ),
     );
   }
 }
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignUpForm extends StatelessWidget {
+  const SignUpForm({super.key});
 
   @override
   Widget build(BuildContext context) {
