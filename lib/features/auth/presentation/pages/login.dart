@@ -20,10 +20,31 @@ class Login extends StatelessWidget {
       body: SingleChildScrollView(
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is AuthFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.failure.message)));
+            if (state is AuthSignInFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.signInFailure.message)),
+              );
+            }
+            if (state is AuthSignInLoading) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Row(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.01,
+                        ),
+                        Text('Signing you up'),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+            if (state is! AuthSignInLoading) {
+              Navigator.of(context, rootNavigator: true).pop();
             }
           },
           child: SizedBox(
@@ -95,11 +116,11 @@ class Login extends StatelessWidget {
                       width: width * 0.5,
                       child: ElevatedButton(
                         onPressed: () {
-                          // if (!formKey.currentState!.validate()) return;
-                          // context.read<AuthCubit>().signInWithEmailAndPassword(
-                          //   emailController.text,
-                          //   passwordController.text,
-                          // );
+                          if (!formKey.currentState!.validate()) return;
+                          context.read<AuthCubit>().signInWithEmailAndPassword(
+                            emailController.text,
+                            passwordController.text,
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(

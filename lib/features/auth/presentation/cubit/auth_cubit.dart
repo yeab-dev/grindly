@@ -15,15 +15,39 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signUpWithEmailAndPassword(String email, String password) async {
-    emit(AuthRegistrationLoading());
+    emit(AuthSignUpLoading());
 
     try {
       final UserCredential credintial = await authRepository
           .signUpWithEmailAndPassword(email, password);
       await credintial.user?.sendEmailVerification();
-      emit(AuthRegistrationSuccess(credential: credintial));
+      emit(AuthSignUpSuccess(credential: credintial));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(SignUpWithEmailAndPasswordFailure.withCode(e.code)));
+      emit(
+        AuthSignUpFailure(SignUpWithEmailAndPasswordFailure.fromCode(e.code)),
+      );
+    }
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    emit(AuthSignInLoading());
+
+    try {
+      final UserCredential credential = await authRepository
+          .signInWithEmailAndPassword(email, password);
+      if (!(credential.user?.emailVerified ?? false)) {
+        emit(
+          AuthSignInFailure(
+            SignInWithEmailAndPasswordFailure('Email not verified'),
+          ),
+        );
+        return;
+      }
+      emit(AuthLoginSuccess(credential: credential));
+    } on FirebaseAuthException catch (e) {
+      emit(
+        AuthSignInFailure(SignInWithEmailAndPasswordFailure.fromCode(e.code)),
+      );
     }
   }
 }

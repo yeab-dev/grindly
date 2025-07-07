@@ -15,12 +15,12 @@ class SignUp extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.failure.message)));
+          if (state is AuthSignUpFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.signUpFailure.message)),
+            );
           }
-          if (state is AuthRegistrationLoading) {
+          if (state is AuthSignUpLoading) {
             showDialog(
               context: context,
               builder: (context) {
@@ -36,11 +36,11 @@ class SignUp extends StatelessWidget {
               },
             );
           }
-          if (state is! AuthRegistrationLoading) {
+          if (state is! AuthSignUpLoading) {
             Navigator.of(context, rootNavigator: true).pop();
           }
 
-          if (state is AuthRegistrationSuccess) {
+          if (state is AuthSignUpSuccess) {
             context.go(Routes.login);
           }
         },

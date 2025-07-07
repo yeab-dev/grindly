@@ -4,7 +4,7 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
   ]);
   final String message;
 
-  factory SignUpWithEmailAndPasswordFailure.withCode(String code) {
+  factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'user-disabled':
         return const SignUpWithEmailAndPasswordFailure(
@@ -30,4 +30,28 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         return SignUpWithEmailAndPasswordFailure();
     }
   }
+}
+
+class SignInWithEmailAndPasswordFailure implements Exception {
+  const SignInWithEmailAndPasswordFailure([
+    this.message = 'something went wrong!',
+  ]);
+
+  factory SignInWithEmailAndPasswordFailure.fromCode(String code) {
+    switch (code) {
+      case 'invalid-credential':
+        return SignInWithEmailAndPasswordFailure('wrong email or password');
+      case 'user-disabled':
+        return const SignInWithEmailAndPasswordFailure(
+          'your account has been disabled. please contact support for help',
+        );
+      case 'invalid-email':
+        return const SignInWithEmailAndPasswordFailure(
+          'email not valid or badly formatted',
+        );
+      default:
+        return SignInWithEmailAndPasswordFailure();
+    }
+  }
+  final String message;
 }
