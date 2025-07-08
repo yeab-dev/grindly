@@ -21,6 +21,17 @@ class SignInCubit extends Cubit<SignInState> {
         email,
         password,
       );
+      if (credential.user != null && !credential.user!.emailVerified) {
+        emit(
+          state.copyWith(
+            status: SignInStatus.failure,
+            failure: SignInWithEmailAndPasswordFailure(
+              'Email not verified. Please verify your email before signing in.',
+            ),
+          ),
+        );
+        return;
+      }
       emit(state.copyWith(status: SignInStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
       emit(

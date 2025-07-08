@@ -42,9 +42,9 @@ class Login extends StatelessWidget {
                   );
                 },
               );
-              if (state.status != SignInStatus.loading) {
-                Navigator.of(context, rootNavigator: true).pop();
-              }
+            }
+            if (state.status != SignInStatus.loading) {
+              Navigator.of(context, rootNavigator: true).pop();
             }
             if (state.status == SignInStatus.success) {
               context.go(Routes.home);
