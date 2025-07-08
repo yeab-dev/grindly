@@ -1,57 +1,67 @@
-class SignUpWithEmailAndPasswordFailure implements Exception {
-  const SignUpWithEmailAndPasswordFailure([
-    this.message = "Something went wrong please try again later",
-  ]);
+abstract class AuthFailure implements Exception {
   final String message;
+  const AuthFailure({required this.message});
 
+  @override
+  String toString() => message;
+}
+
+class SignUpWithEmailAndPasswordFailure extends AuthFailure {
+  const SignUpWithEmailAndPasswordFailure([
+    String message = "Something went wrong, please try again later.",
+  ]) : super(message: message);
+
+  /// Creates a failure based on Firebase error codes.
   factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'user-disabled':
         return const SignUpWithEmailAndPasswordFailure(
-          'your account has been disabled. please contact support for help',
+          'Your account has been disabled. Please contact support for help.',
         );
       case 'invalid-email':
         return const SignUpWithEmailAndPasswordFailure(
-          'email not valid or badly formatted',
+          'Email not valid or badly formatted.',
         );
       case 'email-already-in-use':
         return const SignUpWithEmailAndPasswordFailure(
-          'an account already exists with the email provided',
+          'An account already exists with the provided email.',
         );
       case 'operation-not-allowed':
         return const SignUpWithEmailAndPasswordFailure(
-          'operation not allowed. please contact support for help',
+          'Operation not allowed. Please contact support for help.',
         );
       case 'weak-password':
         return const SignUpWithEmailAndPasswordFailure(
-          'please enter a strong password',
+          'Please enter a stronger password.',
         );
       default:
-        return SignUpWithEmailAndPasswordFailure();
+        return const SignUpWithEmailAndPasswordFailure();
     }
   }
 }
 
-class SignInWithEmailAndPasswordFailure implements Exception {
+class SignInWithEmailAndPasswordFailure extends AuthFailure {
   const SignInWithEmailAndPasswordFailure([
-    this.message = 'something went wrong!',
-  ]);
+    String message = 'Something went wrong!',
+  ]) : super(message: message);
 
+  /// Creates a failure based on Firebase error codes.
   factory SignInWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'invalid-credential':
-        return SignInWithEmailAndPasswordFailure('wrong email or password');
+        return const SignInWithEmailAndPasswordFailure(
+          'Wrong email or password.',
+        );
       case 'user-disabled':
         return const SignInWithEmailAndPasswordFailure(
-          'your account has been disabled. please contact support for help',
+          'Your account has been disabled. Please contact support for help.',
         );
       case 'invalid-email':
         return const SignInWithEmailAndPasswordFailure(
-          'email not valid or badly formatted',
+          'Email not valid or badly formatted.',
         );
       default:
-        return SignInWithEmailAndPasswordFailure();
+        return const SignInWithEmailAndPasswordFailure();
     }
   }
-  final String message;
 }

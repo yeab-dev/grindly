@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
-import 'package:grindly/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/widgets/continue_with_google.dart';
 import 'package:grindly/features/auth/presentation/widgets/text_field.dart';
 
@@ -18,14 +18,14 @@ class Login extends StatelessWidget {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
-        child: BlocListener<AuthCubit, AuthState>(
+        child: BlocListener<SignInCubit, SignInState>(
           listener: (context, state) {
-            if (state is AuthSignInFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.signInFailure.message)),
-              );
+            if (state.status == SignInStatus.failure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.failure!.message)));
             }
-            if (state is AuthSignInLoading) {
+            if (state.status == SignInStatus.loading) {
               showDialog(
                 context: context,
                 builder: (context) {
@@ -36,15 +36,18 @@ class Login extends StatelessWidget {
                         SizedBox(
                           width: MediaQuery.sizeOf(context).width * 0.01,
                         ),
-                        Text('Signing you up'),
+                        Text('Signing you in'),
                       ],
                     ),
                   );
                 },
               );
+              if (state.status != SignInStatus.loading) {
+                Navigator.of(context, rootNavigator: true).pop();
+              }
             }
-            if (state is! AuthSignInLoading) {
-              Navigator.of(context, rootNavigator: true).pop();
+            if (state.status == SignInStatus.success) {
+              context.go(Routes.home);
             }
           },
           child: SizedBox(
@@ -117,10 +120,12 @@ class Login extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           if (!formKey.currentState!.validate()) return;
-                          context.read<AuthCubit>().signInWithEmailAndPassword(
-                            emailController.text,
-                            passwordController.text,
-                          );
+                          context
+                              .read<SignInCubit>()
+                              .signInWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(

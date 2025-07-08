@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
-import 'package:grindly/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
 import 'package:grindly/features/auth/presentation/widgets/continue_with_google.dart';
 import 'package:grindly/features/auth/presentation/widgets/text_field.dart';
 import 'package:grindly/features/auth/presentation/widgets/grindly_logo.dart';
@@ -13,14 +13,14 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthCubit, AuthState>(
+      body: BlocListener<SignUpCubit, SignUpState>(
         listener: (context, state) {
-          if (state is AuthSignUpFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.signUpFailure.message)),
-            );
+          if (state.status == SignUpStatus.failure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.failure!.message)));
           }
-          if (state is AuthSignUpLoading) {
+          if (state.status == SignUpStatus.loading) {
             showDialog(
               context: context,
               builder: (context) {
@@ -36,11 +36,11 @@ class SignUp extends StatelessWidget {
               },
             );
           }
-          if (state is! AuthSignUpLoading) {
+          if (state.status != SignUpStatus.loading) {
             Navigator.of(context, rootNavigator: true).pop();
           }
 
-          if (state is AuthSignUpSuccess) {
+          if (state.status == SignUpStatus.success) {
             context.go(Routes.login);
           }
         },
@@ -174,7 +174,7 @@ class SignUpForm extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     if (!formKey.currentState!.validate()) return;
-                    context.read<AuthCubit>().signUpWithEmailAndPassword(
+                    context.read<SignUpCubit>().signUpWithEmailAndPassword(
                       emailController.text,
                       passwordController.text,
                     );
