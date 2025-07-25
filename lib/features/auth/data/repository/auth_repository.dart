@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class AuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -23,6 +24,19 @@ class AuthRepository {
       email: email,
       password: password,
     );
+  }
+
+  User? getCurrentUser() {
+    return firebaseAuth.currentUser;
+  }
+
+  Future<void> sendEmailVerification() async {
+    final user = getCurrentUser();
+    if (user != null) {
+      user.sendEmailVerification();
+    } else {
+      throw Exception('please signup first');
+    }
   }
 
   Future<void> signOut() async {

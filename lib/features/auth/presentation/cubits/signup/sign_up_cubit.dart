@@ -19,13 +19,13 @@ class SignUpCubit extends Cubit<SignUpState> {
         email,
         password,
       );
-      await credential.user?.sendEmailVerification();
+      await authRepository.sendEmailVerification();
       emit(state.copyWith(status: SignUpStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
       emit(
         state.copyWith(
           status: SignUpStatus.failure,
-          failure: SignInWithEmailAndPasswordFailure.fromCode(e.code),
+          failure: SignUpWithEmailAndPasswordFailure.fromCode(e.code),
         ),
       );
     }

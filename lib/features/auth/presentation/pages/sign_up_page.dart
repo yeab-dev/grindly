@@ -41,7 +41,7 @@ class SignUp extends StatelessWidget {
           }
 
           if (state.status == SignUpStatus.success) {
-            context.go(Routes.login);
+            context.go(Routes.verify);
           }
         },
         child: SignUpForm(),

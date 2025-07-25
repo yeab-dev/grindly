@@ -100,14 +100,20 @@ class Login extends StatelessWidget {
                       validator: null,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    margin: EdgeInsets.only(right: width * 0.05),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Forgot password',
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                  Center(
+                    child: SizedBox(
+                      width: width * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Forgot password',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

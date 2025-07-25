@@ -44,7 +44,7 @@ class SignInCubit extends Cubit<SignInState> {
       emit(
         state.copyWith(
           status: SignInStatus.failure,
-          failure: SignInWithEmailAndPasswordFailure(),
+          failure: SignInWithEmailAndPasswordFailure(e.toString()),
         ),
       );
     }
