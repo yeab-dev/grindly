@@ -30,4 +30,9 @@ class SignUpCubit extends Cubit<SignUpState> {
       );
     }
   }
+
+  Future<bool> isVerifiedUser() async {
+    await authRepository.getCurrentUser()!.reload();
+    return (authRepository.getCurrentUser()!.emailVerified);
+  }
 }

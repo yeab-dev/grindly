@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
 import 'package:grindly/features/auth/presentation/widgets/grindly_logo.dart';
 import 'package:lottie/lottie.dart';
 
-class EmailVerificationPage extends StatelessWidget {
+class EmailVerificationPage extends StatefulWidget {
   const EmailVerificationPage({super.key});
+
+  @override
+  State<EmailVerificationPage> createState() => _EmailVerificationPageState();
+}
+
+class _EmailVerificationPageState extends State<EmailVerificationPage> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +31,9 @@ class EmailVerificationPage extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20.0, top: 20.0),
                   child: GrindlyLogo(),
                 ),
-                // Spacer(),
                 Spacer(),
                 SizedBox(
                   height: height * 0.07,
-
                   child: Lottie.asset(
                     repeat: false,
                     'assets/lottie_animations/email-verification.json',
@@ -49,7 +56,12 @@ class EmailVerificationPage extends StatelessWidget {
                 ),
                 Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context
+                        .read<SignUpCubit>()
+                        .authRepository
+                        .sendEmailVerification();
+                  },
                   child: Text(
                     'resend link',
                     style: TextStyle(
@@ -63,14 +75,41 @@ class EmailVerificationPage extends StatelessWidget {
                 SizedBox(
                   width: width * 0.5,
                   height: height * 0.05,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    child: Text('Done'),
-                  ),
+                  child: _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            final cubit = context.read<SignUpCubit>();
+                            final router = GoRouter.of(context);
+                            final messenger = ScaffoldMessenger.of(context);
+                            cubit.isVerifiedUser().then((isVerified) {
+                              if (isVerified) {
+                                router.go(Routes.login);
+                              } else {
+                                messenger.showSnackBar(
+                                  SnackBar(content: Text("Email not verified")),
+                                );
+                              }
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                          ),
+                          child: Text('Done'),
+                        ),
                 ),
                 Spacer(),
               ],
