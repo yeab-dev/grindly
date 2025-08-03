@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -25,6 +26,22 @@ class AuthRepository {
     );
   }
 
+  Future<UserCredential> continueWithGoogle() async {
+    final googleSignIn = GoogleSignIn.instance;
+    await googleSignIn.initialize();
+
+    try {
+      final auth = await googleSignIn.authenticate();
+      final authentication = auth.authentication;
+      final credential = GoogleAuthProvider.credential(
+        idToken: authentication.idToken,
+      );
+      return await firebaseAuth.signInWithCredential(credential);
+    } on GoogleSignInException catch (_) {
+      rethrow;
+    }
+  }
+
   User? getCurrentUser() {
     return firebaseAuth.currentUser;
   }
@@ -40,10 +57,5 @@ class AuthRepository {
 
   Future<void> signOut() async {
     await firebaseAuth.signOut();
-  }
-
-  Future<UserCredential> continueWithGoogle() async {
-    // Implement Google Sign-In logic here
-    throw UnimplementedError('Google Sign-In not implemented yet');
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
+import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
 import 'package:grindly/features/auth/presentation/widgets/continue_with_google.dart';
 import 'package:grindly/features/auth/presentation/widgets/text_field.dart';
@@ -192,7 +193,40 @@ class SignUpForm extends StatelessWidget {
               ),
             ),
             SizedBox(height: height * 0.04),
-            ContinueWithGoogle(),
+            BlocListener<SignInCubit, SignInState>(
+              listener: (context, state) {
+                if (state.status == SignInStatus.failure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.failure!.message)),
+                  );
+                }
+                if (state.status == SignInStatus.loading) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Row(
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width * 0.01,
+                            ),
+                            Text('Signing you in'),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
+                if (state.status != SignInStatus.loading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
+                if (state.status == SignInStatus.success) {
+                  context.go(Routes.home);
+                }
+              },
+              child: ContinueWithGoogle(),
+            ),
             SizedBox(height: height * 0.04),
 
             Row(

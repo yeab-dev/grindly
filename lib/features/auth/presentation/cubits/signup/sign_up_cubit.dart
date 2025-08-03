@@ -22,12 +22,23 @@ class SignUpCubit extends Cubit<SignUpState> {
       await authRepository.sendEmailVerification();
       emit(state.copyWith(status: SignUpStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
-      emit(
-        state.copyWith(
-          status: SignUpStatus.failure,
-          failure: SignUpWithEmailAndPasswordFailure.fromCode(e.code),
-        ),
-      );
+      if (e.code == 'email-already-in-use') {
+        emit(
+          state.copyWith(
+            status: SignUpStatus.failure,
+            failure: SignInWithEmailAndPasswordFailure(
+              "This email is already associated with another account. If you signed up with Google, please continue with Google.",
+            ),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: SignUpStatus.failure,
+            failure: SignUpWithEmailAndPasswordFailure.fromCode(e.code),
+          ),
+        );
+      }
     }
   }
 

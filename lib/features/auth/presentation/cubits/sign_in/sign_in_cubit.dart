@@ -49,4 +49,26 @@ class SignInCubit extends Cubit<SignInState> {
       );
     }
   }
+
+  Future<void> continueWithGoogle() async {
+    emit(state.copyWith(status: SignInStatus.loading));
+    try {
+      final credential = await authRepository.continueWithGoogle();
+      emit(state.copyWith(status: SignInStatus.success, user: credential.user));
+    } on FirebaseAuthException catch (e) {
+      emit(
+        state.copyWith(
+          status: SignInStatus.failure,
+          failure: SignInWithEmailAndPasswordFailure.fromCode(e.code),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: SignInStatus.failure,
+          failure: SignInWithEmailAndPasswordFailure(e.toString()),
+        ),
+      );
+    }
+  }
 }
