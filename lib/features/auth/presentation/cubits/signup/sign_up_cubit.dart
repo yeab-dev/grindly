@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
-import 'package:grindly/shared/domain/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
