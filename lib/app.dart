@@ -5,6 +5,7 @@ import 'package:grindly/core/router/app_router.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
+import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -14,13 +15,12 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              SignUpCubit(authRepository: getIt<AuthRepository>()),
+          create: (context) => SignUpCubit(
+            authRepository: getIt<AuthRepository>(),
+            userRemoteRepository: getIt<UserRemoteRepository>(),
+          ),
         ),
-        BlocProvider(
-          create: (context) =>
-              SignInCubit(authRepository: getIt<AuthRepository>()),
-        ),
+        BlocProvider(create: (context) => getIt<SignInCubit>()),
       ],
       child: MaterialApp.router(
         routerConfig: goRouter, // from app_router.dart

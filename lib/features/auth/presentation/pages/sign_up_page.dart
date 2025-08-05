@@ -174,10 +174,13 @@ class SignUpForm extends StatelessWidget {
                 height: height * 0.055,
                 child: ElevatedButton(
                   onPressed: () {
+                    final displayName =
+                        "${firstNameController.text} ${lastNameController.text}";
                     if (!formKey.currentState!.validate()) return;
                     context.read<SignUpCubit>().signUpWithEmailAndPassword(
                       emailController.text,
                       passwordController.text,
+                      displayName,
                     );
                   },
                   style: ElevatedButton.styleFrom(

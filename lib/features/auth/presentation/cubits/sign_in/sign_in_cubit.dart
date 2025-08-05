@@ -3,13 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/domain/models/auth_failure.dart';
+import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
+import 'package:grindly/shared/domain/models/user_model.dart';
 import 'package:meta/meta.dart';
 
 part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepository;
-  SignInCubit({required this.authRepository}) : super(SignInState());
+  final UserRemoteRepository userRemoteRepository;
+  SignInCubit({
+    required this.authRepository,
+    required this.userRemoteRepository,
+  }) : super(SignInState());
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -32,6 +38,10 @@ class SignInCubit extends Cubit<SignInState> {
         );
         return;
       }
+      //Save user to cloud firestore
+      await userRemoteRepository.saveUser(
+        UserModel.fromFirebaseUser(credential.user!),
+      );
       emit(state.copyWith(status: SignInStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
       emit(
@@ -54,6 +64,21 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(status: SignInStatus.loading));
     try {
       final credential = await authRepository.continueWithGoogle();
+      if (credential.user == null) {
+        emit(
+          state.copyWith(
+            status: SignInStatus.failure,
+            failure: SignInWithEmailAndPasswordFailure(
+              'Google sign-in failed.',
+            ),
+          ),
+        );
+        return;
+      }
+      //Save user to cloud firestore
+      await userRemoteRepository.saveUser(
+        UserModel.fromFirebaseUser(credential.user!),
+      );
       emit(state.copyWith(status: SignInStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
       emit(

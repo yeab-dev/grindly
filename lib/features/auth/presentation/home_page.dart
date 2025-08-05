@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<SignInCubit, SignInState>(
       builder: (context, state) {
         return Scaffold(
-          body: Center(child: Text("hello there ${state.user?.email}")),
+          body: Center(child: Text("hello there ${state.user?.displayName}")),
         );
       },
     );

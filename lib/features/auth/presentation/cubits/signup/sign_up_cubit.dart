@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
+import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
+import 'package:grindly/shared/domain/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
@@ -10,15 +12,37 @@ part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepository;
-  SignUpCubit({required this.authRepository}) : super(SignUpState());
+  final UserRemoteRepository userRemoteRepository;
+  SignUpCubit({
+    required this.authRepository,
+    required this.userRemoteRepository,
+  }) : super(SignUpState());
 
-  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+  Future<void> signUpWithEmailAndPassword(
+    String email,
+    String password,
+    String displayName,
+  ) async {
     emit(state.copyWith(status: SignUpStatus.loading));
     try {
+      //Authenticate User
       final credential = await authRepository.signUpWithEmailAndPassword(
         email,
         password,
       );
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) {
+        emit(
+          state.copyWith(
+            status: SignUpStatus.failure,
+            failure: SignUpWithEmailAndPasswordFailure("Registration Failed"),
+          ),
+        );
+        return;
+      }
+
+      await firebaseUser.updateDisplayName(displayName);
+      await firebaseUser.reload();
       await authRepository.sendEmailVerification();
       emit(state.copyWith(status: SignUpStatus.success, user: credential.user));
     } on FirebaseAuthException catch (e) {
@@ -39,6 +63,13 @@ class SignUpCubit extends Cubit<SignUpState> {
           ),
         );
       }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: SignUpStatus.failure,
+          failure: SignUpWithEmailAndPasswordFailure("Unexpected Error!"),
+        ),
+      );
     }
   }
 
