@@ -3,14 +3,14 @@ import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime
 
 abstract class WakatimeAuthRepository {
   /// Start OAuth authorization
-  Future<void> authorized({required List<WakaTimeScope> scopes});
+  Future<void> authorize({required List<WakaTimeScope> scopes});
 
   /// Exchange authorization code for access token
-  Future<WakatimeAuthToken> getAccessToken({String code});
+  Future<WakatimeAuthToken> getAccessToken({required String code});
 
   /// Refresh an expired access token
-  Future<WakatimeAuthToken> refreshAccessToken(String refreshToken);
+  Future<WakatimeAuthToken> refreshAccessToken({required String refreshToken});
 
   /// Revoke an access or refresh token
-  Future<void> revokeToken(String token);
+  Future<void> revokeToken({required String token});
 }
