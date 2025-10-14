@@ -5,6 +5,7 @@ import 'package:grindly/core/router/app_router.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
 import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
 
 class App extends StatelessWidget {
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
           ),
         ),
         BlocProvider(create: (context) => getIt<SignInCubit>()),
+        BlocProvider(create: (context) => getIt<WakatimeAuthCubit>()),
       ],
       child: MaterialApp.router(
         routerConfig: goRouter, // from app_router.dart
@@ -34,6 +36,9 @@ class App extends StatelessWidget {
             displaySmall: const TextStyle(
               color: Color(0xFF3BBE44),
               fontFamily: 'JacquesFrancois',
+            ),
+            bodyLarge: ThemeData.light().textTheme.bodyLarge!.copyWith(
+              color: Color(0xFF033206),
             ),
           ),
         ),
