@@ -67,10 +67,14 @@ class WakatimeAuthRepositoryImpl implements WakatimeAuthRepository {
         'grant_type': 'refresh_token',
         'refresh_token': refreshToken,
       },
-      options: Options(contentType: Headers.formUrlEncodedContentType),
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+        responseType: ResponseType.plain,
+      ),
     );
 
-    final model = WakatimeAuthTokenModel.fromJson(json: response.data);
+    final map = Uri.splitQueryString(response.data);
+    final model = WakatimeAuthTokenModel.fromJson(json: map);
     return model.toEntity();
   }
 

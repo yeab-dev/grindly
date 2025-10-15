@@ -28,7 +28,7 @@ class WakatimeAuthPage extends StatelessWidget {
             SizedBox(
               width: width * 0.65,
               child: Text(
-                'inorder to track your coding stats'
+                'inorder to track your coding stats '
                 'we might need an access to your wakatime account. ',
                 style: theme.textTheme.bodyLarge,
                 textAlign: TextAlign.center,

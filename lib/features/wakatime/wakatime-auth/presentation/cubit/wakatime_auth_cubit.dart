@@ -46,19 +46,29 @@ class WakatimeAuthCubit extends Cubit<WakatimeAuthState> {
   Future<void> _handleIncomingLink(Uri? uri) async {
     if (uri == null) return;
 
-    // Parse existing tokens first
-    final existingAccess = await storageRepository.read(key: 'access_token');
-    final existingRefresh = await storageRepository.read(key: 'refresh_token');
-    if (existingAccess != null && existingRefresh != null) {
-      emit(
-        WakatimeAuthSuccess(
-          token: WakatimeAuthToken(
-            accessToken: existingAccess,
-            refreshToken: existingRefresh,
-          ),
-        ),
+    // Parse existing tokens first and use them if they're not expired
+    final existingExpirationDate = await storageRepository.read(
+      key: 'expires_at',
+    );
+    if (existingExpirationDate != null &&
+        DateTime.now().isBefore(DateTime.parse(existingExpirationDate))) {
+      final date = DateTime.parse(existingExpirationDate);
+      final existingAccess = await storageRepository.read(key: 'access_token');
+      final existingRefresh = await storageRepository.read(
+        key: 'refresh_token',
       );
-      return;
+      if (existingAccess != null && existingRefresh != null) {
+        emit(
+          WakatimeAuthSuccess(
+            token: WakatimeAuthToken(
+              accessToken: existingAccess,
+              refreshToken: existingRefresh,
+              expiresAt: date,
+            ),
+          ),
+        );
+        return;
+      }
     }
 
     // Otherwise, handle code from redirect
@@ -75,6 +85,11 @@ class WakatimeAuthCubit extends Cubit<WakatimeAuthState> {
         await storageRepository.write(
           key: 'refresh_token',
           value: token.refreshToken,
+        );
+
+        await storageRepository.write(
+          key: 'expires_at',
+          value: token.expiresAt.toIso8601String(),
         );
 
         emit(WakatimeAuthSuccess(token: token));
