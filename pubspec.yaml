@@ -20,6 +20,11 @@ dependencies:
   lottie: ^3.3.1
   google_sign_in: ^7.1.1
   cloud_firestore: ^5.6.12
+  dio: ^5.9.0
+  url_launcher: ^6.3.2
+  app_links: ^6.4.1
+  flutter_dotenv: ^6.0.0
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:
@@ -30,8 +35,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/google.png
-    - assets/lottie_animations/email-verification.json
+    - assets/images/
+    - assets/lottie_animations/
+    - .env
   fonts:
     - family: 'JacquesFrancois'
       fonts:
