@@ -2,7 +2,7 @@ import 'package:grindly/features/wakatime/stats/domain/entities/project.dart';
 
 class TodaysStats {
   final List<Project> projectsWorkedOnToday;
-  final DateTime totalTimeWorkedToday;
+  final Duration totalTimeWorkedToday;
 
   const TodaysStats({
     required this.projectsWorkedOnToday,
