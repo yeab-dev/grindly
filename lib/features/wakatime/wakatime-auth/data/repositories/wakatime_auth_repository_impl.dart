@@ -43,10 +43,14 @@ class WakatimeAuthRepositoryImpl implements WakatimeAuthRepository {
         'grant_type': 'authorization_code',
         'code': code,
       },
-      options: Options(contentType: Headers.formUrlEncodedContentType),
+      options: Options(
+        contentType: Headers.formUrlEncodedContentType,
+        responseType: ResponseType.plain,
+      ),
     );
 
-    final model = WakatimeAuthTokenModel.fromJson(json: response.data);
+    final map = Uri.splitQueryString(response.data);
+    final model = WakatimeAuthTokenModel.fromJson(json: map);
     return model.toEntity();
   }
 

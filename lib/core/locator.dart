@@ -58,6 +58,9 @@ void setupLocator() {
   );
 
   getIt.registerFactory<WakatimeAuthCubit>(
-    () => WakatimeAuthCubit(repository: getIt<WakatimeAuthRepository>()),
+    () => WakatimeAuthCubit(
+      repository: getIt<WakatimeAuthRepository>(),
+      storageRepository: getIt<SecureStorageRepository>(),
+    ),
   );
 }

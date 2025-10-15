@@ -24,6 +24,7 @@ dependencies:
   url_launcher: ^6.3.2
   app_links: ^6.4.1
   flutter_dotenv: ^6.0.0
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:

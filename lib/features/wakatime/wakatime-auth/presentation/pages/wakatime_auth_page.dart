@@ -39,6 +39,7 @@ class WakatimeAuthPage extends StatelessWidget {
               builder: (context, state) {
                 return SizedBox(
                   height: height * 0.06,
+                  width: width * 0.8,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: theme.colorScheme.onPrimary,
