@@ -19,14 +19,7 @@ class WakatimeAuthCubit extends Cubit<WakatimeAuthState> {
   Future<void> authorizeApp() async {
     emit(WakatimeAuthInProgress());
     try {
-      await repository.authorize(
-        scopes: [
-          WakaTimeScope.readStatsLanguages,
-          WakaTimeScope.readStatsProjects,
-          WakaTimeScope.readSummariesLanguages,
-          WakaTimeScope.readSummariesProjects,
-        ],
-      );
+      await repository.authorize(scopes: [WakaTimeScope.readSummaries]);
       await _listenForAuthCode();
     } on Exception catch (e) {
       emit(WakatimeAuthFailure(errorMessage: e.toString()));
