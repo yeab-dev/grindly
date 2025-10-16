@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:grindly/features/wakatime/stats/data/models/todays_summarries_model.dart';
-import 'package:grindly/features/wakatime/stats/domain/entities/todays_summarries.dart';
-import 'package:grindly/features/wakatime/stats/domain/repositories/wakatime_summarries_repository.dart';
+import 'package:grindly/features/wakatime/summarries/data/models/todays_summarries_model.dart';
+import 'package:grindly/features/wakatime/summarries/domain/entities/todays_summarries.dart';
+import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
 import 'package:intl/intl.dart';
 
 class WakatimeSummarriesRepositoryImpl implements WakatimeSummarriesRepository {

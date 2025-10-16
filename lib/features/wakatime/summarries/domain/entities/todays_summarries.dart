@@ -1,4 +1,4 @@
-import 'package:grindly/features/wakatime/stats/domain/entities/project.dart';
+import 'package:grindly/features/wakatime/summarries/domain/entities/project.dart';
 
 class TodaysSummarries {
   final List<Project> projectsWorkedOnToday;
