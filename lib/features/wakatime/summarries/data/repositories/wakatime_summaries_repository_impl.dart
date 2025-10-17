@@ -6,9 +6,9 @@ import 'package:grindly/features/wakatime/summarries/domain/entities/todays_summ
 import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
 import 'package:intl/intl.dart';
 
-class WakatimeSummarriesRepositoryImpl implements WakatimeSummarriesRepository {
+class WakatimeSummariesRepositoryImpl implements WakatimeSummariesRepository {
   final Dio dio;
-  const WakatimeSummarriesRepositoryImpl({required this.dio});
+  const WakatimeSummariesRepositoryImpl({required this.dio});
   @override
   Future<TodaysSummarries> getTodaysSummarries() async {
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
