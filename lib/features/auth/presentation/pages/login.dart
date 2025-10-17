@@ -47,7 +47,8 @@ class Login extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).pop();
             }
             if (state.status == SignInStatus.success) {
-              context.go(Routes.home);
+              //TODO:
+              context.go(Routes.wakatimeAuth);
             }
           },
           child: SizedBox(
