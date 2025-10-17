@@ -7,7 +7,12 @@ class ProjectModel {
   const ProjectModel({required this.name, required this.timeSpentToday});
 
   factory ProjectModel.fromJson({required Map<String, dynamic> json}) {
-    return ProjectModel(name: json['name'], timeSpentToday: json['digital']);
+    final int hours = json['hours'];
+    final int minutes = json['minutes'];
+    return ProjectModel(
+      name: json['name'],
+      timeSpentToday: Duration(hours: hours, minutes: minutes),
+    );
   }
 
   Project toEntity() {
