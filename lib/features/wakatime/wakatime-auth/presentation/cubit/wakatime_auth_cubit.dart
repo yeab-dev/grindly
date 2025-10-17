@@ -28,11 +28,6 @@ class WakatimeAuthCubit extends Cubit<WakatimeAuthState> {
 
   Future<void> _listenForAuthCode() async {
     _appLinks ??= AppLinks();
-
-    final initialLink = await _appLinks!.getLatestLink();
-    if (initialLink != null) {
-      _handleIncomingLink(initialLink);
-    }
     _appLinks!.uriLinkStream.listen(_handleIncomingLink);
   }
 
