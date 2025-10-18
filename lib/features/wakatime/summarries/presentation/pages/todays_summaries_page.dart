@@ -21,26 +21,31 @@ class TodaysSummariesPage extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocConsumer<WakatimeSummariesCubit, WakatimeSummariesState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
-        builder: (context, state) {
-          if (state is WakatimeSummariesSuccess) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<WakatimeSummariesCubit, WakatimeSummariesState>(
+            builder: (context, state) {
+              if (state is WakatimeSummariesSuccess) {
+                return Center(
                   child: TotalTimeWorkedTodayCard(
                     duration: state.summarries.totalTimeWorkedToday,
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: width * 0.05),
-                  child: Text('Projects', style: theme.textTheme.headlineSmall),
-                ),
-
-                Expanded(
+                );
+              } else if (state is WakatimeSummariesInProgress) {
+                SizedBox(height: height * 0.1);
+              }
+              return SizedBox.shrink();
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: width * 0.05),
+            child: Text('Projects', style: theme.textTheme.headlineSmall),
+          ),
+          BlocBuilder<WakatimeSummariesCubit, WakatimeSummariesState>(
+            builder: (context, state) {
+              if (state is WakatimeSummariesSuccess) {
+                return Expanded(
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -60,12 +65,13 @@ class TodaysSummariesPage extends StatelessWidget {
                       );
                     },
                   ),
-                ),
-              ],
-            );
-          }
-          return SizedBox.shrink();
-        },
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            },
+          ),
+        ],
       ),
 
       bottomNavigationBar: BottomNavigationBar(
@@ -75,10 +81,7 @@ class TodaysSummariesPage extends StatelessWidget {
             label: "summary",
             icon: Icon(Icons.auto_graph),
           ),
-          BottomNavigationBarItem(
-            label: 'what',
-            icon: Icon(Icons.psychology_alt_rounded),
-          ),
+          BottomNavigationBarItem(label: 'profile', icon: Icon(Icons.person)),
         ],
       ),
     );
