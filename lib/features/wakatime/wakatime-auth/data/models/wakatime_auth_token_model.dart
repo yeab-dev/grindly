@@ -28,7 +28,7 @@ class WakatimeAuthTokenModel {
       refreshToken: json['refresh_token'] as String,
       tokenType: json['token_type'] as String,
       expiresAt: DateTime.parse(json['expires_at'] as String),
-      expiresIn: json['expires_in'] as int,
+      expiresIn: int.parse(json['expires_in'] as String),
       scope: json['scope'] as String,
       uid: json['uid'] as String,
     );
