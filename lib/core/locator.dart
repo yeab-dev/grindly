@@ -6,6 +6,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
+import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
+import 'package:grindly/features/wakatime/summarries/data/repositories/wakatime_summaries_repository_impl.dart';
+import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
+import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/data/repositories/wakatime_auth_repository_impl.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
@@ -49,7 +53,20 @@ void setupLocator() {
     ),
   );
 
+  getIt.registerLazySingleton<WakatimeSummariesRepository>(
+    () => WakatimeSummariesRepositoryImpl(
+      dio: getIt<Dio>(),
+      storageRepository: getIt<SecureStorageRepository>(),
+    ),
+  );
+
   //cubits
+  getIt.registerFactory<SignUpCubit>(
+    () => SignUpCubit(
+      authRepository: getIt<AuthRepository>(),
+      userRemoteRepository: getIt<UserRemoteRepository>(),
+    ),
+  );
   getIt.registerFactory(
     () => SignInCubit(
       authRepository: getIt<AuthRepository>(),
@@ -61,6 +78,12 @@ void setupLocator() {
     () => WakatimeAuthCubit(
       repository: getIt<WakatimeAuthRepository>(),
       storageRepository: getIt<SecureStorageRepository>(),
+    ),
+  );
+
+  getIt.registerFactory<WakatimeSummariesCubit>(
+    () => WakatimeSummariesCubit(
+      repository: getIt<WakatimeSummariesRepository>(),
     ),
   );
 }

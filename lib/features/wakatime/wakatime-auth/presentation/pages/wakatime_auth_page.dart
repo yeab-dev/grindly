@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
 
 class WakatimeAuthPage extends StatelessWidget {
@@ -35,7 +37,16 @@ class WakatimeAuthPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: height * 0.5),
-            BlocBuilder<WakatimeAuthCubit, WakatimeAuthState>(
+            BlocConsumer<WakatimeAuthCubit, WakatimeAuthState>(
+              listener: (context, state) {
+                if (state is WakatimeAuthFailure) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                } else if (state is WakatimeAuthSuccess) {
+                  context.go(Routes.todaysSummary);
+                }
+              },
               builder: (context, state) {
                 return SizedBox(
                   height: height * 0.06,
