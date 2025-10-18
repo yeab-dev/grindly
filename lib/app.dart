@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/core/router/app_router.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
@@ -22,28 +24,41 @@ class App extends StatelessWidget {
               getIt<WakatimeSummariesCubit>()..getTodaysSummary(),
         ),
       ],
-      child: MaterialApp.router(
-        routerConfig: goRouter, // from app_router.dart
-        theme: ThemeData(
-          appBarTheme: AppBarTheme(color: Color(0xFFEFFFF0)),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF3BBE44),
-            primary: const Color(0xFF3BBE44),
-          ),
-          useMaterial3: true,
-          textTheme: ThemeData.light().textTheme.copyWith(
-            bodyLarge: ThemeData.light().textTheme.bodyLarge!.copyWith(
-              color: Color(0xFF033206),
+      child: FutureBuilder<Object>(
+        future: route(secureStorage: getIt<FlutterSecureStorage>()),
+        builder: (context, snapshot) {
+          final theme = ThemeData(
+            appBarTheme: AppBarTheme(color: Color(0xFFEFFFF0)),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF3BBE44),
+              primary: const Color(0xFF3BBE44),
             ),
-            headlineSmall: ThemeData.light().textTheme.headlineSmall!.copyWith(
-              color: Color(0xFF033206),
+            useMaterial3: true,
+            textTheme: ThemeData.light().textTheme.copyWith(
+              bodyLarge: ThemeData.light().textTheme.bodyLarge!.copyWith(
+                color: Color(0xFF033206),
+              ),
+              headlineSmall: ThemeData.light().textTheme.headlineSmall!
+                  .copyWith(color: Color(0xFF033206)),
+              displaySmall: const TextStyle(
+                color: Color(0xFF3BBE44),
+                fontFamily: 'JacquesFrancois',
+              ),
             ),
-            displaySmall: const TextStyle(
-              color: Color(0xFF3BBE44),
-              fontFamily: 'JacquesFrancois',
-            ),
-          ),
-        ),
+          );
+
+          if (snapshot.connectionState != ConnectionState.done) {
+            return MaterialApp(
+              home: Scaffold(body: Center(child: CircularProgressIndicator())),
+              theme: theme,
+            );
+          }
+
+          return MaterialApp.router(
+            routerConfig: snapshot.data as dynamic,
+            theme: theme,
+          );
+        },
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/auth/presentation/pages/email_verification_page.dart';
@@ -5,6 +6,31 @@ import 'package:grindly/features/auth/presentation/pages/login.dart';
 import 'package:grindly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/todays_summaries_page.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/presentation/pages/wakatime_auth_page.dart';
+
+Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
+  if (!await secureStorage.containsKey(key: 'access_token')) {
+    return goRouter;
+  }
+  return GoRouter(
+    initialLocation: Routes.todaysSummary,
+    routes: [
+      GoRoute(path: Routes.signUp, builder: (context, state) => const SignUp()),
+      GoRoute(path: Routes.login, builder: (context, state) => const Login()),
+      GoRoute(
+        path: Routes.verify,
+        builder: (context, state) => const EmailVerificationPage(),
+      ),
+      GoRoute(
+        path: Routes.wakatimeAuth,
+        builder: (context, state) => WakatimeAuthPage(),
+      ),
+      GoRoute(
+        path: Routes.todaysSummary,
+        builder: (context, state) => TodaysSummariesPage(),
+      ),
+    ],
+  );
+}
 
 final goRouter = GoRouter(
   initialLocation: Routes.signUp,
