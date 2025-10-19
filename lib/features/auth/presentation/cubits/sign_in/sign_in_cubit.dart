@@ -3,15 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/domain/models/auth_failure.dart';
-import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
-import 'package:grindly/shared/domain/models/user_model.dart';
+import 'package:grindly/shared/user_profile/data/models/user_model.dart';
+import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepository;
-  final UserRemoteRepository userRemoteRepository;
+  final UserRepository userRemoteRepository;
   SignInCubit({
     required this.authRepository,
     required this.userRemoteRepository,

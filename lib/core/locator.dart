@@ -14,8 +14,9 @@ import 'package:grindly/features/wakatime/wakatime-auth/data/repositories/wakati
 import 'package:grindly/features/wakatime/wakatime-auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
 import 'package:grindly/shared/data/repository/local/secure_storage_repository_impl.dart';
-import 'package:grindly/shared/data/repository/remote/user_remote_repository.dart';
+import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
+import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -34,8 +35,11 @@ void setupLocator() {
   getIt.registerLazySingleton(
     () => AuthRepository(firebaseAuth: getIt<FirebaseAuth>()),
   );
-  getIt.registerLazySingleton<UserRemoteRepository>(
-    () => UserRemoteRepository(firestore: getIt<FirebaseFirestore>()),
+  getIt.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(
+      firebaseAuth: getIt<FirebaseAuth>(),
+      firestore: getIt<FirebaseFirestore>(),
+    ),
   );
 
   getIt.registerLazySingleton<WakatimeAuthRepository>(
@@ -64,13 +68,13 @@ void setupLocator() {
   getIt.registerFactory<SignUpCubit>(
     () => SignUpCubit(
       authRepository: getIt<AuthRepository>(),
-      userRemoteRepository: getIt<UserRemoteRepository>(),
+      userRemoteRepository: getIt<UserRepositoryImpl>(),
     ),
   );
   getIt.registerFactory(
     () => SignInCubit(
       authRepository: getIt<AuthRepository>(),
-      userRemoteRepository: getIt<UserRemoteRepository>(),
+      userRemoteRepository: getIt<UserRepository>(),
     ),
   );
 
