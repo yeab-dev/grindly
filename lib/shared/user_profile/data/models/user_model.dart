@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
 class UserModel extends Equatable {
   final String uid;
@@ -33,7 +34,7 @@ class UserModel extends Equatable {
     );
   }
 
-  factory UserModel.fromFirebaseUser(User user) {
+  factory UserModel.fromFirebaseUser(firebase_auth.User user) {
     return UserModel(
       displayName: user.displayName ?? '',
       uid: user.uid,
@@ -52,6 +53,17 @@ class UserModel extends Equatable {
       'photoUrl': photoUrl,
       'createdAt': Timestamp.fromDate(createdAt),
     };
+  }
+
+  User toEntity() {
+    return User(
+      uid: uid,
+      email: email,
+      displayName: displayName,
+      createdAt: createdAt,
+      username: username,
+      photoUrl: photoUrl,
+    );
   }
 
   UserModel copyWith({
