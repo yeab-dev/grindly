@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:go_router/go_router.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/core/router/app_router.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -23,6 +23,7 @@ class App extends StatelessWidget {
           create: (context) =>
               getIt<WakatimeSummariesCubit>()..getTodaysSummary(),
         ),
+        BlocProvider(create: (context) => getIt<UserProfileCubit>()),
       ],
       child: FutureBuilder<Object>(
         future: route(secureStorage: getIt<FlutterSecureStorage>()),

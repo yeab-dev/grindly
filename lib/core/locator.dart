@@ -10,13 +10,14 @@ import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.d
 import 'package:grindly/features/wakatime/summarries/data/repositories/wakatime_summaries_repository_impl.dart';
 import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/data/repositories/wakatime_auth_repository_impl.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/repositories/wakatime_auth_repository.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/data/repositories/wakatime_auth_repository_impl.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/repositories/wakatime_auth_repository.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/presentation/cubit/wakatime_auth_cubit.dart';
 import 'package:grindly/shared/data/repository/local/secure_storage_repository_impl.dart';
 import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
+import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -36,10 +37,7 @@ void setupLocator() {
     () => AuthRepository(firebaseAuth: getIt<FirebaseAuth>()),
   );
   getIt.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(
-      firebaseAuth: getIt<FirebaseAuth>(),
-      firestore: getIt<FirebaseFirestore>(),
-    ),
+    () => UserRepositoryImpl(firestore: getIt<FirebaseFirestore>()),
   );
 
   getIt.registerLazySingleton<WakatimeAuthRepository>(
@@ -89,5 +87,8 @@ void setupLocator() {
     () => WakatimeSummariesCubit(
       repository: getIt<WakatimeSummariesRepository>(),
     ),
+  );
+  getIt.registerFactory<UserProfileCubit>(
+    () => UserProfileCubit(repository: getIt<UserRepository>()),
   );
 }

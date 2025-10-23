@@ -1,28 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
 class UserModel extends Equatable {
   final String uid;
   final String email;
+  final DateTime createdAt;
   final String displayName;
   final String? username;
   final String? photoUrl;
-  final DateTime createdAt;
+  final WakatimeUser? wakatimeAccount;
 
   const UserModel({
-    this.photoUrl,
-    this.username,
-    required this.displayName,
     required this.uid,
     required this.email,
     required this.createdAt,
+    required this.displayName,
+    this.photoUrl,
+    this.username,
+    this.wakatimeAccount,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     final createdAtRaw = map['createdAt'];
     return UserModel(
+      wakatimeAccount: map['wakatimeAccount'],
       uid: map['uid'],
       email: map['email'],
       displayName: map['displayName'],
@@ -57,6 +61,7 @@ class UserModel extends Equatable {
 
   User toEntity() {
     return User(
+      wakatimeAccount: wakatimeAccount!,
       uid: uid,
       email: email,
       displayName: displayName,

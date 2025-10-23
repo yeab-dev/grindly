@@ -1,14 +1,14 @@
-import 'package:grindly/shared/domain/repositories/entities/project.dart';
-
 class WakatimeUser {
   final String photoUrl;
-  final Map<Project, Duration> projectsWithHoursSpent;
-  final Map<int, Duration> weekdaysWithHoursSpent;
+  final Duration bestProjectByDuration;
+  final Duration bestWeekDayByDuration;
+  final Duration bestLanguageByDuration;
   final Duration totalTime;
   const WakatimeUser({
     required this.photoUrl,
-    required this.projectsWithHoursSpent,
-    required this.weekdaysWithHoursSpent,
+    required this.bestLanguageByDuration,
+    required this.bestProjectByDuration,
+    required this.bestWeekDayByDuration,
     required this.totalTime,
   });
 }

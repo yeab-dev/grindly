@@ -4,4 +4,5 @@ class Routes {
   static const String todaysSummary = '/todaysSummary';
   static const String verify = '/verify';
   static const String wakatimeAuth = '/wakatimeAuth';
+  static const String profilePage = '/profilePage';
 }
