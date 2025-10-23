@@ -13,6 +13,10 @@ import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime
 import 'package:grindly/features/wakatime/wakatime_auth/data/repositories/wakatime_auth_repository_impl.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_all_time_since_today_data_source.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_insight_data_source.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_profile_picture_data_source.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_stats_data_source.dart';
 import 'package:grindly/shared/data/repository/local/secure_storage_repository_impl.dart';
 import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
@@ -33,7 +37,7 @@ void setupLocator() {
   );
 
   // repositories
-  getIt.registerLazySingleton(
+  getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepository(firebaseAuth: getIt<FirebaseAuth>()),
   );
   getIt.registerLazySingleton<UserRepository>(
@@ -62,6 +66,35 @@ void setupLocator() {
     ),
   );
 
+  //data sources
+
+  getIt.registerLazySingleton<WakatimeAllTimeSinceTodayDataSource>(
+    () => WakatimeAllTimeSinceTodayDataSource(
+      dio: getIt<Dio>(),
+      repository: getIt<SecureStorageRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WakatimeInsightDataSource>(
+    () => WakatimeInsightDataSource(
+      dio: getIt<Dio>(),
+      storageRepository: getIt<SecureStorageRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WakatimeProfilePictureDataSource>(
+    () => WakatimeProfilePictureDataSource(
+      dio: getIt<Dio>(),
+      repository: getIt<SecureStorageRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<WakatimeStatsDataSource>(
+    () => WakatimeStatsDataSource(
+      dio: getIt<Dio>(),
+      repository: getIt<SecureStorageRepository>(),
+    ),
+  );
   //cubits
   getIt.registerFactory<SignUpCubit>(
     () => SignUpCubit(
