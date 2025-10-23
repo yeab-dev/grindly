@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/data/models/wakatime_auth_token_model.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime_auth_token.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime_scope.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/repositories/wakatime_auth_repository.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/data/models/wakatime_auth_token_model.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/entities/wakatime_auth_token.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/entities/wakatime_scope.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WakatimeAuthRepositoryImpl implements WakatimeAuthRepository {

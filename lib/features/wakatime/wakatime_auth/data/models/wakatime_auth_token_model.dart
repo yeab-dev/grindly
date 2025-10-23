@@ -1,4 +1,4 @@
-import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime_auth_token.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/entities/wakatime_auth_token.dart';
 
 class WakatimeAuthTokenModel {
   final String accessToken;

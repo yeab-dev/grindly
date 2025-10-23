@@ -1,9 +1,9 @@
 import 'package:app_links/app_links.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime_auth_token.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/entities/wakatime_scope.dart';
-import 'package:grindly/features/wakatime/wakatime-auth/domain/repositories/wakatime_auth_repository.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/entities/wakatime_auth_token.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/entities/wakatime_scope.dart';
+import 'package:grindly/features/wakatime/wakatime_auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 
 part 'wakatime_auth_state.dart';
