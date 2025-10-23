@@ -1,4 +1,4 @@
-import 'package:grindly/features/wakatime/summarries/domain/entities/project.dart';
+import 'package:grindly/shared/domain/repositories/entities/project.dart';
 
 class ProjectModel {
   final String name;

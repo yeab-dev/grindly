@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/widgets/project_widget.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/widgets/total_time_worked_today_card.dart';
@@ -75,7 +77,13 @@ class TodaysSummariesPage extends StatelessWidget {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
         backgroundColor: theme.appBarTheme.backgroundColor,
+        onTap: (index) {
+          if (index == 1) {
+            context.go(Routes.profilePage);
+          }
+        },
         items: [
           BottomNavigationBarItem(
             label: "summary",
