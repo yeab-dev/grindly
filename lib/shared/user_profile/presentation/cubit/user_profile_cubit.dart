@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly_user;
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
@@ -9,7 +10,9 @@ part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
   final UserRepository repository;
-  UserProfileCubit({required this.repository}) : super(UserProfileInitial());
+  final WakatimeProfileRepository wakatimeRepository;
+  UserProfileCubit({required this.repository, required this.wakatimeRepository})
+    : super(UserProfileInitial());
 
   Future<void> getUser() async {
     emit(UserProfileInProgress());
@@ -22,7 +25,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       await user.reload();
       final uid = user.uid;
       final grindlyUser = await repository.getUser(uid);
-      emit(UserProfileSuccess(user: grindlyUser!));
+      final wakatimeAccount = await wakatimeRepository.getUserData();
+      emit(
+        UserProfileSuccess(
+          user: grindly_user.User(
+            uid: uid,
+            email: grindlyUser!.email,
+            displayName: grindlyUser.displayName,
+            createdAt: grindlyUser.createdAt,
+            wakatimeAccount: wakatimeAccount,
+          ),
+        ),
+      );
     } catch (e) {
       emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
     }
