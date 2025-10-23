@@ -63,7 +63,7 @@ class TodaysSummariesPage extends StatelessWidget {
                         timeSpent: state
                             .summarries
                             .projectsWorkedOnToday[index]
-                            .timeSpentToday,
+                            .timeSpentToday!,
                       );
                     },
                   ),
