@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:grindly/shared/domain/repositories/entities/project.dart';
+import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 
 class WakatimeStatsDataSource {

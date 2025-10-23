@@ -1,5 +1,5 @@
 import 'package:grindly/features/wakatime/summarries/data/models/project_model.dart';
-import 'package:grindly/shared/domain/repositories/entities/project.dart';
+import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/features/wakatime/summarries/domain/entities/todays_summarries.dart';
 
 class TodaysSummarriesModel {

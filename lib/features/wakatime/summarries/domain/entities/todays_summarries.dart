@@ -1,4 +1,4 @@
-import 'package:grindly/shared/domain/repositories/entities/project.dart';
+import 'package:grindly/shared/domain/entities/project.dart';
 
 class TodaysSummarries {
   final List<Project> projectsWorkedOnToday;

@@ -17,6 +17,8 @@ import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wak
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_insight_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_profile_picture_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_stats_data_source.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/repositories/wakatime_profile_repository_impl.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
 import 'package:grindly/shared/data/repository/local/secure_storage_repository_impl.dart';
 import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
@@ -66,6 +68,14 @@ void setupLocator() {
     ),
   );
 
+  getIt.registerLazySingleton<WakatimeProfileRepository>(
+    () => WakatimeProfileRepositoryImpl(
+      allTimeSinceTodayDataSource: getIt<WakatimeAllTimeSinceTodayDataSource>(),
+      insightDataSource: getIt<WakatimeInsightDataSource>(),
+      profilePictureDataSource: getIt<WakatimeProfilePictureDataSource>(),
+      statsDataSource: getIt<WakatimeStatsDataSource>(),
+    ),
+  );
   //data sources
 
   getIt.registerLazySingleton<WakatimeAllTimeSinceTodayDataSource>(
@@ -122,6 +132,9 @@ void setupLocator() {
     ),
   );
   getIt.registerFactory<UserProfileCubit>(
-    () => UserProfileCubit(repository: getIt<UserRepository>()),
+    () => UserProfileCubit(
+      repository: getIt<UserRepository>(),
+      wakatimeRepository: getIt<WakatimeProfileRepository>(),
+    ),
   );
 }
