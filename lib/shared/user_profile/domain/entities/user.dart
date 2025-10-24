@@ -7,14 +7,14 @@ class User {
   final String? username;
   final String? photoUrl;
   final DateTime createdAt;
-  final WakatimeUser wakatimeAccount;
+  final WakatimeUser? wakatimeAccount;
 
   const User({
     required this.uid,
     required this.email,
     required this.displayName,
     required this.createdAt,
-    required this.wakatimeAccount,
+    this.wakatimeAccount,
     this.username,
     this.photoUrl,
   });

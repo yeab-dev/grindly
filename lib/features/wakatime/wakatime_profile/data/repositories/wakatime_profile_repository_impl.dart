@@ -35,21 +35,11 @@ class WakatimeProfileRepositoryImpl implements WakatimeProfileRepository {
         .getTotalTimeSpentOnWeekDays();
 
     return WakatimeUser(
-      bestLanguageByDuration: _highestDuration(languagesWithHoursSpent),
+      bestLanguageWithDuration: languagesWithHoursSpent,
       photoUrl: profilePictureUrl,
-      bestProjectByDuration: _highestDuration(projectsWithHoursSpent),
-      bestWeekDayByDuration: _highestDuration(weekdaysWithHoursSpent),
+      bestProjectWithDuration: projectsWithHoursSpent,
+      bestWeekDayWithDuration: weekdaysWithHoursSpent,
       totalTime: allTimeSinceToday,
     );
-  }
-
-  Duration _highestDuration<T>(Map<T, Duration> hoursSpent) {
-    Duration maxDuration = Duration.zero;
-    for (final entry in hoursSpent.entries) {
-      if (entry.value > maxDuration) {
-        maxDuration = entry.value;
-      }
-    }
-    return maxDuration;
   }
 }

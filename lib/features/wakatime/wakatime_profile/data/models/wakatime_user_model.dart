@@ -2,9 +2,9 @@ import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakat
 
 class WakatimeUserModel {
   final String photoUrl;
-  final Duration bestProjectByDuration;
-  final Duration bestWeekDayByDuration;
-  final Duration bestLanguageByDuration;
+  final Map<String, dynamic> bestProjectByDuration;
+  final Map<String, dynamic> bestWeekDayByDuration;
+  final Map<String, dynamic> bestLanguageByDuration;
   final Duration totalTime;
 
   const WakatimeUserModel({
@@ -29,9 +29,9 @@ class WakatimeUserModel {
     return WakatimeUser(
       photoUrl: photoUrl,
       totalTime: totalTime,
-      bestLanguageByDuration: bestLanguageByDuration,
-      bestWeekDayByDuration: bestWeekDayByDuration,
-      bestProjectByDuration: bestProjectByDuration,
+      bestLanguageWithDuration: bestLanguageByDuration,
+      bestWeekDayWithDuration: bestWeekDayByDuration,
+      bestProjectWithDuration: bestProjectByDuration,
     );
   }
 }

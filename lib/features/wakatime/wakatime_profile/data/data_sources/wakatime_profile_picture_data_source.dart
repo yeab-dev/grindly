@@ -15,7 +15,7 @@ class WakatimeProfilePictureDataSource {
     try {
       final response = await dio.get(
         _endpoint,
-        queryParameters: {"Authorization": "Bearer $accessToken"},
+        options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
 
       if (response.statusCode == 200) {

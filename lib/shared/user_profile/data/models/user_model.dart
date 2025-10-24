@@ -61,7 +61,6 @@ class UserModel extends Equatable {
 
   User toEntity() {
     return User(
-      wakatimeAccount: wakatimeAccount!,
       uid: uid,
       email: email,
       displayName: displayName,

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
+import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({super.key});
@@ -19,6 +22,10 @@ class UserProfilePage extends StatelessWidget {
             if (state is UserProfileSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('user: ${state.user.displayName}')),
+              );
+            } else if (state is UserProfileFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('user: ${state.errorMessage}')),
               );
             }
           },
@@ -56,78 +63,88 @@ class UserProfilePage extends StatelessWidget {
                       color: theme.colorScheme.primary,
                     ),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(state.user.photoUrl!),
+                      backgroundImage: NetworkImage(
+                        state.user.wakatimeAccount!.photoUrl,
+                      ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: height * 0.015),
                     child: Text(
                       state.user.displayName,
-                      style: theme.textTheme.headlineSmall!.copyWith(),
+                      style: theme.textTheme.headlineSmall,
+                    ),
+                  ),
+                  NetworkAndStreakInfoWidget(),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: width * 0.03),
+                      child: Text(
+                        'Summary',
+                        style: theme.textTheme.headlineLarge!.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
 
                   Padding(
                     padding: EdgeInsets.only(
-                      left: width * 0.05,
+                      left: width * 0.03,
                       top: height * 0.03,
+                      right: width * 0.03,
                     ),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '0',
-                              style: theme.textTheme.headlineLarge!.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            SummaryCard(
+                              title: state
+                                  .user
+                                  .wakatimeAccount!
+                                  .bestLanguageWithDuration['name'],
+                              description: 'top language',
+                              iconData: Icons.arrow_outward_rounded,
                             ),
-                            Text('Following'),
+                            SummaryCard(
+                              title: formatDuration(
+                                state.user.wakatimeAccount!.totalTime,
+                              ),
+                              description: 'total time',
+                              iconData: Icons.timer_sharp,
+                            ),
                           ],
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: width * 0.05,
+                        Padding(
+                          padding: EdgeInsets.only(top: height * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SummaryCard(
+                                title: state
+                                    .user
+                                    .wakatimeAccount!
+                                    .bestWeekDayWithDuration['name'],
+                                description: 'most active day',
+                                iconData: Icons.calendar_month,
+                              ),
+                              SummaryCard(
+                                title:
+                                    (state
+                                                .user
+                                                .wakatimeAccount!
+                                                .bestProjectWithDuration['project']
+                                            as Project)
+                                        .name,
+                                description: 'top Project',
+                                iconData: Icons.folder_outlined,
+                              ),
+                            ],
                           ),
-                          height: height * 0.05,
-                          color: theme.colorScheme.secondaryContainer,
-                          child: SizedBox(width: width * 0.005),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '0',
-                              style: theme.textTheme.headlineLarge!.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('Followers'),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: width * 0.05,
-                          ),
-                          height: height * 0.05,
-                          color: theme.colorScheme.secondaryContainer,
-                          child: SizedBox(width: width * 0.005),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '15',
-                              style: theme.textTheme.headlineLarge!.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('Current Streak'),
-                          ],
                         ),
                       ],
                     ),
@@ -161,5 +178,12 @@ class UserProfilePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String formatDuration(Duration duration) {
+    final durationList = duration.toString().split(':');
+    final int hours = int.parse(durationList[0]);
+    final int minutes = int.parse(durationList[1]);
+    return "$hours:$minutes";
   }
 }

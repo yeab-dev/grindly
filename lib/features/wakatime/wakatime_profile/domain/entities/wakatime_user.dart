@@ -1,14 +1,14 @@
 class WakatimeUser {
   final String photoUrl;
-  final Duration bestProjectByDuration;
-  final Duration bestWeekDayByDuration;
-  final Duration bestLanguageByDuration;
+  final Map<String, dynamic> bestProjectWithDuration;
+  final Map<String, dynamic> bestWeekDayWithDuration;
+  final Map<String, dynamic> bestLanguageWithDuration;
   final Duration totalTime;
   const WakatimeUser({
     required this.photoUrl,
-    required this.bestLanguageByDuration,
-    required this.bestProjectByDuration,
-    required this.bestWeekDayByDuration,
+    required this.bestLanguageWithDuration,
+    required this.bestProjectWithDuration,
+    required this.bestWeekDayWithDuration,
     required this.totalTime,
   });
 }

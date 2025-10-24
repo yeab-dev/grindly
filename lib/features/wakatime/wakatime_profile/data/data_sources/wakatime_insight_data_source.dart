@@ -13,26 +13,23 @@ class WakatimeInsightDataSource {
     required this.storageRepository,
   });
 
-  Future<Map<String, Duration>> getTotalTimeSpentOnWeekDays() async {
+  Future<Map<String, dynamic>> getTotalTimeSpentOnWeekDays() async {
     final token = await storageRepository.read(key: 'access_token');
     try {
       final response = await dio.get(
         _endpoint,
-        queryParameters: {"Authorization": "Bearer $token"},
+        options: Options(headers: {"Authorization": "Bearer $token"}),
       );
       if (response.statusCode == 200) {
-        final Map<String, Duration> result = {};
-        final List<Map<String, dynamic>> timeSpentOnWeekDays =
-            response.data['data']['weekdays'];
-        for (Map<String, dynamic> weekdayData in timeSpentOnWeekDays) {
-          final name = weekdayData['name'] as String;
-          final total = weekdayData['total'];
-          result[name] = Converters.toDuration((total as num).toDouble());
-        }
+        final Map<String, dynamic> result = {};
+        final List timeSpentOnWeekDays = response.data['data']['weekdays'];
+        final name = timeSpentOnWeekDays[0]['name'] as String;
+        final total = timeSpentOnWeekDays[0]['total'];
+        result['name'] = name;
+        result['duration'] = Converters.toDuration((total as num).toDouble());
         return result;
       }
-      // return empty map if response is not OK
-      return {};
+      throw Exception('Something went wrong');
     } catch (e) {
       rethrow;
     }
