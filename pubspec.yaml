@@ -38,6 +38,7 @@ flutter:
   assets:
     - assets/images/
     - assets/lottie_animations/
+    - assets/icons/
     - .env
   fonts:
     - family: 'JacquesFrancois'

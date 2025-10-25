@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class SummaryCard extends StatelessWidget {
   final String title;
   final String description;
-  final IconData iconData;
+  final Widget iconImage;
   const SummaryCard({
     super.key,
     required this.title,
     required this.description,
-    required this.iconData,
+    required this.iconImage,
   });
 
   @override
@@ -18,13 +18,13 @@ class SummaryCard extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     return Container(
       height: height * 0.08,
-      width: width * 0.4,
+      width: width * 0.41,
       decoration: BoxDecoration(
         border: Border.all(
-          color: theme.colorScheme.tertiary.withAlpha(80),
+          color: theme.colorScheme.tertiary.withAlpha(50),
           width: 2.8,
         ),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Align(
         alignment: Alignment.topLeft,
@@ -32,23 +32,28 @@ class SummaryCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(
-                  iconData,
-                  color: theme.colorScheme.primary,
-                  size: width * 0.07,
-                ),
-                SizedBox(width: width * 0.02),
-                Text(title, style: theme.textTheme.titleLarge),
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: width * 0.01),
+              child: Row(
+                children: [
+                  iconImage,
+                  SizedBox(width: width * 0.02),
+                  Text(
+                    title,
+                    style: theme.textTheme.titleMedium!.copyWith(
+                      fontSize: height * 0.02,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: width * 0.02),
               child: Text(
                 description,
                 style: theme.textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
