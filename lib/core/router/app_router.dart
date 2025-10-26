@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
@@ -9,7 +10,36 @@ import 'package:grindly/features/wakatime/wakatime_auth/presentation/pages/wakat
 import 'package:grindly/shared/user_profile/presentation/pages/user_profile_page.dart';
 
 Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
-  if (!await secureStorage.containsKey(key: 'access_token')) {
+  final bool isUserSignedIn = FirebaseAuth.instance.currentUser != null;
+  if (!isUserSignedIn &&
+      !await secureStorage.containsKey(key: 'access_token')) {
+    return GoRouter(
+      initialLocation: Routes.login,
+      routes: [
+        GoRoute(
+          path: Routes.signUp,
+          builder: (context, state) => const SignUp(),
+        ),
+        GoRoute(path: Routes.login, builder: (context, state) => const Login()),
+        GoRoute(
+          path: Routes.verify,
+          builder: (context, state) => const EmailVerificationPage(),
+        ),
+        GoRoute(
+          path: Routes.wakatimeAuth,
+          builder: (context, state) => WakatimeAuthPage(),
+        ),
+        GoRoute(
+          path: Routes.todaysSummary,
+          builder: (context, state) => TodaysSummariesPage(),
+        ),
+        GoRoute(
+          path: Routes.profilePage,
+          builder: (context, state) => UserProfilePage(),
+        ),
+      ],
+    );
+  } else if (!await secureStorage.containsKey(key: 'access_token')) {
     return goRouter;
   }
   return GoRouter(

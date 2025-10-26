@@ -16,7 +16,7 @@ class UserProfilePage extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: BlocConsumer<UserProfileCubit, UserProfileState>(
           listener: (context, state) {
             if (state is UserProfileSuccess) {
@@ -32,6 +32,7 @@ class UserProfilePage extends StatelessWidget {
           builder: (context, state) {
             if (state is UserProfileSuccess) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
@@ -51,32 +52,95 @@ class UserProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    height: height * 0.13,
-                    width: height * 0.13,
-                    decoration: BoxDecoration(
-                      border: Border.all(
+                  Center(
+                    child: Container(
+                      height: height * 0.13,
+                      width: height * 0.13,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorScheme.primary,
+                          width: width * 0.01,
+                        ),
+                        shape: BoxShape.circle,
                         color: theme.colorScheme.primary,
-                        width: width * 0.01,
                       ),
-                      shape: BoxShape.circle,
-                      color: theme.colorScheme.primary,
-                    ),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        state.user.wakatimeAccount!.photoUrl,
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          state.user.wakatimeAccount!.photoUrl,
+                        ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: height * 0.015),
-                    child: Text(
-                      state.user.displayName,
-                      style: theme.textTheme.headlineSmall,
+                    child: Center(
+                      child: Text(
+                        state.user.displayName,
+                        style: theme.textTheme.headlineSmall,
+                      ),
                     ),
                   ),
                   NetworkAndStreakInfoWidget(),
-
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: width * 0.05,
+                      bottom: height * 0.03,
+                    ),
+                    padding: EdgeInsets.only(
+                      left: width * 0.03,
+                      top: height * 0.01,
+                    ),
+                    width: width * 0.45,
+                    height: height * 0.12,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: theme.colorScheme.tertiary.withAlpha(50),
+                        width: width * 0.005,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.01),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: height * 0.024,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 7.0),
+                                  child: Image.asset('assets/icons/x-icon.png'),
+                                ),
+                                Text('X', style: TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.03,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: SizedBox(
+                                    height: height * 0.024,
+                                    child: Image.asset(
+                                      'assets/icons/telegram-icon.png',
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Telegram',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
