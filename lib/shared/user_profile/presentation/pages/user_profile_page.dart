@@ -5,6 +5,7 @@ import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -81,66 +82,7 @@ class UserProfilePage extends StatelessWidget {
                     ),
                   ),
                   NetworkAndStreakInfoWidget(),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: width * 0.05,
-                      bottom: height * 0.03,
-                    ),
-                    padding: EdgeInsets.only(
-                      left: width * 0.03,
-                      top: height * 0.01,
-                    ),
-                    width: width * 0.45,
-                    height: height * 0.12,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: theme.colorScheme.tertiary.withAlpha(50),
-                        width: width * 0.005,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.01),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: height * 0.024,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 7.0),
-                                  child: Image.asset('assets/icons/x-icon.png'),
-                                ),
-                                Text('X', style: TextStyle(fontSize: 18)),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.03,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 8.0),
-                                  child: SizedBox(
-                                    height: height * 0.024,
-                                    child: Image.asset(
-                                      'assets/icons/telegram-icon.png',
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  'Telegram',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SocialMediaWidget(),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -237,11 +179,14 @@ class UserProfilePage extends StatelessWidget {
                 ],
               );
             }
-            return ElevatedButton(
-              onPressed: () {
-                context.read<UserProfileCubit>().getUser();
-              },
-              child: Text('press me'),
+            return Center(
+              heightFactor: height * 0.01,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.read<UserProfileCubit>().getUser();
+                },
+                child: Text('press me'),
+              ),
             );
           },
         ),
