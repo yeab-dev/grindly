@@ -214,6 +214,6 @@ class UserProfilePage extends StatelessWidget {
     final durationList = duration.toString().split(':');
     final int hours = int.parse(durationList[0]);
     final int minutes = int.parse(durationList[1]);
-    return "$hours:$minutes";
+    return "$hours hrs $minutes min";
   }
 }

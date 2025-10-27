@@ -71,7 +71,10 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: height * 0.01),
                 child: Text(
                   'commit early, commit often',
-                  style: TextStyle(fontSize: 19),
+                  style: TextStyle(
+                    fontSize: 19,
+                    color: theme.colorScheme.secondary,
+                  ),
                 ),
               ),
             ],

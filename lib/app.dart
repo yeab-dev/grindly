@@ -33,7 +33,6 @@ class App extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xFF3BBE44),
               primary: const Color(0xFF3BBE44),
-              tertiary: const Color(0xFF98A399),
             ),
             useMaterial3: true,
             textTheme: ThemeData.light().textTheme.copyWith(

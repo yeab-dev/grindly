@@ -43,7 +43,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
     return goRouter;
   }
   return GoRouter(
-    initialLocation: Routes.profilePage,
+    initialLocation: Routes.todaysSummary,
     routes: [
       GoRoute(path: Routes.signUp, builder: (context, state) => const SignUp()),
       GoRoute(path: Routes.login, builder: (context, state) => const Login()),
