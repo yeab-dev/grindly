@@ -44,7 +44,9 @@ class UserProfilePage extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfilePictureWidget(imgSource: state.user.photoUrl!),
+                  ProfilePictureWidget(
+                    imgSource: state.user.wakatimeAccount!.photoUrl,
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 18.0),
                     child: Center(
@@ -58,7 +60,7 @@ class UserProfilePage extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        context.go(Routes.editProfilePage);
+                        GoRouter.of(context).push(Routes.editProfilePage);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(right: 15.0),
@@ -67,7 +69,19 @@ class UserProfilePage extends StatelessWidget {
                     ),
                   ),
                   NetworkAndStreakInfoWidget(),
-                  SocialMediaWidget(),
+                  SocialMediaWidget(
+                    xLink: state.user.socialMediaAccounts!.firstWhere((
+                      account,
+                    ) {
+                      return account.platformLogo == "assets/icons/x-icon.png";
+                    }).url,
+                    telegramLink: state.user.socialMediaAccounts!.firstWhere((
+                      account,
+                    ) {
+                      return account.platformLogo ==
+                          "assets/icons/telegram-icon.png";
+                    }).url,
+                  ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(

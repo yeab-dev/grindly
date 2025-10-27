@@ -35,6 +35,9 @@ class UserModel extends Equatable {
       displayName: map['display_name'],
       bio: map['bio'],
       photoUrl: map['photo_url'] as String?,
+      socialMediaAccounts: (map['social_media_accounts'] as List<dynamic>)
+          .map((element) => SocialMediaAccountModel.fromMap(map: element))
+          .toList(),
       createdAt: createdAtRaw is Timestamp
           ? createdAtRaw.toDate()
           : DateTime.parse(createdAtRaw),

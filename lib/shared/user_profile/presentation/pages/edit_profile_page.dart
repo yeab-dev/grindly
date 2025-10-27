@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 
@@ -17,6 +18,7 @@ class EditProfilePage extends StatelessWidget {
     TextEditingController xController = TextEditingController();
     TextEditingController telegramController = TextEditingController();
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

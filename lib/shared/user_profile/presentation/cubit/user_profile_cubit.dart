@@ -4,7 +4,6 @@ import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
 import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
 import 'package:grindly/shared/user_profile/data/models/user_model.dart';
-import 'package:grindly/shared/user_profile/domain/entities/social_media_account.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly_user;
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
@@ -27,19 +26,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       }
       await user.reload();
       final uid = user.uid;
-      final grindlyUser = await repository.getUser(uid);
+      UserModel? grindlyUser = await repository.getUser(uid);
       final wakatimeAccount = await wakatimeRepository.getUserData();
-      emit(
-        UserProfileSuccess(
-          user: grindly_user.User(
-            uid: uid,
-            email: grindlyUser!.email,
-            displayName: grindlyUser.displayName,
-            createdAt: grindlyUser.createdAt,
-            wakatimeAccount: wakatimeAccount,
-          ),
-        ),
-      );
+      grindlyUser = grindlyUser!.copyWith(wakatimeAccount: wakatimeAccount);
+
+      emit(UserProfileSuccess(user: grindlyUser.toEntity()));
     } catch (e) {
       emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
     }

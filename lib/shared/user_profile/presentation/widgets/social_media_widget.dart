@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaWidget extends StatelessWidget {
-  const SocialMediaWidget({super.key});
+  final String xLink;
+  final String telegramLink;
+  const SocialMediaWidget({
+    super.key,
+    required this.xLink,
+    required this.telegramLink,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +17,8 @@ class SocialMediaWidget extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     return Container(
       margin: EdgeInsets.only(left: width * 0.05, bottom: height * 0.03),
-      padding: EdgeInsets.only(left: width * 0.03, top: height * 0.01),
       width: width * 0.45,
-      height: height * 0.12,
+      height: height * 0.14,
       decoration: BoxDecoration(
         border: Border.all(
           color: theme.colorScheme.tertiary.withAlpha(50),
@@ -25,32 +31,44 @@ class SocialMediaWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              height: height * 0.024,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 7.0),
-                    child: Image.asset('assets/icons/x-icon.png'),
-                  ),
-                  Text('X', style: TextStyle(fontSize: 18)),
-                ],
+            TextButton(
+              onPressed: () async {
+                final uri = Uri.parse(xLink);
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              },
+              child: SizedBox(
+                height: height * 0.024,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 7.0),
+                      child: Image.asset('assets/icons/x-icon.png'),
+                    ),
+                    Text('X', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
               ),
             ),
-            SizedBox(
-              height: height * 0.03,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: SizedBox(
-                      height: height * 0.024,
-                      child: Image.asset('assets/icons/telegram-icon.png'),
+            TextButton(
+              onPressed: () async {
+                final uri = Uri.parse(telegramLink);
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              },
+              child: SizedBox(
+                height: height * 0.03,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: SizedBox(
+                        height: height * 0.024,
+                        child: Image.asset('assets/icons/telegram-icon.png'),
+                      ),
                     ),
-                  ),
-                  Text('Telegram', style: TextStyle(fontSize: 18)),
-                ],
+                    Text('Telegram', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
               ),
             ),
           ],
