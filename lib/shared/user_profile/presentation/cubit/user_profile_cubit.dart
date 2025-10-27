@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
+import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
 import 'package:grindly/shared/user_profile/data/models/user_model.dart';
+import 'package:grindly/shared/user_profile/domain/entities/social_media_account.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly_user;
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
@@ -43,14 +45,31 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }
   }
 
-  Future<void> updateUser(UserModel userModel) async {
+  Future<void> updateUser({
+    required String displayName,
+    required String? bio,
+    required String? xLink,
+    required String? telegramLink,
+  }) async {
     emit(UserProfileInProgress());
     try {
-      await repository.updateUser(userModel);
-
-      final user = await repository.getUser(userModel.uid);
-      if (user != null) {
-        emit(UserProfileSuccess(user: user));
+      final FirebaseAuth firebaseAuth = getIt<FirebaseAuth>();
+      final uid = firebaseAuth.currentUser!.uid;
+      UserModel? userModel = await repository.getUser(uid);
+      final updatedUserModel = userModel?.copyWith(
+        displayName: displayName,
+        bio: bio,
+        socialMediaAccounts: <SocialMediaAccountModel>[
+          SocialMediaAccountModel(platformName: 'X', url: xLink ?? ""),
+          SocialMediaAccountModel(
+            platformName: 'Telegram',
+            url: telegramLink ?? "",
+          ),
+        ],
+      );
+      if (updatedUserModel != null) {
+        await repository.updateUser(updatedUserModel);
+        emit(UserProfileSuccess(user: updatedUserModel.toEntity()));
       } else {
         throw Exception('couldn\'t update profile');
       }

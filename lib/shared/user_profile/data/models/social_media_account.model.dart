@@ -19,10 +19,12 @@ class SocialMediaAccountModel {
     return {"platform_name": platformName, "url": url};
   }
 
-  SocialMediaAccount toEntity({required String assetLocation}) {
+  SocialMediaAccount toEntity() {
     return SocialMediaAccount(
       platformName: platformName,
-      platformLogo: assetLocation,
+      platformLogo: platformName == 'X'
+          ? "assets/icons/x-icon.png"
+          : "assets/icons/telegram-icon.png",
       url: url,
     );
   }

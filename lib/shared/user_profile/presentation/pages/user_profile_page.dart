@@ -5,6 +5,7 @@ import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
 
@@ -43,25 +44,7 @@ class UserProfilePage extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Container(
-                      height: height * 0.13,
-                      width: height * 0.13,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: theme.colorScheme.primary,
-                          width: width * 0.01,
-                        ),
-                        shape: BoxShape.circle,
-                        color: theme.colorScheme.primary,
-                      ),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          state.user.wakatimeAccount!.photoUrl,
-                        ),
-                      ),
-                    ),
-                  ),
+                  ProfilePictureWidget(imgSource: state.user.photoUrl!),
                   Padding(
                     padding: EdgeInsets.only(top: 18.0),
                     child: Center(
@@ -74,7 +57,9 @@ class UserProfilePage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go(Routes.editProfilePage);
+                      },
                       child: Padding(
                         padding: EdgeInsets.only(right: 15.0),
                         child: Text('edit profile'),
