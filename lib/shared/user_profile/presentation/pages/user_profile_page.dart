@@ -43,21 +43,6 @@ class UserProfilePage extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: width * 0.05),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.edit,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Center(
                     child: Container(
                       height: height * 0.13,
@@ -78,11 +63,21 @@ class UserProfilePage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: height * 0.015),
+                    padding: EdgeInsets.only(top: 18.0),
                     child: Center(
                       child: Text(
                         state.user.displayName,
                         style: theme.textTheme.headlineSmall,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 15.0),
+                        child: Text('edit profile'),
                       ),
                     ),
                   ),

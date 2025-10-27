@@ -9,7 +9,6 @@ class UserModel extends Equatable {
   final String email;
   final DateTime createdAt;
   final String displayName;
-  final String? username;
   final String? photoUrl;
   final WakatimeUser? wakatimeAccount;
 
@@ -19,7 +18,6 @@ class UserModel extends Equatable {
     required this.createdAt,
     required this.displayName,
     this.photoUrl,
-    this.username,
     this.wakatimeAccount,
   });
 
@@ -30,7 +28,6 @@ class UserModel extends Equatable {
       uid: map['uid'],
       email: map['email'],
       displayName: map['displayName'],
-      username: map['username'] as String?,
       photoUrl: map['photoUrl'] as String?,
       createdAt: createdAtRaw is Timestamp
           ? createdAtRaw.toDate()
@@ -53,7 +50,6 @@ class UserModel extends Equatable {
       'uid': uid,
       'email': email,
       'displayName': displayName,
-      'username': username,
       'photoUrl': photoUrl,
       'createdAt': Timestamp.fromDate(createdAt),
     };
@@ -65,7 +61,6 @@ class UserModel extends Equatable {
       email: email,
       displayName: displayName,
       createdAt: createdAt,
-      username: username,
       photoUrl: photoUrl,
     );
   }
@@ -81,7 +76,6 @@ class UserModel extends Equatable {
       uid: uid,
       email: email ?? this.email,
       displayName: displayName ?? this.displayName,
-      username: username ?? this.username,
       photoUrl: photoUrl ?? this.photoUrl,
       createdAt: createdAt ?? this.createdAt,
     );

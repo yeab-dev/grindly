@@ -10,7 +10,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
     return Center(
       child: Padding(
-        padding: EdgeInsets.only(top: height * 0.03, bottom: height * 0.04),
+        padding: EdgeInsets.only(bottom: height * 0.04),
         child: Container(
           width: width * 0.9,
           height: height * 0.16,
