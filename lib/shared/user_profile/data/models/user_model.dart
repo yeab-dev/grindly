@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
+import 'package:grindly/shared/user_profile/domain/entities/social_media_account.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
 class UserModel extends Equatable {
@@ -11,6 +12,7 @@ class UserModel extends Equatable {
   final String displayName;
   final String? photoUrl;
   final WakatimeUser? wakatimeAccount;
+  final List<SocialMediaAccount>? socialMediaAccounts;
 
   const UserModel({
     required this.uid,
@@ -19,16 +21,17 @@ class UserModel extends Equatable {
     required this.displayName,
     this.photoUrl,
     this.wakatimeAccount,
+    this.socialMediaAccounts,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    final createdAtRaw = map['createdAt'];
+    final createdAtRaw = map['created_at'];
     return UserModel(
-      wakatimeAccount: map['wakatimeAccount'],
+      wakatimeAccount: map['wakatime_account'],
       uid: map['uid'],
       email: map['email'],
-      displayName: map['displayName'],
-      photoUrl: map['photoUrl'] as String?,
+      displayName: map['display_name'],
+      photoUrl: map['photo_url'] as String?,
       createdAt: createdAtRaw is Timestamp
           ? createdAtRaw.toDate()
           : DateTime.parse(createdAtRaw),
@@ -49,9 +52,10 @@ class UserModel extends Equatable {
     return {
       'uid': uid,
       'email': email,
-      'displayName': displayName,
-      'photoUrl': photoUrl,
-      'createdAt': Timestamp.fromDate(createdAt),
+      'display_name': displayName,
+      'photo_url': photoUrl,
+      'created_at': Timestamp.fromDate(createdAt),
+      'social_media_accounts': socialMediaAccounts,
     };
   }
 
