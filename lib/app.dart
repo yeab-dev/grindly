@@ -23,7 +23,7 @@ class App extends StatelessWidget {
           create: (context) =>
               getIt<WakatimeSummariesCubit>()..getTodaysSummary(),
         ),
-        BlocProvider(create: (context) => getIt<UserProfileCubit>()),
+        BlocProvider(create: (context) => getIt<UserProfileCubit>()..getUser()),
       ],
       child: FutureBuilder<Object>(
         future: route(secureStorage: getIt<FlutterSecureStorage>()),

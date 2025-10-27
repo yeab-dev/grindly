@@ -17,6 +17,14 @@ class UserProfilePage extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: theme.textTheme.titleLarge!.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: BlocConsumer<UserProfileCubit, UserProfileState>(
           listener: (context, state) {
@@ -36,10 +44,7 @@ class UserProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      top: height * 0.05,
-                      right: width * 0.05,
-                    ),
+                    padding: EdgeInsets.only(right: width * 0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -178,16 +183,13 @@ class UserProfilePage extends StatelessWidget {
                   ),
                 ],
               );
+            } else if (state is UserProfileInProgress) {
+              return Padding(
+                padding: EdgeInsets.only(top: height * 0.4),
+                child: Center(child: CircularProgressIndicator()),
+              );
             }
-            return Center(
-              heightFactor: height * 0.01,
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<UserProfileCubit>().getUser();
-                },
-                child: Text('press me'),
-              ),
-            );
+            return SizedBox.shrink();
           },
         ),
       ),
