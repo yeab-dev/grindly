@@ -4,9 +4,9 @@ class User {
   final String uid;
   final String email;
   final String displayName;
-  final String? username;
-  final String? photoUrl;
   final DateTime createdAt;
+  final String? bio;
+  final String? photoUrl;
   final WakatimeUser? wakatimeAccount;
 
   const User({
@@ -14,8 +14,8 @@ class User {
     required this.email,
     required this.displayName,
     required this.createdAt,
+    this.bio,
     this.wakatimeAccount,
-    this.username,
     this.photoUrl,
   });
 }
