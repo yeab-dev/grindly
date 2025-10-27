@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
+import 'package:grindly/shared/user_profile/data/models/user_model.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly_user;
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
@@ -39,6 +40,22 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       );
     } catch (e) {
       emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
+    }
+  }
+
+  Future<void> updateUser(UserModel userModel) async {
+    emit(UserProfileInProgress());
+    try {
+      await repository.updateUser(userModel);
+
+      final user = await repository.getUser(userModel.uid);
+      if (user != null) {
+        emit(UserProfileSuccess(user: user));
+      } else {
+        throw Exception('couldn\'t update profile');
+      }
+    } catch (e) {
+      emit(UserProfileFailure(errorMessage: e.toString()));
     }
   }
 }
