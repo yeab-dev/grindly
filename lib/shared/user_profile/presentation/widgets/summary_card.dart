@@ -17,8 +17,8 @@ class SummaryCard extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Container(
-      height: height * 0.09,
-      width: width * 0.43,
+      height: height * 0.08,
+      width: width * 0.45,
       decoration: BoxDecoration(
         border: Border.all(
           color: theme.colorScheme.tertiary.withAlpha(50),
@@ -39,7 +39,7 @@ class SummaryCard extends StatelessWidget {
                   iconImage,
                   SizedBox(width: width * 0.02),
                   SizedBox(
-                    width: width * 0.3,
+                    width: width * 0.33,
                     child: Text(
                       title,
                       style: theme.textTheme.titleMedium!.copyWith(
