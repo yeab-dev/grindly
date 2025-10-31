@@ -2,20 +2,45 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
-import 'package:grindly/shared/user_profile/domain/entities/user.dart';
+import 'package:grindly/shared/user_profile/domain/entities/user.dart'
+    as grindly;
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
-  final String photoUrl;
-  const EditProfilePage({super.key, required this.photoUrl});
+  final grindly.User user;
+  const EditProfilePage({super.key, required this.user});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  PhotoSource? photoSource;
+  grindly.PhotoSource? photoSource;
+
+  final formKey = GlobalKey<FormState>();
+  TextEditingController displayNameController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  TextEditingController xController = TextEditingController();
+  TextEditingController telegramController = TextEditingController();
+
+  @override
+  void initState() {
+    final user = widget.user;
+    displayNameController.text = user.displayName;
+    bioController.text = user.bio ?? "";
+    xController.text =
+        user.socialMediaAccounts?.firstWhere((account) {
+          return account.platformName == "X";
+        }).url ??
+        "https://x.com/";
+    telegramController.text =
+        user.socialMediaAccounts?.firstWhere((account) {
+          return account.platformName == "Telegram";
+        }).url ??
+        "https://t.me/";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +48,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
 
-    final formKey = GlobalKey<FormState>();
-    TextEditingController displayNameController = TextEditingController();
-    TextEditingController bioController = TextEditingController();
-    TextEditingController xController = TextEditingController();
-    TextEditingController telegramController = TextEditingController();
     return BlocConsumer<UserProfileCubit, UserProfileState>(
       listener: (context, state) {
         if (state is UserProfileFailure) {
@@ -45,20 +65,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       builder: (context, state) {
         if (state is UserProfileSuccess) {
-          displayNameController.text = state.user.displayName;
-          bioController.text = state.user.bio ?? "";
-          xController.text =
-              state.user.socialMediaAccounts
-                  ?.where((account) => account.platformName == "X")
-                  .first
-                  .url ??
-              "https//x.com/";
-          telegramController.text =
-              state.user.socialMediaAccounts
-                  ?.where((account) => account.platformName == "Telegram")
-                  .first
-                  .url ??
-              "https//t.me/";
+          displayNameController.text != state.user.displayName
+              ? displayNameController = displayNameController
+              : displayNameController.text = state.user.displayName;
+          bioController.text != state.user.bio
+              ? bioController = bioController
+              : bioController.text = state.user.bio ?? "";
+          xController.text !=
+                  state.user.socialMediaAccounts
+                      ?.where((account) => account.platformName == "X")
+                      .first
+                      .url
+              ? xController = xController
+              : xController.text =
+                    state.user.socialMediaAccounts
+                        ?.where((account) => account.platformName == "X")
+                        .first
+                        .url ??
+                    "https://x.com/";
+          telegramController.text !=
+                  state.user.socialMediaAccounts
+                      ?.where((account) => account.platformName == "Telegram")
+                      .first
+                      .url
+              ? telegramController = telegramController
+              : telegramController.text =
+                    state.user.socialMediaAccounts
+                        ?.where((account) => account.platformName == "Telegram")
+                        .first
+                        .url ??
+                    "https://t.me/";
 
           return SingleChildScrollView(
             child: Column(
@@ -68,13 +104,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: height * 0.07),
-                      child: ProfilePictureWidget(
-                        imgSource: photoSource == null
-                            ? widget.photoUrl
-                            : photoSource == PhotoSource.google
-                            ? getIt<FirebaseAuth>().currentUser!.photoURL!
-                            : state.user.wakatimeAccount?.photoUrl ??
-                                  widget.photoUrl,
+                      child: Builder(
+                        builder: (_) {
+                          final imgSourceString = photoSource == null
+                              ? (widget.user.photoUrl ?? '')
+                              : photoSource == grindly.PhotoSource.google
+                              ? (getIt<FirebaseAuth>().currentUser?.photoURL ??
+                                    '')
+                              : (state.user.wakatimeAccount?.photoUrl ??
+                                    widget.user.photoUrl ??
+                                    '');
+                          return ProfilePictureWidget(
+                            imgSource: imgSourceString,
+                          );
+                        },
                       ),
                     ),
                     Positioned(
@@ -106,7 +149,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       TextButton(
                                         onPressed: () {
                                           setState(() {
-                                            photoSource = PhotoSource.google;
+                                            displayNameController =
+                                                displayNameController;
+                                            photoSource =
+                                                grindly.PhotoSource.google;
                                           });
                                         },
                                         child: Text(
@@ -122,7 +168,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       TextButton(
                                         onPressed: () {
                                           setState(() {
-                                            photoSource = PhotoSource.wakatime;
+                                            photoSource =
+                                                grindly.PhotoSource.wakatime;
                                           });
                                         },
                                         child: Text(

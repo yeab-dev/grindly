@@ -45,10 +45,9 @@ class UserProfilePage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      GoRouter.of(context).push(
-                        Routes.editProfilePage,
-                        extra: state.user.photoUrl!,
-                      );
+                      GoRouter.of(
+                        context,
+                      ).push(Routes.editProfilePage, extra: state.user);
                     },
                     child: Padding(
                       padding: EdgeInsets.only(right: 15.0),

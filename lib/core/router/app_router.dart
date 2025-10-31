@@ -8,6 +8,8 @@ import 'package:grindly/features/auth/presentation/pages/login.dart';
 import 'package:grindly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/todays_summaries_page.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/pages/wakatime_auth_page.dart';
+import 'package:grindly/shared/user_profile/domain/entities/user.dart'
+    as grindly;
 import 'package:grindly/shared/user_profile/presentation/pages/edit_profile_page.dart';
 import 'package:grindly/shared/user_profile/presentation/pages/user_profile_page.dart';
 
@@ -51,7 +53,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
         GoRoute(
           path: Routes.editProfilePage,
           builder: (context, state) => MainScaffold(
-            child: EditProfilePage(photoUrl: state.extra as String),
+            child: EditProfilePage(user: state.extra as grindly.User),
           ),
         ),
       ],
@@ -92,7 +94,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
       GoRoute(
         path: Routes.editProfilePage,
         builder: (context, state) => MainScaffold(
-          child: EditProfilePage(photoUrl: state.extra as String),
+          child: EditProfilePage(user: state.extra as grindly.User),
         ),
       ),
     ],
@@ -131,8 +133,9 @@ final goRouter = GoRouter(
 
     GoRoute(
       path: Routes.editProfilePage,
-      builder: (context, state) =>
-          MainScaffold(child: EditProfilePage(photoUrl: state.extra as String)),
+      builder: (context, state) => MainScaffold(
+        child: EditProfilePage(user: state.extra as grindly.User),
+      ),
     ),
   ],
 );
