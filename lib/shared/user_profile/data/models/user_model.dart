@@ -13,6 +13,7 @@ class UserModel extends Equatable {
   final String? bio;
   final String? photoUrl;
   final WakatimeUser? wakatimeAccount;
+  final String? wakatimeProfilePictureUrl;
   final List<SocialMediaAccountModel>? socialMediaAccounts;
 
   const UserModel({
@@ -24,6 +25,7 @@ class UserModel extends Equatable {
     this.photoUrl,
     this.wakatimeAccount,
     this.socialMediaAccounts,
+    this.wakatimeProfilePictureUrl,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -35,12 +37,13 @@ class UserModel extends Equatable {
       displayName: map['display_name'],
       bio: map['bio'],
       photoUrl: map['photo_url'] as String?,
-      socialMediaAccounts: (map['social_media_accounts'] as List<dynamic>)
-          .map((element) => SocialMediaAccountModel.fromMap(map: element))
+      socialMediaAccounts: (map['social_media_accounts'] as List<dynamic>?)
+          ?.map((element) => SocialMediaAccountModel.fromMap(map: element))
           .toList(),
       createdAt: createdAtRaw is Timestamp
           ? createdAtRaw.toDate()
           : DateTime.parse(createdAtRaw),
+      wakatimeProfilePictureUrl: map['wakatime_profile_picture_url'],
     );
   }
 
@@ -65,6 +68,7 @@ class UserModel extends Equatable {
       'social_media_accounts': socialMediaAccounts?.map((account) {
         return account.toMap();
       }).toList(),
+      'wakatime_profile_picture_url': wakatimeProfilePictureUrl,
     };
   }
 
@@ -80,6 +84,7 @@ class UserModel extends Equatable {
       socialMediaAccounts: socialMediaAccounts
           ?.map((element) => element.toEntity())
           .toList(),
+      wakatimeProfilePictureUrl: wakatimeProfilePictureUrl,
     );
   }
 
@@ -92,6 +97,7 @@ class UserModel extends Equatable {
     DateTime? createdAt,
     WakatimeUser? wakatimeAccount,
     List<SocialMediaAccountModel>? socialMediaAccounts,
+    String? wakatimeProfilePictureUrl,
   }) {
     return UserModel(
       uid: uid,
@@ -102,6 +108,8 @@ class UserModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       socialMediaAccounts: socialMediaAccounts ?? this.socialMediaAccounts,
       wakatimeAccount: wakatimeAccount ?? this.wakatimeAccount,
+      wakatimeProfilePictureUrl:
+          wakatimeProfilePictureUrl ?? this.wakatimeProfilePictureUrl,
     );
   }
 

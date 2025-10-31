@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SocialMediaWidget extends StatelessWidget {
-  final String xLink;
-  final String telegramLink;
-  const SocialMediaWidget({
-    super.key,
-    required this.xLink,
-    required this.telegramLink,
-  });
+  final String? xLink;
+  final String? telegramLink;
+  const SocialMediaWidget({super.key, this.xLink, this.telegramLink});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +29,11 @@ class SocialMediaWidget extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () async {
-                final uri = Uri.parse(xLink);
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
+                if (xLink == null) {
+                } else {
+                  final uri = Uri.parse(xLink!);
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                }
               },
               child: SizedBox(
                 height: height * 0.024,
@@ -52,8 +51,11 @@ class SocialMediaWidget extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                final uri = Uri.parse(telegramLink);
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
+                if (telegramLink == null) {
+                } else {
+                  final uri = Uri.parse(telegramLink!);
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                }
               },
               child: SizedBox(
                 height: height * 0.03,

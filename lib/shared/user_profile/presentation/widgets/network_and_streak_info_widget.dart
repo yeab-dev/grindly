@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class NetworkAndStreakInfoWidget extends StatelessWidget {
-  const NetworkAndStreakInfoWidget({super.key});
+  final int following;
+  final int followers;
+  final String? bio;
+  const NetworkAndStreakInfoWidget({
+    super.key,
+    required this.following,
+    required this.followers,
+    required this.bio,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +41,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '0',
+                        '$following',
                         style: theme.textTheme.headlineLarge!.copyWith(
                           color: theme.colorScheme.primary,
                           fontWeight: FontWeight.bold,
@@ -55,7 +63,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '0',
+                        '$followers',
                         style: theme.textTheme.headlineLarge!.copyWith(
                           color: theme.colorScheme.primary,
                           fontWeight: FontWeight.bold,
@@ -70,7 +78,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(bottom: height * 0.01),
                 child: Text(
-                  'commit early, commit often',
+                  bio ?? "",
                   style: TextStyle(
                     fontSize: 19,
                     color: theme.colorScheme.secondary,

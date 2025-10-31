@@ -1,6 +1,14 @@
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
 import 'package:grindly/shared/user_profile/domain/entities/social_media_account.dart';
 
+enum PhotoSource {
+  google(name: 'google'),
+  wakatime(name: 'wakatime');
+
+  final String name;
+  const PhotoSource({required this.name});
+}
+
 class User {
   final String uid;
   final String email;
@@ -10,6 +18,7 @@ class User {
   final String? photoUrl;
   final WakatimeUser? wakatimeAccount;
   final List<SocialMediaAccount>? socialMediaAccounts;
+  final String? wakatimeProfilePictureUrl;
 
   const User({
     required this.uid,
@@ -20,5 +29,6 @@ class User {
     this.photoUrl,
     this.wakatimeAccount,
     this.socialMediaAccounts,
+    this.wakatimeProfilePictureUrl,
   });
 }

@@ -37,10 +37,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   }
 
   Future<void> updateUser({
-    required String displayName,
-    required String? bio,
-    required String? xLink,
-    required String? telegramLink,
+    String? displayName,
+    String? bio,
+    String? xLink,
+    String? telegramLink,
+    grindly_user.PhotoSource? photoSrc,
+    required grindly_user.User previous,
   }) async {
     emit(UserProfileInProgress());
     try {
@@ -50,13 +52,21 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       final updatedUserModel = userModel?.copyWith(
         displayName: displayName,
         bio: bio,
-        socialMediaAccounts: <SocialMediaAccountModel>[
-          SocialMediaAccountModel(platformName: 'X', url: xLink ?? ""),
-          SocialMediaAccountModel(
-            platformName: 'Telegram',
-            url: telegramLink ?? "",
-          ),
-        ],
+        socialMediaAccounts: (xLink == null && telegramLink == null)
+            ? null
+            : <SocialMediaAccountModel>[
+                if (xLink != null)
+                  SocialMediaAccountModel(platformName: 'X', url: xLink),
+                if (telegramLink != null)
+                  SocialMediaAccountModel(
+                    platformName: 'Telegram',
+                    url: telegramLink,
+                  ),
+              ],
+        wakatimeAccount: previous.wakatimeAccount,
+        photoUrl: photoSrc == grindly_user.PhotoSource.google
+            ? firebaseAuth.currentUser!.photoURL
+            : previous.wakatimeAccount?.photoUrl,
       );
       if (updatedUserModel != null) {
         await repository.updateUser(updatedUserModel);

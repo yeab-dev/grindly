@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grindly/core/router/main_scaffold.dart';
 import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/auth/presentation/pages/email_verification_page.dart';
 import 'package:grindly/features/auth/presentation/pages/login.dart';
@@ -32,16 +33,26 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
         ),
         GoRoute(
           path: Routes.todaysSummary,
-          builder: (context, state) => TodaysSummariesPage(),
+          builder: (context, state) => MainScaffold(
+            title: "summary",
+            currentIndex: 0,
+            child: TodaysSummariesPage(),
+          ),
         ),
         GoRoute(
           path: Routes.profilePage,
-          builder: (context, state) => UserProfilePage(),
+          builder: (context, state) => MainScaffold(
+            title: "profile",
+            currentIndex: 1,
+            child: UserProfilePage(),
+          ),
         ),
 
         GoRoute(
           path: Routes.editProfilePage,
-          builder: (context, state) => EditProfilePage(),
+          builder: (context, state) => MainScaffold(
+            child: EditProfilePage(photoUrl: state.extra as String),
+          ),
         ),
       ],
     );
@@ -49,7 +60,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
     return goRouter;
   }
   return GoRouter(
-    initialLocation: Routes.editProfilePage,
+    initialLocation: Routes.profilePage,
     routes: [
       GoRoute(path: Routes.signUp, builder: (context, state) => const SignUp()),
       GoRoute(path: Routes.login, builder: (context, state) => const Login()),
@@ -63,15 +74,26 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
       ),
       GoRoute(
         path: Routes.todaysSummary,
-        builder: (context, state) => TodaysSummariesPage(),
+        builder: (context, state) => MainScaffold(
+          title: "summary",
+          currentIndex: 0,
+          child: TodaysSummariesPage(),
+        ),
       ),
       GoRoute(
         path: Routes.profilePage,
-        builder: (context, state) => UserProfilePage(),
+        builder: (context, state) => MainScaffold(
+          title: "profile",
+          currentIndex: 1,
+          child: UserProfilePage(),
+        ),
       ),
+
       GoRoute(
         path: Routes.editProfilePage,
-        builder: (context, state) => EditProfilePage(),
+        builder: (context, state) => MainScaffold(
+          child: EditProfilePage(photoUrl: state.extra as String),
+        ),
       ),
     ],
   );
@@ -92,11 +114,25 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: Routes.todaysSummary,
-      builder: (context, state) => TodaysSummariesPage(),
+      builder: (context, state) => MainScaffold(
+        title: "summary",
+        currentIndex: 0,
+        child: TodaysSummariesPage(),
+      ),
     ),
     GoRoute(
+      path: Routes.profilePage,
+      builder: (context, state) => MainScaffold(
+        title: "profile",
+        currentIndex: 1,
+        child: UserProfilePage(),
+      ),
+    ),
+
+    GoRoute(
       path: Routes.editProfilePage,
-      builder: (context, state) => EditProfilePage(),
+      builder: (context, state) =>
+          MainScaffold(child: EditProfilePage(photoUrl: state.extra as String)),
     ),
   ],
 );
