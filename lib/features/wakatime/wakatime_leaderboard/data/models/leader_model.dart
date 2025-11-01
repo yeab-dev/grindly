@@ -16,4 +16,17 @@ class LeaderModel {
     required this.countryCode,
     required this.totalHoursSpentDuringTheWeek,
   });
+
+  factory LeaderModel.fromJson(Map<String, dynamic> json) {
+    return LeaderModel(
+      userId: json['user']['id'],
+      displayName: json['user']['display_name'],
+      rank: json['rank'],
+      photoPublic: json['user']['photo_public'],
+      photoUrl: json['user']['photo'],
+      countryCode: json['user']['city']['country_code'],
+      totalHoursSpentDuringTheWeek:
+          json['running_total']['human_readable_total'],
+    );
+  }
 }
