@@ -21,13 +21,14 @@ class _LeaderboardFilteringWidgetState
       margin: EdgeInsets.only(top: height * 0.03),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: theme.colorScheme.tertiary),
+        color: theme.colorScheme.primaryContainer,
       ),
       child: ToggleButtons(
+        textStyle: theme.textTheme.bodyLarge,
         renderBorder: false,
         borderRadius: BorderRadius.circular(15),
-        selectedColor: theme.colorScheme.tertiary,
-        fillColor: theme.colorScheme.primaryContainer,
+        selectedColor: theme.colorScheme.onPrimary,
+        fillColor: theme.colorScheme.primary,
         isSelected: _selectedFilters,
         onPressed: (index) {
           setState(() {

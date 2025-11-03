@@ -50,7 +50,11 @@ List<GoRoute> _appRoutes() {
     ),
     GoRoute(
       path: Routes.leaderboard,
-      builder: (context, state) => MainScaffold(child: LeaderBoadPage()),
+      builder: (context, state) => MainScaffold(
+        title: "leaderboard",
+        currentIndex: 2,
+        child: LeaderBoadPage(),
+      ),
     ),
   ];
 }
@@ -60,7 +64,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
   final hasToken = await secureStorage.containsKey(key: 'access_token');
   final initial = (!isUserSignedIn && !hasToken)
       ? Routes.login
-      : Routes.profilePage;
+      : Routes.leaderboard;
 
   if (!isUserSignedIn && !hasToken) {
     return GoRouter(initialLocation: initial, routes: _appRoutes());
