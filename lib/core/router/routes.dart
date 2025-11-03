@@ -6,4 +6,5 @@ class Routes {
   static const String wakatimeAuth = '/wakatimeAuth';
   static const String profilePage = '/profilePage';
   static const String editProfilePage = '/editProfile';
+  static const String leaderboard = '/leaderboard';
 }

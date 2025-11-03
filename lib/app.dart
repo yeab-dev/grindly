@@ -7,6 +7,7 @@ import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 
 class App extends StatelessWidget {
@@ -24,6 +25,9 @@ class App extends StatelessWidget {
               getIt<WakatimeSummariesCubit>()..getTodaysSummary(),
         ),
         BlocProvider(create: (context) => getIt<UserProfileCubit>()..getUser()),
+        BlocProvider(
+          create: (context) => getIt<WakatimeLeadersCubit>()..getLeaders(),
+        ),
       ],
       child: FutureBuilder<Object>(
         future: route(secureStorage: getIt<FlutterSecureStorage>()),

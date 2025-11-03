@@ -13,6 +13,9 @@ import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime
 import 'package:grindly/features/wakatime/wakatime_auth/data/repositories/wakatime_auth_repository_impl.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/domain/repositories/wakatime_auth_repository.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/cubit/wakatime_auth_cubit.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/data/repositories/wakatime_leaders_repository_impl.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/repositories/wakatime_leaders_repository.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_all_time_since_today_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_insight_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_profile_picture_data_source.dart';
@@ -76,6 +79,13 @@ void setupLocator() {
       statsDataSource: getIt<WakatimeStatsDataSource>(),
     ),
   );
+
+  getIt.registerLazySingleton<WakatimeLeadersRepository>(
+    () => WakatimeLeadersRepositoryImpl(
+      dio: getIt<Dio>(),
+      storageRepository: getIt<SecureStorageRepository>(),
+    ),
+  );
   //data sources
 
   getIt.registerLazySingleton<WakatimeAllTimeSinceTodayDataSource>(
@@ -136,5 +146,9 @@ void setupLocator() {
       repository: getIt<UserRepository>(),
       wakatimeRepository: getIt<WakatimeProfileRepository>(),
     ),
+  );
+
+  getIt.registerFactory<WakatimeLeadersCubit>(
+    () => WakatimeLeadersCubit(repository: getIt<WakatimeLeadersRepository>()),
   );
 }

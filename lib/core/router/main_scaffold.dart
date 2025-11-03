@@ -33,8 +33,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                   context.go(Routes.todaysSummary);
                 } else if (index == 1) {
                   context.go(Routes.profilePage);
-                } else if (index == -1) {
-                  context.go(Routes.editProfilePage);
+                } else if (index == 2) {
+                  context.go(Routes.leaderboard);
                 }
               },
               items: [
@@ -45,6 +45,10 @@ class _MainScaffoldState extends State<MainScaffold> {
                 BottomNavigationBarItem(
                   label: 'profile',
                   icon: Icon(Icons.person),
+                ),
+                BottomNavigationBarItem(
+                  label: "leaderboard",
+                  icon: Icon(Icons.leaderboard),
                 ),
               ],
             )
