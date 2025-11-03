@@ -6,7 +6,7 @@ class LeaderModel {
   final int rank;
   final String photoUrl;
   final bool photoPublic;
-  final String countryCode;
+  final String? countryCode;
   final String totalHoursSpentDuringTheWeek;
 
   const LeaderModel({
@@ -15,7 +15,7 @@ class LeaderModel {
     required this.rank,
     required this.photoPublic,
     required this.photoUrl,
-    required this.countryCode,
+    this.countryCode,
     required this.totalHoursSpentDuringTheWeek,
   });
 
@@ -26,7 +26,9 @@ class LeaderModel {
       rank: json['rank'],
       photoPublic: json['user']['photo_public'],
       photoUrl: json['user']['photo'],
-      countryCode: json['user']['city']['country_code'],
+      countryCode: json['user']['city'] != null
+          ? json['user']['city']['country_code'] as String?
+          : null,
       totalHoursSpentDuringTheWeek:
           json['running_total']['human_readable_total'],
     );

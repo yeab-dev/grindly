@@ -13,16 +13,16 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
   });
   @override
   Future<List<Leader>> getLeaders() async {
-    final accessToken = storageRepository.read(key: 'access_token');
+    final accessToken = await storageRepository.read(key: 'access_token');
     try {
       final response = await dio.get(
-        "https://wakatime.com/api/leaders",
+        "https://wakatime.com/api/v1/leaders",
         options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
 
       if (response.statusCode == 200) {
         final List<Leader> leaders = [];
-        final data = response.data['data'] as List<Map<String, dynamic>>;
+        final data = response.data['data'] as List<dynamic>;
         for (Map<String, dynamic> leaderJson in data) {
           leaders.add(LeaderModel.fromJson(leaderJson).toEntity());
         }
