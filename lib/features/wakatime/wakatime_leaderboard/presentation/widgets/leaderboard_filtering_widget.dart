@@ -18,7 +18,7 @@ class _LeaderboardFilteringWidgetState
     final width = MediaQuery.sizeOf(context).width;
     final theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: height * 0.03),
+      margin: EdgeInsets.only(top: height * 0.01, bottom: height * 0.01),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: theme.colorScheme.primaryContainer,

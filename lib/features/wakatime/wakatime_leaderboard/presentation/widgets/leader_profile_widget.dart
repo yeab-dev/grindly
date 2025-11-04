@@ -24,7 +24,7 @@ class LeaderProfileWidget extends StatelessWidget {
         children: [
           Center(
             child: Padding(
-              padding: EdgeInsets.only(right: 5.0),
+              padding: EdgeInsets.only(right: 20.0),
               child: Text('$rank', style: theme.textTheme.titleMedium),
             ),
           ),

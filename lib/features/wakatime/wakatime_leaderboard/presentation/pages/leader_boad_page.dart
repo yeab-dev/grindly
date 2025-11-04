@@ -11,7 +11,6 @@ class LeaderBoadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     final width = MediaQuery.sizeOf(context).width;
-    final theme = Theme.of(context);
     return SizedBox(
       width: width,
       child: BlocConsumer<WakatimeLeadersCubit, WakatimeLeadersState>(
@@ -23,29 +22,36 @@ class LeaderBoadPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is WakatimeLeadersSuccess) {
-            return Column(
-              children: [
-                LeaderboardFilteringWidget(),
-                SizedBox(height: height * 0.05),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.leaders.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: height * 0.01),
-                        child: LeaderProfileWidget(
-                          rank: state.leaders[index].rank,
-                          imgUrl: state.leaders[index].photoUrl,
-                          displayName: state.leaders[index].displayName,
-                          duration:
-                              state.leaders[index].totalHoursSpentDuringTheWeek,
-                        ),
-                      );
-                    },
+          if (state is WakatimeLeadersInProgress) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is WakatimeLeadersSuccess) {
+            return Expanded(
+              child: Column(
+                children: [
+                  LeaderboardFilteringWidget(),
+                  // SizedBox(height: height * 0.05),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.leaders.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: height * 0.01,
+                          ),
+                          child: LeaderProfileWidget(
+                            rank: state.leaders[index].rank,
+                            imgUrl: state.leaders[index].photoUrl,
+                            displayName: state.leaders[index].displayName,
+                            duration: state
+                                .leaders[index]
+                                .totalHoursSpentDuringTheWeek,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }
           return SizedBox.shrink();
