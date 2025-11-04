@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
 import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
@@ -10,9 +11,11 @@ class UserModel extends Equatable {
   final String email;
   final DateTime createdAt;
   final String displayName;
+  final WakatimeUser? wakatimeAccount;
   final String? bio;
   final String? photoUrl;
-  final WakatimeUser? wakatimeAccount;
+  final String? wakatimeId;
+  final CountryModel? countryModel;
   final String? wakatimeProfilePictureUrl;
   final List<SocialMediaAccountModel>? socialMediaAccounts;
 
@@ -23,15 +26,16 @@ class UserModel extends Equatable {
     required this.displayName,
     this.bio,
     this.photoUrl,
-    this.wakatimeAccount,
     this.socialMediaAccounts,
+    this.wakatimeId,
+    this.countryModel,
     this.wakatimeProfilePictureUrl,
+    this.wakatimeAccount,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     final createdAtRaw = map['created_at'];
     return UserModel(
-      wakatimeAccount: map['wakatime_account'],
       uid: map['uid'],
       email: map['email'],
       displayName: map['display_name'],
@@ -44,6 +48,8 @@ class UserModel extends Equatable {
           ? createdAtRaw.toDate()
           : DateTime.parse(createdAtRaw),
       wakatimeProfilePictureUrl: map['wakatime_profile_picture_url'],
+      wakatimeId: map['wakatime_id'],
+      countryModel: CountryModel.fromJson(map['country']),
     );
   }
 
@@ -69,6 +75,8 @@ class UserModel extends Equatable {
         return account.toMap();
       }).toList(),
       'wakatime_profile_picture_url': wakatimeProfilePictureUrl,
+      'wakatime_id': wakatimeId,
+      'country': countryModel?.toMap(),
     };
   }
 
@@ -80,36 +88,34 @@ class UserModel extends Equatable {
       createdAt: createdAt,
       bio: bio,
       photoUrl: photoUrl,
-      wakatimeAccount: wakatimeAccount,
       socialMediaAccounts: socialMediaAccounts
           ?.map((element) => element.toEntity())
           .toList(),
       wakatimeProfilePictureUrl: wakatimeProfilePictureUrl,
+      wakatimeId: wakatimeId,
+      country: countryModel?.toEntity(),
     );
   }
 
   UserModel copyWith({
     String? bio,
-    String? email,
     String? displayName,
-    String? username,
     String? photoUrl,
-    DateTime? createdAt,
-    WakatimeUser? wakatimeAccount,
     List<SocialMediaAccountModel>? socialMediaAccounts,
-    String? wakatimeProfilePictureUrl,
+    WakatimeUser? wakatimeAccount,
   }) {
     return UserModel(
       uid: uid,
       bio: bio ?? this.bio,
-      email: email ?? this.email,
+      email: email,
       displayName: displayName ?? this.displayName,
       photoUrl: photoUrl ?? this.photoUrl,
-      createdAt: createdAt ?? this.createdAt,
+      createdAt: createdAt,
       socialMediaAccounts: socialMediaAccounts ?? this.socialMediaAccounts,
+      wakatimeId: wakatimeId,
+      wakatimeProfilePictureUrl: wakatimeProfilePictureUrl,
+      countryModel: countryModel,
       wakatimeAccount: wakatimeAccount ?? this.wakatimeAccount,
-      wakatimeProfilePictureUrl:
-          wakatimeProfilePictureUrl ?? this.wakatimeProfilePictureUrl,
     );
   }
 

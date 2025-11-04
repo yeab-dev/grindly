@@ -1,3 +1,4 @@
+import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/country.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
 import 'package:grindly/shared/user_profile/domain/entities/social_media_account.dart';
 
@@ -16,18 +17,22 @@ class User {
   final DateTime createdAt;
   final String? bio;
   final String? photoUrl;
-  final WakatimeUser? wakatimeAccount;
   final List<SocialMediaAccount>? socialMediaAccounts;
   final String? wakatimeProfilePictureUrl;
+  final String? wakatimeId;
+  final Country? country;
+  final WakatimeUser? wakatimeAccount;
 
   const User({
     required this.uid,
     required this.email,
     required this.createdAt,
     required this.displayName,
+    this.wakatimeAccount,
+    this.wakatimeId,
+    this.country,
     this.bio,
     this.photoUrl,
-    this.wakatimeAccount,
     this.socialMediaAccounts,
     this.wakatimeProfilePictureUrl,
   });
