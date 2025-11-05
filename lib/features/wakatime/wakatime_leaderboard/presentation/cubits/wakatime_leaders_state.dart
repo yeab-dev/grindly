@@ -10,7 +10,11 @@ final class WakatimeLeadersInProgress extends WakatimeLeadersState {}
 
 final class WakatimeLeadersSuccess extends WakatimeLeadersState {
   final List<Leader> leaders;
-  const WakatimeLeadersSuccess({required this.leaders});
+  final Country? currentUsersCuntry;
+  const WakatimeLeadersSuccess({
+    required this.leaders,
+    required this.currentUsersCuntry,
+  });
 }
 
 final class WakatimeLeadersFailure extends WakatimeLeadersState {

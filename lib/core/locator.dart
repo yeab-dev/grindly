@@ -143,12 +143,16 @@ void setupLocator() {
   );
   getIt.registerFactory<UserProfileCubit>(
     () => UserProfileCubit(
+      storageRepository: getIt<SecureStorageRepository>(),
       repository: getIt<UserRepository>(),
       wakatimeRepository: getIt<WakatimeProfileRepository>(),
     ),
   );
 
   getIt.registerFactory<WakatimeLeadersCubit>(
-    () => WakatimeLeadersCubit(repository: getIt<WakatimeLeadersRepository>()),
+    () => WakatimeLeadersCubit(
+      repository: getIt<WakatimeLeadersRepository>(),
+      storageRepository: getIt<SecureStorageRepository>(),
+    ),
   );
 }

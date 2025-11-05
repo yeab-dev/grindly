@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 
 class WakatimeBasicInfoDataSource {
@@ -22,14 +21,8 @@ class WakatimeBasicInfoDataSource {
       if (response.statusCode == 200) {
         final String id = response.data['data']['id'];
         final String photoUrl = response.data['data']['photo'];
-        final CountryModel countryModel = CountryModel.fromJson(
-          response.data['data']['city'],
-        );
-        return {
-          "id": id,
-          "photo_url": photoUrl,
-          "country": countryModel.toEntity(),
-        };
+        final country = response.data['data']['city'];
+        return {"id": id, "photo_url": photoUrl, "country": country};
       }
       throw Exception(response.statusMessage);
     } catch (e) {

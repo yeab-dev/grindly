@@ -29,7 +29,7 @@ class WakatimeUserModel {
       bestProjectByDuration: json['projects_with_hours_spent'],
       bestWeekDayByDuration: json['weekdays_with_hours_spent'],
       countryModel: json['basic_info'].containsKey("country")
-          ? CountryModel.fromJson(json['country'])
+          ? CountryModel.fromJson(json['basic_info']['country'])
           : null,
     );
   }

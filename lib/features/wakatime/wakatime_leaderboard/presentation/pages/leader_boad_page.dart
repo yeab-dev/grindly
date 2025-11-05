@@ -13,49 +13,58 @@ class LeaderBoadPage extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     return SizedBox(
       width: width,
-      child: BlocConsumer<WakatimeLeadersCubit, WakatimeLeadersState>(
-        listener: (context, state) {
-          if (state is WakatimeLeadersFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-          }
-        },
-        builder: (context, state) {
-          if (state is WakatimeLeadersInProgress) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is WakatimeLeadersSuccess) {
-            return Expanded(
-              child: Column(
-                children: [
-                  LeaderboardFilteringWidget(),
-                  // SizedBox(height: height * 0.05),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.leaders.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01,
-                          ),
-                          child: LeaderProfileWidget(
-                            rank: state.leaders[index].rank,
-                            imgUrl: state.leaders[index].photoUrl,
-                            displayName: state.leaders[index].displayName,
-                            duration: state
-                                .leaders[index]
-                                .totalHoursSpentDuringTheWeek,
-                          ),
-                        );
-                      },
-                    ),
+      child: Column(
+        children: [
+          LeaderboardFilteringWidget(),
+          BlocConsumer<WakatimeLeadersCubit, WakatimeLeadersState>(
+            listener: (context, state) {
+              if (state is WakatimeLeadersFailure) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+              }
+            },
+            builder: (context, state) {
+              if (state is WakatimeLeadersInProgress) {
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Center(child: CircularProgressIndicator())],
                   ),
-                ],
-              ),
-            );
-          }
-          return SizedBox.shrink();
-        },
+                );
+              } else if (state is WakatimeLeadersSuccess) {
+                return Expanded(
+                  child: Column(
+                    children: [
+                      // SizedBox(height: height * 0.05),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.leaders.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: height * 0.01,
+                              ),
+                              child: LeaderProfileWidget(
+                                rank: state.leaders[index].rank,
+                                imgUrl: state.leaders[index].photoUrl,
+                                displayName: state.leaders[index].displayName,
+                                duration: state
+                                    .leaders[index]
+                                    .totalHoursSpentDuringTheWeek,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return SizedBox.shrink();
+            },
+          ),
+        ],
       ),
     );
   }

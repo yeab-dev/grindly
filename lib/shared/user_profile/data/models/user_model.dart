@@ -49,7 +49,11 @@ class UserModel extends Equatable {
           : DateTime.parse(createdAtRaw),
       wakatimeProfilePictureUrl: map['wakatime_profile_picture_url'],
       wakatimeId: map['wakatime_id'],
-      countryModel: CountryModel.fromJson(map['country']),
+      countryModel: map.containsKey('country')
+          ? map['country'] != null
+                ? CountryModel.fromJson(map['country'])
+                : null
+          : null,
     );
   }
 
@@ -94,6 +98,7 @@ class UserModel extends Equatable {
       wakatimeProfilePictureUrl: wakatimeProfilePictureUrl,
       wakatimeId: wakatimeId,
       country: countryModel?.toEntity(),
+      wakatimeAccount: wakatimeAccount,
     );
   }
 

@@ -39,14 +39,14 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
     final accessToken = storageRepository.read(key: 'access_token');
     try {
       final response = await dio.get(
-        "https://wakatime.com/api/leaders",
+        "https://wakatime.com/api/v1/leaders",
         queryParameters: {"country_code": countryCode},
         options: Options(headers: {"Authorization": "Bearer $accessToken"}),
       );
 
       if (response.statusCode == 200) {
         final List<Leader> leaders = [];
-        final data = response.data['data'] as List<Map<String, dynamic>>;
+        final data = response.data['data'] as List;
         for (Map<String, dynamic> leaderJson in data) {
           leaders.add(LeaderModel.fromJson(leaderJson).toEntity());
         }

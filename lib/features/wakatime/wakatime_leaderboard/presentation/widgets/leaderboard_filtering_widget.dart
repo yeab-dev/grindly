@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 
 class LeaderboardFilteringWidget extends StatefulWidget {
   const LeaderboardFilteringWidget({super.key});
@@ -11,7 +13,7 @@ class LeaderboardFilteringWidget extends StatefulWidget {
 class _LeaderboardFilteringWidgetState
     extends State<LeaderboardFilteringWidget> {
   final List<bool> _selectedFilters = [true, false, false];
-  final List<String> _filters = ['Global', 'Ethiopia', 'Grindly'];
+  final List<String> _filters = ['Global', '', 'Grindly'];
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
@@ -23,28 +25,43 @@ class _LeaderboardFilteringWidgetState
         borderRadius: BorderRadius.circular(15),
         color: theme.colorScheme.primaryContainer,
       ),
-      child: ToggleButtons(
-        textStyle: theme.textTheme.bodyLarge,
-        renderBorder: false,
-        borderRadius: BorderRadius.circular(15),
-        selectedColor: theme.colorScheme.onPrimary,
-        fillColor: theme.colorScheme.primary,
-        isSelected: _selectedFilters,
-        onPressed: (index) {
-          setState(() {
-            for (int i = 0; i < _selectedFilters.length; i++) {
-              _selectedFilters[i] = i == index;
-            }
-          });
+      child: BlocBuilder<WakatimeLeadersCubit, WakatimeLeadersState>(
+        builder: (context, state) {
+          if (state is WakatimeLeadersSuccess) {
+            _filters[1] = state.currentUsersCuntry!.countryName;
+            return ToggleButtons(
+              textStyle: theme.textTheme.bodyLarge,
+              renderBorder: false,
+              borderRadius: BorderRadius.circular(15),
+              selectedColor: theme.colorScheme.onPrimary,
+              fillColor: theme.colorScheme.primary,
+              isSelected: _selectedFilters,
+              onPressed: (index) {
+                setState(() {
+                  for (int i = 0; i < _selectedFilters.length; i++) {
+                    _selectedFilters[i] = i == index;
+                  }
+                  if (index == 0) {
+                    context.read<WakatimeLeadersCubit>().getLeaders();
+                  } else if (index == 1) {
+                    context.read<WakatimeLeadersCubit>().getLeadersByCountry(
+                      countryCode: state.currentUsersCuntry!.countryCode,
+                    );
+                  }
+                });
+              },
+              children: _filters
+                  .map(
+                    (filter) => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                      child: Text(filter),
+                    ),
+                  )
+                  .toList(),
+            );
+          }
+          return SizedBox.shrink();
         },
-        children: _filters
-            .map(
-              (filter) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                child: Text(filter),
-              ),
-            )
-            .toList(),
       ),
     );
   }

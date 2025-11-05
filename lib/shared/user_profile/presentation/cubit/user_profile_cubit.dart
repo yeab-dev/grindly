@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/repositories/wakatime_profile_repository.dart';
+import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
 import 'package:grindly/shared/user_profile/data/models/user_model.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
@@ -13,8 +14,12 @@ part 'user_profile_state.dart';
 class UserProfileCubit extends Cubit<UserProfileState> {
   final UserRepository repository;
   final WakatimeProfileRepository wakatimeRepository;
-  UserProfileCubit({required this.repository, required this.wakatimeRepository})
-    : super(UserProfileInitial());
+  final SecureStorageRepository storageRepository;
+  UserProfileCubit({
+    required this.repository,
+    required this.wakatimeRepository,
+    required this.storageRepository,
+  }) : super(UserProfileInitial());
 
   Future<void> getUser() async {
     emit(UserProfileInProgress());
@@ -29,7 +34,19 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       UserModel? grindlyUser = await repository.getUser(uid);
       final wakatimeAccount = await wakatimeRepository.getUserData();
       grindlyUser = grindlyUser!.copyWith(wakatimeAccount: wakatimeAccount);
-
+      await repository.updateUser(grindlyUser);
+      await storageRepository.write(
+        key: "country_code",
+        value: wakatimeAccount.country != null
+            ? wakatimeAccount.country!.countryCode
+            : "NW",
+      );
+      await storageRepository.write(
+        key: "country_name",
+        value: wakatimeAccount.country != null
+            ? wakatimeAccount.country!.countryName
+            : "Nowhere",
+      );
       emit(UserProfileSuccess(user: grindlyUser.toEntity()));
     } catch (e) {
       emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
