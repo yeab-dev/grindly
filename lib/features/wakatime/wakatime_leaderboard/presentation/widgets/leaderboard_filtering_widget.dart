@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 
 class LeaderboardFilteringWidget extends StatefulWidget {
-  const LeaderboardFilteringWidget({super.key});
+  final int? lastFilter;
+  const LeaderboardFilteringWidget({super.key, this.lastFilter});
 
   @override
   State<LeaderboardFilteringWidget> createState() =>
@@ -12,8 +13,20 @@ class LeaderboardFilteringWidget extends StatefulWidget {
 
 class _LeaderboardFilteringWidgetState
     extends State<LeaderboardFilteringWidget> {
-  final List<bool> _selectedFilters = [true, false, false];
+  List<bool> _selectedFilters = [true, false, false];
   final List<String> _filters = ['Global', 'Your Country', 'Grindly'];
+  @override
+  void initState() {
+    _selectedFilters = (widget.lastFilter == null)
+        ? [true, false, false]
+        : [
+            widget.lastFilter! == 0,
+            widget.lastFilter! == 1,
+            widget.lastFilter == 2,
+          ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;

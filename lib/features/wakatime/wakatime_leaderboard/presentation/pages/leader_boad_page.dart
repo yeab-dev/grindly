@@ -15,7 +15,6 @@ class LeaderBoadPage extends StatelessWidget {
       width: width,
       child: Column(
         children: [
-          LeaderboardFilteringWidget(),
           BlocConsumer<WakatimeLeadersCubit, WakatimeLeadersState>(
             listener: (context, state) {
               if (state is WakatimeLeadersFailure) {
@@ -36,6 +35,7 @@ class LeaderBoadPage extends StatelessWidget {
                 return Expanded(
                   child: Column(
                     children: [
+                      LeaderboardFilteringWidget(lastFilter: state.index),
                       // SizedBox(height: height * 0.05),
                       Expanded(
                         child: ListView.builder(
