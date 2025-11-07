@@ -64,7 +64,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
   final hasToken = await secureStorage.containsKey(key: 'access_token');
   final initial = (!isUserSignedIn && !hasToken)
       ? Routes.login
-      : Routes.todaysSummary;
+      : Routes.profilePage;
 
   if (!isUserSignedIn && !hasToken) {
     return GoRouter(initialLocation: initial, routes: _appRoutes());

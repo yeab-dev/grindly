@@ -17,7 +17,7 @@ class UserModel extends Equatable {
   final String? wakatimeId;
   final CountryModel? countryModel;
   final String? wakatimeProfilePictureUrl;
-  final List<SocialMediaAccountModel>? socialMediaAccounts;
+  final List<SocialMediaAccountModel> socialMediaAccounts;
 
   const UserModel({
     required this.uid,
@@ -26,7 +26,7 @@ class UserModel extends Equatable {
     required this.displayName,
     this.bio,
     this.photoUrl,
-    this.socialMediaAccounts,
+    required this.socialMediaAccounts,
     this.wakatimeId,
     this.countryModel,
     this.wakatimeProfilePictureUrl,
@@ -41,8 +41,8 @@ class UserModel extends Equatable {
       displayName: map['display_name'],
       bio: map['bio'],
       photoUrl: map['photo_url'] as String?,
-      socialMediaAccounts: (map['social_media_accounts'] as List<dynamic>?)
-          ?.map((element) => SocialMediaAccountModel.fromMap(map: element))
+      socialMediaAccounts: (map['social_media_accounts'] as List<dynamic>)
+          .map((element) => SocialMediaAccountModel.fromMap(map: element))
           .toList(),
       createdAt: createdAtRaw is Timestamp
           ? createdAtRaw.toDate()
@@ -59,6 +59,7 @@ class UserModel extends Equatable {
 
   factory UserModel.fromFirebaseUser(firebase_auth.User user) {
     return UserModel(
+      socialMediaAccounts: [],
       displayName: user.displayName ?? '',
       uid: user.uid,
       email: user.email ?? '',
@@ -75,7 +76,7 @@ class UserModel extends Equatable {
       'photo_url': photoUrl,
       'bio': bio,
       'created_at': Timestamp.fromDate(createdAt),
-      'social_media_accounts': socialMediaAccounts?.map((account) {
+      'social_media_accounts': socialMediaAccounts.map((account) {
         return account.toMap();
       }).toList(),
       'wakatime_profile_picture_url': wakatimeProfilePictureUrl,
@@ -93,7 +94,7 @@ class UserModel extends Equatable {
       bio: bio,
       photoUrl: photoUrl,
       socialMediaAccounts: socialMediaAccounts
-          ?.map((element) => element.toEntity())
+          .map((element) => element.toEntity())
           .toList(),
       wakatimeProfilePictureUrl: wakatimeProfilePictureUrl,
       wakatimeId: wakatimeId,

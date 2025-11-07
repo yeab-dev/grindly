@@ -47,6 +47,10 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             ? wakatimeAccount.country!.countryName
             : "Nowhere",
       );
+      await storageRepository.write(
+        key: "wakatime_id",
+        value: wakatimeAccount.id,
+      );
       emit(UserProfileSuccess(user: grindlyUser.toEntity()));
     } catch (e) {
       emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
@@ -69,9 +73,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       final updatedUserModel = userModel?.copyWith(
         displayName: displayName,
         bio: bio,
-        socialMediaAccounts: (xLink == null && telegramLink == null)
-            ? null
-            : <SocialMediaAccountModel>[
+        socialMediaAccounts: (xLink == null || telegramLink == null)
+            ? <SocialMediaAccountModel>[
                 if (xLink != null)
                   SocialMediaAccountModel(platformName: 'X', url: xLink),
                 if (telegramLink != null)
@@ -79,7 +82,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                     platformName: 'Telegram',
                     url: telegramLink,
                   ),
-              ],
+              ]
+            : null,
         wakatimeAccount: previous.wakatimeAccount,
         photoUrl: photoSrc == grindly_user.PhotoSource.google
             ? firebaseAuth.currentUser!.photoURL

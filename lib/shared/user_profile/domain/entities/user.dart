@@ -17,7 +17,7 @@ class User {
   final DateTime createdAt;
   final String? bio;
   final String? photoUrl;
-  final List<SocialMediaAccount>? socialMediaAccounts;
+  final List<SocialMediaAccount> socialMediaAccounts;
   final String? wakatimeProfilePictureUrl;
   final String? wakatimeId;
   final Country? country;
@@ -33,7 +33,7 @@ class User {
     this.country,
     this.bio,
     this.photoUrl,
-    this.socialMediaAccounts,
+    required this.socialMediaAccounts,
     this.wakatimeProfilePictureUrl,
   });
 }

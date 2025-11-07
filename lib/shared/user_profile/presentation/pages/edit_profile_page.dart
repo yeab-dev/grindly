@@ -29,16 +29,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final user = widget.user;
     displayNameController.text = user.displayName;
     bioController.text = user.bio ?? "";
-    xController.text =
-        user.socialMediaAccounts?.firstWhere((account) {
-          return account.platformName == "X";
-        }).url ??
-        "https://x.com/";
-    telegramController.text =
-        user.socialMediaAccounts?.firstWhere((account) {
-          return account.platformName == "Telegram";
-        }).url ??
-        "https://t.me/";
+    xController.text = user.socialMediaAccounts.isEmpty
+        ? "https://x.com/"
+        : user.socialMediaAccounts.firstWhere((account) {
+            return account.platformName == "X";
+          }).platformName;
+    telegramController.text = user.socialMediaAccounts.isEmpty
+        ? "https://t.me/"
+        : user.socialMediaAccounts.firstWhere((account) {
+            return account.platformName == "Telegram";
+          }).platformName;
     super.initState();
   }
 
@@ -65,37 +65,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       builder: (context, state) {
         if (state is UserProfileSuccess) {
-          displayNameController.text != state.user.displayName
-              ? displayNameController = displayNameController
-              : displayNameController.text = state.user.displayName;
-          bioController.text != state.user.bio
-              ? bioController = bioController
-              : bioController.text = state.user.bio ?? "";
-          xController.text !=
-                  state.user.socialMediaAccounts
-                      ?.where((account) => account.platformName == "X")
-                      .first
-                      .url
-              ? xController = xController
-              : xController.text =
-                    state.user.socialMediaAccounts
-                        ?.where((account) => account.platformName == "X")
-                        .first
-                        .url ??
-                    "https://x.com/";
-          telegramController.text !=
-                  state.user.socialMediaAccounts
-                      ?.where((account) => account.platformName == "Telegram")
-                      .first
-                      .url
-              ? telegramController = telegramController
-              : telegramController.text =
-                    state.user.socialMediaAccounts
-                        ?.where((account) => account.platformName == "Telegram")
-                        .first
-                        .url ??
-                    "https://t.me/";
-
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -337,10 +306,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               bio: bioController.text.isEmpty
                                   ? null
                                   : bioController.text,
-                              xLink: xController.text.isEmpty
+                              xLink: xController.text == "https://x.com/"
                                   ? null
                                   : xController.text,
-                              telegramLink: telegramController.text.isEmpty
+                              telegramLink:
+                                  telegramController.text == "https://t.me/"
                                   ? null
                                   : telegramController.text,
                             );

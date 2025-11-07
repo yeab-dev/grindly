@@ -61,15 +61,18 @@ class UserProfilePage extends StatelessWidget {
                   bio: state.user.bio,
                 ),
                 SocialMediaWidget(
-                  xLink: state.user.socialMediaAccounts?.firstWhere((account) {
-                    return account.platformLogo == "assets/icons/x-icon.png";
-                  }).url,
-                  telegramLink: state.user.socialMediaAccounts?.firstWhere((
-                    account,
-                  ) {
-                    return account.platformLogo ==
-                        "assets/icons/telegram-icon.png";
-                  }).url,
+                  xLink: state.user.socialMediaAccounts.isNotEmpty
+                      ? state.user.socialMediaAccounts.firstWhere((account) {
+                          return account.platformLogo ==
+                              "assets/icons/x-icon.png";
+                        }).url
+                      : null,
+                  telegramLink: state.user.socialMediaAccounts.isNotEmpty
+                      ? state.user.socialMediaAccounts.firstWhere((account) {
+                          return account.platformLogo ==
+                              "assets/icons/telegram-icon.png";
+                        }).url
+                      : null,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

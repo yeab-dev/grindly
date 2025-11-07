@@ -26,25 +26,28 @@ class App extends StatelessWidget {
         ),
         BlocProvider(create: (context) => getIt<UserProfileCubit>()..getUser()),
         BlocProvider(
-          create: (context) => getIt<WakatimeLeadersCubit>()..getLeaders(),
+          create: (context) =>
+              getIt<WakatimeLeadersCubit>()..getGlobalLeaders(),
         ),
       ],
       child: FutureBuilder<Object>(
         future: route(secureStorage: getIt<FlutterSecureStorage>()),
         builder: (context, snapshot) {
-          final theme = ThemeData(
-            appBarTheme: AppBarTheme(color: Color(0xFFEFFFF0)),
+          /// 🌞 LIGHT THEME
+          final lightTheme = ThemeData(
+            useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              color: Color(0xFFEFFFF0),
+              iconTheme: IconThemeData(color: Color(0xFF033206)),
+            ),
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xFF3BBE44),
               primary: const Color(0xFF3BBE44),
+              brightness: Brightness.light,
             ),
-            useMaterial3: true,
             textTheme: ThemeData.light().textTheme.copyWith(
-              bodyLarge: ThemeData.light().textTheme.bodyLarge!.copyWith(
-                color: Color(0xFF033206),
-              ),
-              headlineSmall: ThemeData.light().textTheme.headlineSmall!
-                  .copyWith(color: Color(0xFF033206)),
+              bodyLarge: const TextStyle(color: Color(0xFF033206)),
+              headlineSmall: const TextStyle(color: Color(0xFF033206)),
               displaySmall: const TextStyle(
                 color: Color(0xFF3BBE44),
                 fontFamily: 'JacquesFrancois',
@@ -52,16 +55,22 @@ class App extends StatelessWidget {
             ),
           );
 
+          /// While loading routes
           if (snapshot.connectionState != ConnectionState.done) {
             return MaterialApp(
-              home: Scaffold(body: Center(child: CircularProgressIndicator())),
-              theme: theme,
+              home: const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              ),
+              theme: lightTheme,
+              themeMode: ThemeMode.system,
             );
           }
 
+          /// When done
           return MaterialApp.router(
             routerConfig: snapshot.data as dynamic,
-            theme: theme,
+            theme: lightTheme,
+            themeMode: ThemeMode.light,
           );
         },
       ),

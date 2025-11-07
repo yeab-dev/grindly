@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/repositories/wakatime_leaders_repository.dart';
@@ -12,45 +13,104 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
   WakatimeLeadersCubit({
     required this.repository,
     required this.storageRepository,
-  }) : super(WakatimeLeadersInitial());
+  }) : super(
+         WakatimeLeadersInitial(
+           index: 0,
+           globalLeaders: [],
+           countryLeaders: [],
+         ),
+       );
 
-  Future<void> getLeaders() async {
-    emit(WakatimeLeadersInProgress());
-    try {
-      final leaders = await repository.getLeaders();
-      final countryName = await storageRepository.read(key: 'country_name');
-      final countryCode = await storageRepository.read(key: 'country_code');
+  Future<void> getGlobalLeaders() async {
+    if (state.globalLeaders.isNotEmpty) {
       emit(
         WakatimeLeadersSuccess(
-          leaders: leaders,
-          currentUsersCuntry: Country(
-            countryName: countryName ?? 'nowhere',
-            countryCode: countryCode ?? 'NW',
+          index: 0,
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.countryLeaders,
+          currentUsersCountry: state.currentUsersCountry,
+        ),
+      );
+      return;
+    }
+    emit(
+      WakatimeLeadersInProgress(
+        index: 0,
+        globalLeaders: state.globalLeaders,
+        countryLeaders: state.globalLeaders,
+      ),
+    );
+    try {
+      final globalLeaders = await repository.getLeaders();
+      final countryName = await storageRepository.read(key: "country_name");
+      final countryCode = await storageRepository.read(key: "country_code");
+
+      emit(
+        WakatimeLeadersSuccess(
+          index: 0,
+          globalLeaders: globalLeaders,
+          countryLeaders: state.countryLeaders,
+          currentUsersCountry: Country(
+            countryName: countryName ?? "Nowhere",
+            countryCode: countryCode ?? "NW",
           ),
         ),
       );
     } on Exception catch (e) {
-      emit(WakatimeLeadersFailure(errorMessage: e.toString()));
+      emit(
+        WakatimeLeadersFailure(
+          index: 0,
+          errorMessage: e.toString(),
+          globalLeaders: [],
+          countryLeaders: [],
+        ),
+      );
     }
   }
 
-  Future<void> getLeadersByCountry({required String countryCode}) async {
-    emit(WakatimeLeadersInProgress());
-    try {
-      final countryName = await storageRepository.read(key: 'country_name');
-      final countryCode = await storageRepository.read(key: 'country_code');
-      final leaders = await repository.getLeadersByCountry(countryCode!);
+  Future<void> getCountryLeaders({required String countryCode}) async {
+    if (state.countryLeaders.isNotEmpty) {
       emit(
         WakatimeLeadersSuccess(
-          leaders: leaders,
-          currentUsersCuntry: Country(
-            countryName: countryName ?? 'nowhere',
+          index: 1,
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.countryLeaders,
+          currentUsersCountry: state.currentUsersCountry,
+        ),
+      );
+      return;
+    }
+    emit(
+      WakatimeLeadersInProgress(
+        index: 1,
+        globalLeaders: state.globalLeaders,
+        countryLeaders: state.countryLeaders,
+      ),
+    );
+    try {
+      final countryName = await storageRepository.read(key: "country_name");
+      final countryCode = await storageRepository.read(key: "country_code");
+      final countryLeaders = await repository.getLeadersByCountry(countryCode!);
+      emit(
+        WakatimeLeadersSuccess(
+          index: 1,
+          globalLeaders: state.globalLeaders,
+          countryLeaders: countryLeaders,
+          currentUsersCountry: Country(
+            countryName: countryName ?? "Nowhere",
             countryCode: countryCode,
           ),
         ),
       );
     } on Exception catch (e) {
-      emit(WakatimeLeadersFailure(errorMessage: e.toString()));
+      emit(
+        WakatimeLeadersFailure(
+          index: 1,
+          errorMessage: e.toString(),
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.globalLeaders,
+        ),
+      );
     }
   }
 }

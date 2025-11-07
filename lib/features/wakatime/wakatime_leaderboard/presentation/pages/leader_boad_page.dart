@@ -39,19 +39,31 @@ class LeaderBoadPage extends StatelessWidget {
                       // SizedBox(height: height * 0.05),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: state.leaders.length,
+                          itemCount: state.index == 0
+                              ? state.globalLeaders.length
+                              : state.countryLeaders.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical: height * 0.01,
                               ),
                               child: LeaderProfileWidget(
-                                rank: state.leaders[index].rank,
-                                imgUrl: state.leaders[index].photoUrl,
-                                displayName: state.leaders[index].displayName,
-                                duration: state
-                                    .leaders[index]
-                                    .totalHoursSpentDuringTheWeek,
+                                rank: state.index == 0
+                                    ? state.globalLeaders[index].rank
+                                    : state.countryLeaders[index].rank,
+                                imgUrl: state.index == 0
+                                    ? state.globalLeaders[index].photoUrl
+                                    : state.countryLeaders[index].photoUrl,
+                                displayName: state.index == 0
+                                    ? state.globalLeaders[index].displayName
+                                    : state.countryLeaders[index].displayName,
+                                duration: state.index == 0
+                                    ? state
+                                          .globalLeaders[index]
+                                          .totalHoursSpentDuringTheWeek
+                                    : state
+                                          .countryLeaders[index]
+                                          .totalHoursSpentDuringTheWeek,
                               ),
                             );
                           },
