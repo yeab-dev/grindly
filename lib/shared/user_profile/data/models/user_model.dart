@@ -79,9 +79,12 @@ class UserModel extends Equatable {
       'social_media_accounts': socialMediaAccounts.map((account) {
         return account.toMap();
       }).toList(),
-      'wakatime_profile_picture_url': wakatimeProfilePictureUrl,
-      'wakatime_id': wakatimeId,
-      'country': countryModel?.toMap(),
+      'wakatime_profile_picture_url': wakatimeAccount?.photoUrl,
+      'wakatime_id': wakatimeAccount?.id,
+      'country': {
+        "country": wakatimeAccount?.country?.countryName,
+        "country_code": wakatimeAccount?.country?.countryCode,
+      },
     };
   }
 

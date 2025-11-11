@@ -31,14 +31,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     bioController.text = user.bio ?? "";
     xController.text = user.socialMediaAccounts.isEmpty
         ? "https://x.com/"
-        : user.socialMediaAccounts.firstWhere((account) {
-            return account.platformName == "X";
-          }).platformName;
+        : user.socialMediaAccounts.any((account) => account.platformName == "X")
+        ? user.socialMediaAccounts
+              .firstWhere((account) => account.platformName == "X")
+              .url
+        : "https://x.com/";
     telegramController.text = user.socialMediaAccounts.isEmpty
         ? "https://t.me/"
-        : user.socialMediaAccounts.firstWhere((account) {
-            return account.platformName == "Telegram";
-          }).platformName;
+        : user.socialMediaAccounts.any(
+            (account) => account.platformName == "Telegram",
+          )
+        ? user.socialMediaAccounts
+              .firstWhere((account) => account.platformName == "Telegram")
+              .url
+        : "https://t.me/";
     super.initState();
   }
 

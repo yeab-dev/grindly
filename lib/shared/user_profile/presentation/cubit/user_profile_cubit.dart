@@ -53,7 +53,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       );
       emit(UserProfileSuccess(user: grindlyUser.toEntity()));
     } catch (e) {
-      emit(UserProfileFailure(errorMessage: 'Could\'t get profile info'));
+      emit(
+        UserProfileFailure(
+          errorMessage: 'Could\'t get profile info: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -73,7 +77,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       final updatedUserModel = userModel?.copyWith(
         displayName: displayName,
         bio: bio,
-        socialMediaAccounts: (xLink == null || telegramLink == null)
+        socialMediaAccounts: (xLink != null || telegramLink != null)
             ? <SocialMediaAccountModel>[
                 if (xLink != null)
                   SocialMediaAccountModel(platformName: 'X', url: xLink),
