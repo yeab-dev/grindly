@@ -2,4 +2,5 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/g
 
 abstract class GrindlyLeadersRepository {
   Future<List<GrindlyLeader>> getGrindlyLeaders();
+  Future<void> saveGrindlyLeader({required GrindlyLeader leader});
 }
