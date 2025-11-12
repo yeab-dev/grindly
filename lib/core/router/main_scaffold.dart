@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
+import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
 
 class MainScaffold extends StatefulWidget {
   final String? title;
@@ -25,32 +27,39 @@ class _MainScaffoldState extends State<MainScaffold> {
       appBar: AppBar(title: Text(widget.title ?? "")),
       body: widget.child,
       bottomNavigationBar: widget.currentIndex != null
-          ? BottomNavigationBar(
-              backgroundColor: theme.appBarTheme.backgroundColor,
-              currentIndex: widget.currentIndex!,
-              onTap: (index) {
-                if (index == 0) {
-                  context.go(Routes.todaysSummary);
-                } else if (index == 1) {
-                  context.go(Routes.profilePage);
-                } else if (index == 2) {
-                  context.go(Routes.leaderboard);
-                }
+          ? BlocBuilder<UserProfileCubit, UserProfileState>(
+              builder: (context, state) {
+                return BottomNavigationBar(
+                  backgroundColor: theme.appBarTheme.backgroundColor,
+                  currentIndex: widget.currentIndex!,
+                  onTap: (index) {
+                    if (index == 0) {
+                      context.go(Routes.todaysSummary);
+                    } else if (index == 1) {
+                      context.go(Routes.profilePage);
+                    } else if (index == 2) {
+                      context.go(
+                        Routes.leaderboard,
+                        extra: (state as UserProfileSuccess).user,
+                      );
+                    }
+                  },
+                  items: [
+                    BottomNavigationBarItem(
+                      label: "summary",
+                      icon: Icon(Icons.auto_graph),
+                    ),
+                    BottomNavigationBarItem(
+                      label: 'profile',
+                      icon: Icon(Icons.person),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "leaderboard",
+                      icon: Icon(Icons.leaderboard),
+                    ),
+                  ],
+                );
               },
-              items: [
-                BottomNavigationBarItem(
-                  label: "summary",
-                  icon: Icon(Icons.auto_graph),
-                ),
-                BottomNavigationBarItem(
-                  label: 'profile',
-                  icon: Icon(Icons.person),
-                ),
-                BottomNavigationBarItem(
-                  label: "leaderboard",
-                  icon: Icon(Icons.leaderboard),
-                ),
-              ],
             )
           : null,
     );

@@ -53,7 +53,7 @@ List<GoRoute> _appRoutes() {
       builder: (context, state) => MainScaffold(
         title: "leaderboard",
         currentIndex: 2,
-        child: LeaderBoadPage(),
+        child: LeaderBoadPage(grindlyUser: state.extra as grindly.User),
       ),
     ),
   ];

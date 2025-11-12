@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
 class LeaderProfileWidget extends StatelessWidget {
   final int rank;
   final String imgUrl;
   final String displayName;
   final String duration;
+  final String wakatimeId;
+  final User currentUser;
   const LeaderProfileWidget({
     super.key,
+    required this.wakatimeId,
+    required this.currentUser,
     required this.displayName,
     required this.duration,
     required this.imgUrl,
@@ -17,8 +22,17 @@ class LeaderProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final theme = Theme.of(context);
-    return Padding(
+    final height = MediaQuery.sizeOf(context).height;
+    return Container(
+      height: height * 0.065,
+      margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      decoration: BoxDecoration(
+        color: wakatimeId == currentUser.wakatimeAccount?.id
+            ? theme.colorScheme.primaryContainer
+            : null,
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

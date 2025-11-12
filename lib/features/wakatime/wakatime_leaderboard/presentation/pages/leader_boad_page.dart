@@ -3,10 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leader_profile_widget.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leaderboard_filtering_widget.dart';
+import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
-class LeaderBoadPage extends StatelessWidget {
-  const LeaderBoadPage({super.key});
+class LeaderBoadPage extends StatefulWidget {
+  final User grindlyUser;
+  const LeaderBoadPage({super.key, required this.grindlyUser});
 
+  @override
+  State<LeaderBoadPage> createState() => _LeaderBoadPageState();
+}
+
+class _LeaderBoadPageState extends State<LeaderBoadPage> {
+  final ScrollController scrollController = ScrollController();
+  int? scrollTargetIndex;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
@@ -32,6 +41,18 @@ class LeaderBoadPage extends StatelessWidget {
                   ),
                 );
               } else if (state is WakatimeLeadersSuccess) {
+                final leaders = state.index == 0
+                    ? state.globalLeaders
+                    : state.countryLeaders;
+                scrollTargetIndex = leaders.indexWhere(
+                  (leader) =>
+                      leader.userId == widget.grindlyUser.wakatimeAccount?.id,
+                );
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
+                    _scrollToIndex(scrollTargetIndex!, height * 0.077);
+                  }
+                });
                 return Expanded(
                   child: Column(
                     children: [
@@ -39,15 +60,25 @@ class LeaderBoadPage extends StatelessWidget {
                       // SizedBox(height: height * 0.05),
                       Expanded(
                         child: ListView.builder(
+                          controller: scrollController,
                           itemCount: state.index == 0
                               ? state.globalLeaders.length
                               : state.countryLeaders.length,
                           itemBuilder: (context, index) {
+                            if (state.index == 0 &&
+                                state.globalLeaders[index].userId ==
+                                    widget.grindlyUser.wakatimeAccount?.id) {
+                              scrollTargetIndex = index;
+                            }
+
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical: height * 0.01,
                               ),
                               child: LeaderProfileWidget(
+                                wakatimeId: state.index == 0
+                                    ? state.globalLeaders[index].userId
+                                    : state.countryLeaders[index].userId,
                                 rank: state.index == 0
                                     ? state.globalLeaders[index].rank
                                     : state.countryLeaders[index].rank,
@@ -64,6 +95,7 @@ class LeaderBoadPage extends StatelessWidget {
                                     : state
                                           .countryLeaders[index]
                                           .totalHoursSpentDuringTheWeek,
+                                currentUser: widget.grindlyUser,
                               ),
                             );
                           },
@@ -78,6 +110,15 @@ class LeaderBoadPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _scrollToIndex(int index, double itemHeight) {
+    final offset = itemHeight * index;
+    scrollController.animateTo(
+      offset,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 }
