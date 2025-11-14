@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/grindly_leader.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leader_profile_widget.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leaderboard_filtering_widget.dart';
@@ -51,7 +52,16 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
                     _scrollToIndex(scrollTargetIndex!, height * 0.077);
-                    // context.read<WakatimeLeadersCubit>().saveLeader(leader: GrindlyLeader(grindlyId: leaders[scrollTargetIndex!].userId, displayName: leaders[scrollTargetIndex!].displayName, photoUrl: leaders[scrollTargetIndex!].photoUrl, timeInSeconds: leaders[scrollTargetIndex!].totalHoursSpentDuringTheWeek));
+                    context.read<WakatimeLeadersCubit>().saveLeader(
+                      leader: GrindlyLeader(
+                        grindlyId: leaders[scrollTargetIndex!].userId,
+                        displayName: leaders[scrollTargetIndex!].displayName,
+                        photoUrl: leaders[scrollTargetIndex!].photoUrl,
+                        timeInSeconds:
+                            leaders[scrollTargetIndex!].totalHourInSeconds,
+                        country: leaders[scrollTargetIndex!].country,
+                      ),
+                    );
                   }
                 });
                 return Expanded(

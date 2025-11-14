@@ -27,8 +27,8 @@ class LeaderModel {
       rank: json['rank'],
       photoPublic: json['user']['photo_public'],
       photoUrl: json['user']['photo'],
-      countryModel: json['city'] != null
-          ? CountryModel.fromJson(json['city'])
+      countryModel: json['user']['city'] != null
+          ? CountryModel.fromJson(json['user']['city'])
           : null,
       totalHoursInSeconds: (json['running_total']['total_seconds'] as double)
           .toInt(),
