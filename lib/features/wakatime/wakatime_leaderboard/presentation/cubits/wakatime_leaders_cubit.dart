@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/data/models/grindly_leader_model.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/grindly_leader.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/repositories/grindly_leaders_repository.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/repositories/wakatime_leaders_repository.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/country.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 
@@ -9,8 +13,10 @@ part 'wakatime_leaders_state.dart';
 
 class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
   WakatimeLeadersRepository repository;
+  GrindlyLeadersRepository grindlyLeadersRepository;
   SecureStorageRepository storageRepository;
   WakatimeLeadersCubit({
+    required this.grindlyLeadersRepository,
     required this.repository,
     required this.storageRepository,
   }) : super(
@@ -113,4 +119,23 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
       );
     }
   }
+
+  Future<void> saveLeader({required GrindlyLeader leader}) async {
+    await grindlyLeadersRepository.saveGrindlyLeader(
+      leaderModel: GrindlyLeaderModel(
+        grindlyId: leader.grindlyId,
+        displayName: leader.displayName,
+        photoUrl: leader.photoUrl,
+        timeInSeconds: leader.timeInSeconds,
+        country: leader.country != null
+            ? CountryModel(
+                countryCode: leader.country!.countryCode,
+                countryName: leader.country!.countryName,
+              )
+            : null,
+      ),
+    );
+  }
+
+  Future<void> getGrindlyLeaders() async {}
 }

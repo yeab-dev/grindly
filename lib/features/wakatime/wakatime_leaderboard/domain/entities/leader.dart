@@ -6,7 +6,7 @@ class Leader {
   final int rank;
   final String photoUrl;
   final bool photoPublic;
-  final String totalHoursSpentDuringTheWeek;
+  final int totalHourInSeconds;
   final Country? country;
 
   const Leader({
@@ -15,7 +15,7 @@ class Leader {
     required this.rank,
     required this.photoPublic,
     required this.photoUrl,
-    required this.totalHoursSpentDuringTheWeek,
+    required this.totalHourInSeconds,
     this.country,
   });
 }

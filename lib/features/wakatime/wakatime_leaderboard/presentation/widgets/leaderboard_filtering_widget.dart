@@ -62,15 +62,15 @@ class _LeaderboardFilteringWidgetState
                       context.read<WakatimeLeadersCubit>().getCountryLeaders(
                         countryCode: state.currentUsersCountry!.countryCode,
                       );
-                    }
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'please set your country on your wakatime settings.',
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'please set your country on your wakatime settings.',
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 });
               },

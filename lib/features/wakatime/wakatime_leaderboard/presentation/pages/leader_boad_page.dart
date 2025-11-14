@@ -51,6 +51,7 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
                     _scrollToIndex(scrollTargetIndex!, height * 0.077);
+                    // context.read<WakatimeLeadersCubit>().saveLeader(leader: GrindlyLeader(grindlyId: leaders[scrollTargetIndex!].userId, displayName: leaders[scrollTargetIndex!].displayName, photoUrl: leaders[scrollTargetIndex!].photoUrl, timeInSeconds: leaders[scrollTargetIndex!].totalHoursSpentDuringTheWeek));
                   }
                 });
                 return Expanded(
@@ -88,13 +89,13 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                                 displayName: state.index == 0
                                     ? state.globalLeaders[index].displayName
                                     : state.countryLeaders[index].displayName,
-                                duration: state.index == 0
+                                durationInSeconds: state.index == 0
                                     ? state
                                           .globalLeaders[index]
-                                          .totalHoursSpentDuringTheWeek
+                                          .totalHourInSeconds
                                     : state
                                           .countryLeaders[index]
-                                          .totalHoursSpentDuringTheWeek,
+                                          .totalHourInSeconds,
                                 currentUser: widget.grindlyUser,
                               ),
                             );

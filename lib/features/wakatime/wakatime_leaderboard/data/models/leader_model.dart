@@ -7,7 +7,7 @@ class LeaderModel {
   final int rank;
   final String photoUrl;
   final bool photoPublic;
-  final String totalHoursSpentDuringTheWeek;
+  final int totalHoursInSeconds;
   final CountryModel? countryModel;
 
   const LeaderModel({
@@ -16,7 +16,7 @@ class LeaderModel {
     required this.rank,
     required this.photoPublic,
     required this.photoUrl,
-    required this.totalHoursSpentDuringTheWeek,
+    required this.totalHoursInSeconds,
     this.countryModel,
   });
 
@@ -30,8 +30,8 @@ class LeaderModel {
       countryModel: json['city'] != null
           ? CountryModel.fromJson(json['city'])
           : null,
-      totalHoursSpentDuringTheWeek:
-          json['running_total']['human_readable_total'],
+      totalHoursInSeconds: (json['running_total']['total_seconds'] as double)
+          .toInt(),
     );
   }
 
@@ -43,7 +43,7 @@ class LeaderModel {
       photoPublic: photoPublic,
       photoUrl: photoUrl,
       country: countryModel?.toEntity(),
-      totalHoursSpentDuringTheWeek: totalHoursSpentDuringTheWeek,
+      totalHourInSeconds: totalHoursInSeconds,
     );
   }
 }

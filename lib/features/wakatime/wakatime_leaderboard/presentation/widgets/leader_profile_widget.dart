@@ -5,7 +5,7 @@ class LeaderProfileWidget extends StatelessWidget {
   final int rank;
   final String imgUrl;
   final String displayName;
-  final String duration;
+  final int durationInSeconds;
   final String wakatimeId;
   final User currentUser;
   const LeaderProfileWidget({
@@ -13,7 +13,7 @@ class LeaderProfileWidget extends StatelessWidget {
     required this.wakatimeId,
     required this.currentUser,
     required this.displayName,
-    required this.duration,
+    required this.durationInSeconds,
     required this.imgUrl,
     required this.rank,
   });
@@ -55,28 +55,19 @@ class LeaderProfileWidget extends StatelessWidget {
               ),
             ),
           ),
-          Text(_formatDuration(duration), style: theme.textTheme.titleLarge),
+          Text(
+            _formatDuration(durationInSeconds),
+            style: theme.textTheme.titleLarge,
+          ),
         ],
       ),
     );
   }
 
-  String _formatDuration(String input) {
-    final hourRegex = RegExp(
-      r'(\d+)\s*(?:h|hr|hrs|hour|hours)',
-      caseSensitive: false,
-    );
-    final minRegex = RegExp(
-      r'(\d+)\s*(?:m|min|mins|minute|minutes)',
-      caseSensitive: false,
-    );
-
-    final hourMatch = hourRegex.firstMatch(input);
-    final minMatch = minRegex.firstMatch(input);
-
-    final hours = hourMatch != null ? int.parse(hourMatch.group(1)!) : 0;
-    final minutes = minMatch != null ? int.parse(minMatch.group(1)!) : 0;
-
+  String _formatDuration(int totalSeconds) {
+    final hours = totalSeconds ~/ 3600;
+    final remainingSeconds = totalSeconds % 3600;
+    final minutes = remainingSeconds ~/ 60;
     final minutesPadded = minutes.toString().padLeft(2, '0');
     return '$hours:$minutesPadded';
   }
