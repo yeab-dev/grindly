@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/data/models/leader_model.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
@@ -7,9 +8,11 @@ import 'package:grindly/shared/domain/repositories/secure_storage_repository.dar
 class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
   final Dio dio;
   final SecureStorageRepository storageRepository;
+  final FirebaseFirestore firestore;
   const WakatimeLeadersRepositoryImpl({
     required this.dio,
     required this.storageRepository,
+    required this.firestore,
   });
   @override
   Future<List<Leader>> getLeaders() async {
@@ -56,5 +59,29 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<void> saveLeaderToFirestore({required Leader leader}) async {
+    if (leader.grindlyID == null) {
+      throw ArgumentError('grindly ID cannot be null');
+    }
+    final ref = firestore.collection('users').doc(leader.grindlyID);
+    await ref.set(leader.toModel().toMap());
+  }
+
+  @override
+  Future<List<Leader>> getGrindlyLeaders() async {
+    final snapshot = await firestore
+        .collection("leaders")
+        .orderBy("seconds")
+        .get();
+
+    final List<Leader> leaders = snapshot.docs.map((doc) {
+      final data = doc.data();
+      return LeaderModel.fromMap(map: data).toEntity();
+    }).toList();
+
+    return leaders;
   }
 }
