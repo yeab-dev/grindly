@@ -71,7 +71,7 @@ class _LeaderboardFilteringWidgetState
                         ),
                       );
                     }
-                  }
+                  } else {}
                 });
               },
               children: _filters

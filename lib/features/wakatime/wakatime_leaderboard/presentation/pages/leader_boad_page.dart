@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/grindly_leader.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubits/wakatime_leaders_cubit.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leader_profile_widget.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leaderboard_filtering_widget.dart';
@@ -42,9 +42,14 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                   ),
                 );
               } else if (state is WakatimeLeadersSuccess) {
-                final leaders = state.index == 0
-                    ? state.globalLeaders
-                    : state.countryLeaders;
+                final List<Leader> leaders;
+                if (state.index == 0) {
+                  leaders = state.globalLeaders;
+                } else if (state.index == 1) {
+                  leaders = state.countryLeaders;
+                } else {
+                  leaders = state.grindlyLeaders;
+                }
                 scrollTargetIndex = leaders.indexWhere(
                   (leader) =>
                       leader.userId == widget.grindlyUser.wakatimeAccount?.id,
@@ -52,16 +57,6 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
                     _scrollToIndex(scrollTargetIndex!, height * 0.077);
-                    context.read<WakatimeLeadersCubit>().saveLeader(
-                      leader: GrindlyLeader(
-                        grindlyId: leaders[scrollTargetIndex!].userId,
-                        displayName: leaders[scrollTargetIndex!].displayName,
-                        photoUrl: leaders[scrollTargetIndex!].photoUrl,
-                        timeInSeconds:
-                            leaders[scrollTargetIndex!].totalHourInSeconds,
-                        country: leaders[scrollTargetIndex!].country,
-                      ),
-                    );
                   }
                 });
                 return Expanded(
@@ -74,37 +69,45 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                           controller: scrollController,
                           itemCount: state.index == 0
                               ? state.globalLeaders.length
-                              : state.countryLeaders.length,
+                              : state.index == 1
+                              ? state.countryLeaders.length
+                              : state.grindlyLeaders.length,
                           itemBuilder: (context, index) {
-                            if (state.index == 0 &&
-                                state.globalLeaders[index].userId ==
-                                    widget.grindlyUser.wakatimeAccount?.id) {
-                              scrollTargetIndex = index;
-                            }
-
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical: height * 0.01,
                               ),
                               child: LeaderProfileWidget(
                                 wakatimeId: state.index == 0
-                                    ? state.globalLeaders[index].userId
-                                    : state.countryLeaders[index].userId,
+                                    ? state.globalLeaders[index].userId!
+                                    : state.index == 1
+                                    ? state.countryLeaders[index].userId!
+                                    : "",
                                 rank: state.index == 0
-                                    ? state.globalLeaders[index].rank
-                                    : state.countryLeaders[index].rank,
+                                    ? state.globalLeaders[index].rank!
+                                    : state.index == 1
+                                    ? state.countryLeaders[index].rank!
+                                    : index + 1,
                                 imgUrl: state.index == 0
                                     ? state.globalLeaders[index].photoUrl
-                                    : state.countryLeaders[index].photoUrl,
+                                    : state.index == 1
+                                    ? state.countryLeaders[index].photoUrl
+                                    : state.grindlyLeaders[index].photoUrl,
                                 displayName: state.index == 0
                                     ? state.globalLeaders[index].displayName
-                                    : state.countryLeaders[index].displayName,
+                                    : state.index == 1
+                                    ? state.countryLeaders[index].displayName
+                                    : state.grindlyLeaders[index].displayName,
                                 durationInSeconds: state.index == 0
                                     ? state
                                           .globalLeaders[index]
                                           .totalHourInSeconds
-                                    : state
+                                    : state.index == 1
+                                    ? state
                                           .countryLeaders[index]
+                                          .totalHourInSeconds
+                                    : state
+                                          .grindlyLeaders[index]
                                           .totalHourInSeconds,
                                 currentUser: widget.grindlyUser,
                               ),

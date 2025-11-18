@@ -13,7 +13,7 @@ class CountryModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {"country_name": countryName, "country_code": countryCode};
+    return {"country": countryName, "country_code": countryCode};
   }
 
   Country toEntity() {

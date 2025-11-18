@@ -2,21 +2,23 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/l
 import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 
 class LeaderModel {
-  final String userId;
+  final String? grindlyId;
+  final String? userId;
   final String displayName;
-  final int rank;
+  final int? rank;
   final String photoUrl;
   final bool photoPublic;
   final int totalHoursInSeconds;
   final CountryModel? countryModel;
 
   const LeaderModel({
-    required this.userId,
+    this.userId,
     required this.displayName,
-    required this.rank,
+    this.rank,
     required this.photoPublic,
     required this.photoUrl,
     required this.totalHoursInSeconds,
+    this.grindlyId,
     this.countryModel,
   });
 
