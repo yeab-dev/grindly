@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/data/models/leader_model.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/repositories/wakatime_leaders_repository.dart';
@@ -63,10 +65,8 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
 
   @override
   Future<void> saveLeaderToFirestore({required Leader leader}) async {
-    if (leader.grindlyID == null) {
-      throw ArgumentError('grindly ID cannot be null');
-    }
-    final ref = firestore.collection('users').doc(leader.grindlyID);
+    final id = getIt<FirebaseAuth>().currentUser!.uid;
+    final ref = firestore.collection('leaders').doc(id);
     await ref.set(leader.toModel().toMap());
   }
 

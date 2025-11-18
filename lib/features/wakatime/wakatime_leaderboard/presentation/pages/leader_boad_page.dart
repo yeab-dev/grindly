@@ -58,6 +58,9 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
                     _scrollToIndex(scrollTargetIndex!, height * 0.077);
+                    context.read<WakatimeLeadersCubit>().saveGrindlyLeader(
+                      leader: leaders[scrollTargetIndex!],
+                    );
                   }
                 });
                 return Expanded(
@@ -83,7 +86,7 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                                     ? state.globalLeaders[index].wakatimeID
                                     : state.index == 1
                                     ? state.countryLeaders[index].wakatimeID
-                                    : "",
+                                    : state.grindlyLeaders[index].wakatimeID,
                                 rank: state.index == 0
                                     ? state.globalLeaders[index].rank
                                     : state.index == 1

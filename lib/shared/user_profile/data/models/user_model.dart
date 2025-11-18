@@ -81,10 +81,12 @@ class UserModel extends Equatable {
       }).toList(),
       'wakatime_profile_picture_url': wakatimeAccount?.photoUrl,
       'wakatime_id': wakatimeAccount?.id,
-      'country': {
-        "country": wakatimeAccount?.country?.countryName,
-        "country_code": wakatimeAccount?.country?.countryCode,
-      },
+      'country': wakatimeAccount?.country != null
+          ? {
+              "country": wakatimeAccount!.country!.countryName,
+              "country_code": wakatimeAccount!.country!.countryCode,
+            }
+          : null,
     };
   }
 

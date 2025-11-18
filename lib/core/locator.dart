@@ -84,6 +84,7 @@ void setupLocator() {
     () => WakatimeLeadersRepositoryImpl(
       dio: getIt<Dio>(),
       storageRepository: getIt<SecureStorageRepository>(),
+      firestore: getIt<FirebaseFirestore>(),
     ),
   );
 

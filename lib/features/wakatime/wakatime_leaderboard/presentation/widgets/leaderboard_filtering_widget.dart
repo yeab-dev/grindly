@@ -22,7 +22,7 @@ class _LeaderboardFilteringWidgetState
         : [
             widget.lastFilter! == 0,
             widget.lastFilter! == 1,
-            widget.lastFilter == 2,
+            widget.lastFilter! == 2,
           ];
     super.initState();
   }
@@ -71,7 +71,9 @@ class _LeaderboardFilteringWidgetState
                         ),
                       );
                     }
-                  } else {}
+                  } else {
+                    context.read<WakatimeLeadersCubit>().getGrindlyLeaders();
+                  }
                 });
               },
               children: _filters

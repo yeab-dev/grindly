@@ -47,7 +47,6 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
       final globalLeaders = await repository.getLeaders();
       final countryName = await storageRepository.read(key: "country_name");
       final countryCode = await storageRepository.read(key: "country_code");
-
       emit(
         WakatimeLeadersSuccess(
           index: 0,
@@ -121,5 +120,59 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
         ),
       );
     }
+  }
+
+  Future<void> getGrindlyLeaders() async {
+    if (state.grindlyLeaders.isNotEmpty) {
+      emit(
+        WakatimeLeadersSuccess(
+          index: 2,
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.countryLeaders,
+          currentUsersCountry: state.currentUsersCountry,
+          grindlyLeaders: state.grindlyLeaders,
+        ),
+      );
+      return;
+    }
+    emit(
+      WakatimeLeadersInProgress(
+        index: 2,
+        globalLeaders: state.globalLeaders,
+        countryLeaders: state.countryLeaders,
+        grindlyLeaders: state.grindlyLeaders,
+      ),
+    );
+    try {
+      final grindlyLeaders = await repository.getGrindlyLeaders();
+      final countryName = await storageRepository.read(key: "country_name");
+      final countryCode = await storageRepository.read(key: "country_code");
+      emit(
+        WakatimeLeadersSuccess(
+          index: 2,
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.countryLeaders,
+          grindlyLeaders: grindlyLeaders,
+          currentUsersCountry: Country(
+            countryName: countryName ?? "Nowhere",
+            countryCode: countryCode ?? "NW",
+          ),
+        ),
+      );
+    } on Exception catch (e) {
+      emit(
+        WakatimeLeadersFailure(
+          index: 2,
+          errorMessage: e.toString(),
+          globalLeaders: state.globalLeaders,
+          countryLeaders: state.globalLeaders,
+          grindlyLeaders: state.grindlyLeaders,
+        ),
+      );
+    }
+  }
+
+  Future<void> saveGrindlyLeader({required Leader leader}) async {
+    await repository.saveLeaderToFirestore(leader: leader);
   }
 }
