@@ -2,29 +2,29 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/l
 import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 
 class LeaderModel {
-  final String? grindlyId;
-  final String? userId;
+  final String? grindlyID;
+  final String wakatimeID;
   final String displayName;
-  final int? rank;
+  final int rank;
   final String photoUrl;
   final bool photoPublic;
   final int totalHoursInSeconds;
   final CountryModel? countryModel;
 
   const LeaderModel({
-    this.userId,
     required this.displayName,
-    this.rank,
+    required this.rank,
+    required this.wakatimeID,
     required this.photoPublic,
     required this.photoUrl,
     required this.totalHoursInSeconds,
-    this.grindlyId,
+    this.grindlyID,
     this.countryModel,
   });
 
   factory LeaderModel.fromJson(Map<String, dynamic> json) {
     return LeaderModel(
-      userId: json['user']['id'],
+      wakatimeID: json['user']['id'],
       displayName: json['user']['display_name'],
       rank: json['rank'],
       photoPublic: json['user']['photo_public'],
@@ -39,13 +39,14 @@ class LeaderModel {
 
   Leader toEntity() {
     return Leader(
-      userId: userId,
+      wakatimeID: wakatimeID,
+      grindlyID: grindlyID,
       displayName: displayName,
       rank: rank,
       photoPublic: photoPublic,
       photoUrl: photoUrl,
       country: countryModel?.toEntity(),
-      totalHourInSeconds: totalHoursInSeconds,
+      totalHoursInSeconds: totalHoursInSeconds,
     );
   }
 }

@@ -52,7 +52,8 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 }
                 scrollTargetIndex = leaders.indexWhere(
                   (leader) =>
-                      leader.userId == widget.grindlyUser.wakatimeAccount?.id,
+                      leader.wakatimeID ==
+                      widget.grindlyUser.wakatimeAccount?.id,
                 );
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
@@ -79,14 +80,14 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                               ),
                               child: LeaderProfileWidget(
                                 wakatimeId: state.index == 0
-                                    ? state.globalLeaders[index].userId!
+                                    ? state.globalLeaders[index].wakatimeID
                                     : state.index == 1
-                                    ? state.countryLeaders[index].userId!
+                                    ? state.countryLeaders[index].wakatimeID
                                     : "",
                                 rank: state.index == 0
-                                    ? state.globalLeaders[index].rank!
+                                    ? state.globalLeaders[index].rank
                                     : state.index == 1
-                                    ? state.countryLeaders[index].rank!
+                                    ? state.countryLeaders[index].rank
                                     : index + 1,
                                 imgUrl: state.index == 0
                                     ? state.globalLeaders[index].photoUrl
@@ -101,14 +102,14 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                                 durationInSeconds: state.index == 0
                                     ? state
                                           .globalLeaders[index]
-                                          .totalHourInSeconds
+                                          .totalHoursInSeconds
                                     : state.index == 1
                                     ? state
                                           .countryLeaders[index]
-                                          .totalHourInSeconds
+                                          .totalHoursInSeconds
                                     : state
                                           .grindlyLeaders[index]
-                                          .totalHourInSeconds,
+                                          .totalHoursInSeconds,
                                 currentUser: widget.grindlyUser,
                               ),
                             );
