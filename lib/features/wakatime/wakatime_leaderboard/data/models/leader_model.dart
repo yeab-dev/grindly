@@ -37,6 +37,29 @@ class LeaderModel {
     );
   }
 
+  factory LeaderModel.fromMap({required Map<String, dynamic> map}) {
+    return LeaderModel(
+      displayName: map['display_name'],
+      rank: 0,
+      wakatimeID: map['wakatime_id'],
+      photoPublic: map['photo_public'],
+      photoUrl: map['photo_url'],
+      totalHoursInSeconds: map['seconds'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "country": countryModel?.toMap(),
+      "display_name": displayName,
+      "wakatime_id": wakatimeID,
+      "grindly_id": grindlyID,
+      "photo_url": photoUrl,
+      "seconds": totalHoursInSeconds,
+      "photo_public": photoPublic,
+    };
+  }
+
   Leader toEntity() {
     return Leader(
       wakatimeID: wakatimeID,
