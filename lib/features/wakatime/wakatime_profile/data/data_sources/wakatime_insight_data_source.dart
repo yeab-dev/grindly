@@ -22,11 +22,26 @@ class WakatimeInsightDataSource {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> result = {};
-        final List timeSpentOnWeekDays = response.data['data']['weekdays'];
-        final name = timeSpentOnWeekDays[0]['name'] as String;
-        final total = timeSpentOnWeekDays[0]['total'];
-        result['name'] = name;
-        result['duration'] = Converters.toDuration((total as num).toDouble());
+        final List timeSpentOnWeekDays =
+            response.data['data']['weekdays'] as List;
+        if (timeSpentOnWeekDays.isEmpty) return result;
+
+        String longestName = '';
+        Duration longestDuration = Duration.zero;
+
+        for (final item in timeSpentOnWeekDays) {
+          final name = item['name'] as String;
+          final total = (item['total'] as num).toDouble();
+          final duration = Converters.toDuration(total);
+
+          if (duration.compareTo(longestDuration) > 0) {
+            longestDuration = duration;
+            longestName = name;
+          }
+        }
+
+        result['name'] = longestName;
+        result['duration'] = longestDuration;
         return result;
       }
       throw Exception('Something went wrong');
