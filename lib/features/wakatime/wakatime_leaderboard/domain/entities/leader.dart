@@ -31,6 +31,7 @@ class Leader {
       photoPublic: photoPublic,
       photoUrl: photoUrl,
       totalHoursInSeconds: totalHoursInSeconds,
+      countryModel: country?.toModel(),
     );
   }
 }

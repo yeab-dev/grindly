@@ -58,9 +58,11 @@ class _LeaderBoadPageState extends State<LeaderBoadPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (scrollTargetIndex != null && scrollTargetIndex! >= 0) {
                     _scrollToIndex(scrollTargetIndex!, height * 0.077);
-                    context.read<WakatimeLeadersCubit>().saveGrindlyLeader(
-                      leader: leaders[scrollTargetIndex!],
-                    );
+                    if (state.index != 2) {
+                      context.read<WakatimeLeadersCubit>().saveGrindlyLeader(
+                        leader: leaders[scrollTargetIndex!],
+                      );
+                    }
                   }
                 });
                 return Expanded(

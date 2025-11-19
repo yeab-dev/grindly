@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/domain/entities/leader.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
 
@@ -45,6 +47,7 @@ class LeaderModel {
       photoPublic: map['photo_public'],
       photoUrl: map['photo_url'],
       totalHoursInSeconds: map['seconds'],
+      countryModel: CountryModel.fromJson(map['country']),
     );
   }
 
@@ -53,7 +56,7 @@ class LeaderModel {
       "country": countryModel?.toMap(),
       "display_name": displayName,
       "wakatime_id": wakatimeID,
-      "grindly_id": grindlyID,
+      "grindly_id": getIt<FirebaseAuth>().currentUser?.uid,
       "photo_url": photoUrl,
       "seconds": totalHoursInSeconds,
       "photo_public": photoPublic,

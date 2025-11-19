@@ -74,7 +74,7 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
   Future<List<Leader>> getGrindlyLeaders() async {
     final snapshot = await firestore
         .collection("leaders")
-        .orderBy("seconds")
+        .orderBy("seconds", descending: true)
         .get();
 
     final List<Leader> leaders = snapshot.docs.map((doc) {
