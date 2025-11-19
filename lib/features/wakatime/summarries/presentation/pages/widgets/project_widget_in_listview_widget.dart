@@ -27,9 +27,14 @@ class ProjectWidgetInListviewWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              projectName,
-              style: theme.textTheme.headlineSmall!.copyWith(fontSize: 20),
+            SizedBox(
+              width: width * 0.45,
+              child: Text(
+                projectName.length < 15
+                    ? projectName
+                    : "${projectName.substring(0, 15)}...",
+                style: theme.textTheme.headlineSmall!.copyWith(fontSize: 20),
+              ),
             ),
 
             Row(
