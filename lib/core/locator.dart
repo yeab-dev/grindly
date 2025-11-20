@@ -77,6 +77,7 @@ void setupLocator() {
       insightDataSource: getIt<WakatimeInsightDataSource>(),
       basicInfoDataSource: getIt<WakatimeBasicInfoDataSource>(),
       statsDataSource: getIt<WakatimeStatsDataSource>(),
+      firestore: getIt<FirebaseFirestore>(),
     ),
   );
 

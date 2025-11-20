@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grindly/core/locator.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_all_time_since_today_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_insight_data_source.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/data/data_sources/wakatime_basic_info_data_source.dart';
@@ -11,12 +14,14 @@ class WakatimeProfileRepositoryImpl implements WakatimeProfileRepository {
   final WakatimeInsightDataSource insightDataSource;
   final WakatimeBasicInfoDataSource basicInfoDataSource;
   final WakatimeStatsDataSource statsDataSource;
+  final FirebaseFirestore firestore;
 
   const WakatimeProfileRepositoryImpl({
     required this.allTimeSinceTodayDataSource,
     required this.insightDataSource,
     required this.basicInfoDataSource,
     required this.statsDataSource,
+    required this.firestore,
   });
   @override
   Future<WakatimeUser> getUserData() async {
@@ -41,7 +46,13 @@ class WakatimeProfileRepositoryImpl implements WakatimeProfileRepository {
       "projects_with_hours_spent": projectsWithHoursSpent,
       "weekdays_with_hours_spent": weekdaysWithHoursSpent,
     });
-
+    await _saveUserInfoToFirestore(userModel);
     return userModel.toEntity();
+  }
+
+  Future<void> _saveUserInfoToFirestore(WakatimeUserModel userModel) async {
+    final id = getIt<FirebaseAuth>().currentUser?.uid;
+    final ref = firestore.collection('users').doc(id);
+    await ref.update(userModel.toMap());
   }
 }
