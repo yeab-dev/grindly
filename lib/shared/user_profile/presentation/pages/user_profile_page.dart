@@ -58,29 +58,32 @@ class UserProfilePage extends StatelessWidget {
                 NetworkAndStreakInfoWidget(
                   following: 0,
                   followers: 0,
-                  bio: state.user.bio,
+                  isOwnProfile: true,
                 ),
-                SocialMediaWidget(
-                  xLink:
-                      state.user.socialMediaAccounts.any(
-                        (account) => account.platformName == "X",
-                      )
-                      ? state.user.socialMediaAccounts
-                            .firstWhere(
-                              (account) => account.platformName == "X",
-                            )
-                            .url
-                      : null,
-                  telegramLink:
-                      state.user.socialMediaAccounts.any(
-                        (account) => account.platformName == "Telegram",
-                      )
-                      ? state.user.socialMediaAccounts
-                            .firstWhere(
-                              (account) => account.platformName == "Telegram",
-                            )
-                            .url
-                      : null,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                  child: SocialMediaWidget(
+                    xLink:
+                        state.user.socialMediaAccounts.any(
+                          (account) => account.platformName == "X",
+                        )
+                        ? state.user.socialMediaAccounts
+                              .firstWhere(
+                                (account) => account.platformName == "X",
+                              )
+                              .url
+                        : null,
+                    telegramLink:
+                        state.user.socialMediaAccounts.any(
+                          (account) => account.platformName == "Telegram",
+                        )
+                        ? state.user.socialMediaAccounts
+                              .firstWhere(
+                                (account) => account.platformName == "Telegram",
+                              )
+                              .url
+                        : null,
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
