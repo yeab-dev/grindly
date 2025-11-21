@@ -48,6 +48,7 @@ class LeaderModel {
       photoUrl: map['photo_url'],
       totalHoursInSeconds: map['seconds'],
       countryModel: CountryModel.fromJson(map['country']),
+      grindlyID: map['grindly_id'],
     );
   }
 

@@ -27,12 +27,12 @@ class LeaderProfilePage extends StatelessWidget {
         builder: (context, state) {
           if (state is LeaderProfileSuccess) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ProfilePictureWidget(imgSource: state.user.photoUrl!),
                 Padding(
-                  padding: EdgeInsets.only(top: 18.0),
+                  padding: EdgeInsets.only(top: 18.0, bottom: width * 0.05),
                   child: Center(
                     child: Text(
                       state.user.displayName,
@@ -41,42 +41,51 @@ class LeaderProfilePage extends StatelessWidget {
                   ),
                 ),
 
-                NetworkAndStreakInfoWidget(
-                  following: 0,
-                  followers: 0,
-                  isOwnProfile: false,
+                Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.03),
+                  child: NetworkAndStreakInfoWidget(
+                    following: 0,
+                    followers: 0,
+                    isOwnProfile: false,
+                  ),
                 ),
-                Center(
-                  child: Text(
-                    "\"${state.user.bio}\"",
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontStyle: FontStyle.italic,
-                      fontSize: width * 0.045,
-                      color: theme.colorScheme.secondary.withAlpha(100),
+                Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.03),
+                  child: Center(
+                    child: Text(
+                      "\"${state.user.bio}\"",
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontStyle: FontStyle.italic,
+                        fontSize: width * 0.045,
+                        color: theme.colorScheme.secondary.withAlpha(100),
+                      ),
                     ),
                   ),
                 ),
-                SocialMediaWidget(
-                  xLink:
-                      state.user.socialMediaAccounts.any(
-                        (account) => account.platformName == "X",
-                      )
-                      ? state.user.socialMediaAccounts
-                            .firstWhere(
-                              (account) => account.platformName == "X",
-                            )
-                            .url
-                      : null,
-                  telegramLink:
-                      state.user.socialMediaAccounts.any(
-                        (account) => account.platformName == "Telegram",
-                      )
-                      ? state.user.socialMediaAccounts
-                            .firstWhere(
-                              (account) => account.platformName == "Telegram",
-                            )
-                            .url
-                      : null,
+                Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.05),
+                  child: SocialMediaWidget(
+                    xLink:
+                        state.user.socialMediaAccounts.any(
+                          (account) => account.platformName == "X",
+                        )
+                        ? state.user.socialMediaAccounts
+                              .firstWhere(
+                                (account) => account.platformName == "X",
+                              )
+                              .url
+                        : null,
+                    telegramLink:
+                        state.user.socialMediaAccounts.any(
+                          (account) => account.platformName == "Telegram",
+                        )
+                        ? state.user.socialMediaAccounts
+                              .firstWhere(
+                                (account) => account.platformName == "Telegram",
+                              )
+                              .url
+                        : null,
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
