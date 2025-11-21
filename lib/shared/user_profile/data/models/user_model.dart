@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:grindly/features/wakatime/wakatime_profile/data/models/country_model.dart';
+import 'package:grindly/features/wakatime/wakatime_profile/data/models/wakatime_user_model.dart';
 import 'package:grindly/features/wakatime/wakatime_profile/domain/entities/wakatime_user.dart';
 import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
@@ -54,6 +55,7 @@ class UserModel extends Equatable {
                 ? CountryModel.fromJson(map['country'])
                 : null
           : null,
+      wakatimeAccount: WakatimeUserModel.fromMap(map).toEntity(),
     );
   }
 

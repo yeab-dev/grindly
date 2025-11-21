@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
-import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';

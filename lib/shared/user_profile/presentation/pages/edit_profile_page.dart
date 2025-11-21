@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/core/locator.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly;
-import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 
 class EditProfilePage extends StatefulWidget {

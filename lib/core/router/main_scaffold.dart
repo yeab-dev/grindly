@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
-import 'package:grindly/shared/user_profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 
 class MainScaffold extends StatefulWidget {
   final String? title;
