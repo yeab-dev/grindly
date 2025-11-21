@@ -55,7 +55,6 @@ class LeaderProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: height * 01),
               SocialMediaWidget(
                 xLink:
                     state.user.socialMediaAccounts.any(

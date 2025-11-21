@@ -85,6 +85,7 @@ class UserProfilePage extends StatelessWidget {
                         : null,
                   ),
                 ),
+                SizedBox(height: height * 0.05),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
