@@ -6,15 +6,15 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widg
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leaderboard_filtering_widget.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 
-class LeaderBoadPage extends StatefulWidget {
+class LeaderBoardPage extends StatefulWidget {
   final User grindlyUser;
-  const LeaderBoadPage({super.key, required this.grindlyUser});
+  const LeaderBoardPage({super.key, required this.grindlyUser});
 
   @override
-  State<LeaderBoadPage> createState() => _LeaderBoadPageState();
+  State<LeaderBoardPage> createState() => _LeaderBoardPageState();
 }
 
-class _LeaderBoadPageState extends State<LeaderBoadPage> {
+class _LeaderBoardPageState extends State<LeaderBoardPage> {
   final ScrollController scrollController = ScrollController();
   int? scrollTargetIndex;
   @override

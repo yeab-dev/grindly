@@ -8,7 +8,7 @@ import 'package:grindly/features/auth/presentation/pages/login.dart';
 import 'package:grindly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/todays_summaries_page.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/pages/wakatime_auth_page.dart';
-import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/pages/leader_boad_page.dart';
+import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/pages/leader_board_page.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly;
 import 'package:grindly/shared/user_profile/presentation/pages/edit_profile_page.dart';
@@ -54,7 +54,7 @@ List<GoRoute> _appRoutes() {
       builder: (context, state) => MainScaffold(
         title: "leaderboard",
         currentIndex: 2,
-        child: LeaderBoadPage(grindlyUser: state.extra as grindly.User),
+        child: LeaderBoardPage(grindlyUser: state.extra as grindly.User),
       ),
     ),
 
