@@ -60,7 +60,8 @@ List<GoRoute> _appRoutes() {
 
     GoRoute(
       path: Routes.leaderProfilePage,
-      builder: (context, state) => LeaderProfilePage(),
+      builder: (context, state) =>
+          LeaderProfilePage(currentUser: state.extra as grindly.User),
     ),
   ];
 }

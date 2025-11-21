@@ -106,6 +106,7 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                                 );
                                             context.push(
                                               Routes.leaderProfilePage,
+                                              extra: widget.grindlyUser,
                                             );
                                           }
                                         },

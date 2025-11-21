@@ -19,12 +19,16 @@ class UserModel extends Equatable {
   final CountryModel? countryModel;
   final String? wakatimeProfilePictureUrl;
   final List<SocialMediaAccountModel> socialMediaAccounts;
+  final List<User>? following;
+  final List<User>? followers;
 
   const UserModel({
     required this.uid,
     required this.email,
     required this.createdAt,
     required this.displayName,
+    this.following,
+    this.followers,
     this.bio,
     this.photoUrl,
     required this.socialMediaAccounts,
@@ -61,6 +65,8 @@ class UserModel extends Equatable {
 
   factory UserModel.fromFirebaseUser(firebase_auth.User user) {
     return UserModel(
+      followers: [],
+      following: [],
       socialMediaAccounts: [],
       displayName: user.displayName ?? '',
       uid: user.uid,
@@ -89,11 +95,15 @@ class UserModel extends Equatable {
               "country_code": wakatimeAccount!.country!.countryCode,
             }
           : null,
+      'followers': followers,
+      'following': following,
     };
   }
 
   User toEntity() {
     return User(
+      followers: followers ?? [],
+      following: following ?? [],
       uid: uid,
       email: email,
       displayName: displayName,
@@ -118,6 +128,8 @@ class UserModel extends Equatable {
     WakatimeUser? wakatimeAccount,
   }) {
     return UserModel(
+      followers: followers,
+      following: following,
       uid: uid,
       bio: bio ?? this.bio,
       email: email,

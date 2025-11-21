@@ -21,4 +21,27 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> updateUser(UserModel user) async {
     await firestore.collection('users').doc(user.uid).update(user.toMap());
   }
+
+  @override
+  Future<void> follow({
+    required String followingUserId,
+    required String followedUserId,
+  }) async {
+    final followingUser = await getUser(followingUserId);
+    final userBeingFollowed = await getUser(followedUserId);
+    if (followingUser != null && userBeingFollowed != null) {
+      await firestore
+          .collection('users')
+          .doc(followingUserId)
+          .collection('following')
+          .doc(followedUserId)
+          .set(userBeingFollowed.toMap());
+      await firestore
+          .collection('users')
+          .doc(followedUserId)
+          .collection('followers')
+          .doc(followingUserId)
+          .set(followingUser.toMap());
+    }
+  }
 }

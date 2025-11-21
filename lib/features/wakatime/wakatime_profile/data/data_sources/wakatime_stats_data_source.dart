@@ -22,7 +22,9 @@ class WakatimeStatsDataSource {
         apiResponse = response;
         final Map<String, dynamic> result = {};
         final timeSpentOnProjects = response.data['data']['projects'];
-
+        if (timeSpentOnProjects == null) {
+          throw Exception('no projects');
+        }
         String name = timeSpentOnProjects[0]['name'];
         final digitalDuration = (timeSpentOnProjects[0]['digital'] as String)
             .split(':');

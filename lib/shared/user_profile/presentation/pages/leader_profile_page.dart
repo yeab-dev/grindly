@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
+import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
@@ -8,7 +9,8 @@ import 'package:grindly/shared/user_profile/presentation/widgets/social_media_wi
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
 
 class LeaderProfilePage extends StatelessWidget {
-  const LeaderProfilePage({super.key});
+  final User currentUser;
+  const LeaderProfilePage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,12 @@ class LeaderProfilePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProfilePictureWidget(imgSource: state.user.photoUrl!),
+                ProfilePictureWidget(imgSource: state.user!.photoUrl!),
                 Padding(
                   padding: EdgeInsets.only(top: 18.0, bottom: width * 0.05),
                   child: Center(
                     child: Text(
-                      state.user.displayName,
+                      state.user!.displayName,
                       style: theme.textTheme.headlineSmall,
                     ),
                   ),
@@ -47,13 +49,14 @@ class LeaderProfilePage extends StatelessWidget {
                     following: 0,
                     followers: 0,
                     isOwnProfile: false,
+                    currentUser: currentUser,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: height * 0.03),
                   child: Center(
                     child: Text(
-                      "\"${state.user.bio}\"",
+                      "\"${state.user!.bio}\"",
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontStyle: FontStyle.italic,
                         fontSize: width * 0.045,
@@ -66,20 +69,20 @@ class LeaderProfilePage extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: height * 0.05),
                   child: SocialMediaWidget(
                     xLink:
-                        state.user.socialMediaAccounts.any(
+                        state.user!.socialMediaAccounts.any(
                           (account) => account.platformName == "X",
                         )
-                        ? state.user.socialMediaAccounts
+                        ? state.user!.socialMediaAccounts
                               .firstWhere(
                                 (account) => account.platformName == "X",
                               )
                               .url
                         : null,
                     telegramLink:
-                        state.user.socialMediaAccounts.any(
+                        state.user!.socialMediaAccounts.any(
                           (account) => account.platformName == "Telegram",
                         )
-                        ? state.user.socialMediaAccounts
+                        ? state.user!.socialMediaAccounts
                               .firstWhere(
                                 (account) => account.platformName == "Telegram",
                               )
@@ -115,7 +118,7 @@ class LeaderProfilePage extends StatelessWidget {
                         children: [
                           SummaryCard(
                             title: state
-                                .user
+                                .user!
                                 .wakatimeAccount!
                                 .bestLanguageWithDuration['name'],
                             description: 'top language',
@@ -126,7 +129,7 @@ class LeaderProfilePage extends StatelessWidget {
                           ),
                           SummaryCard(
                             title: formatDuration(
-                              state.user.wakatimeAccount!.totalTime,
+                              state.user!.wakatimeAccount!.totalTime,
                             ),
                             description: 'total time',
                             iconImage: SizedBox(
@@ -145,7 +148,7 @@ class LeaderProfilePage extends StatelessWidget {
                           children: [
                             SummaryCard(
                               title: state
-                                  .user
+                                  .user!
                                   .wakatimeAccount!
                                   .bestWeekDayWithDuration['name'],
                               description: 'most active day',
@@ -159,7 +162,7 @@ class LeaderProfilePage extends StatelessWidget {
                             SummaryCard(
                               title:
                                   (state
-                                              .user
+                                              .user!
                                               .wakatimeAccount!
                                               .bestProjectWithDuration['project']
                                           as Project)

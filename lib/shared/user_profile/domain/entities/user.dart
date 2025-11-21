@@ -22,18 +22,22 @@ class User {
   final String? wakatimeId;
   final Country? country;
   final WakatimeUser? wakatimeAccount;
+  final List<User> followers;
+  final List<User> following;
 
   const User({
     required this.uid,
     required this.email,
     required this.createdAt,
     required this.displayName,
+    required this.following,
+    required this.followers,
+    required this.socialMediaAccounts,
     this.wakatimeAccount,
     this.wakatimeId,
     this.country,
     this.bio,
     this.photoUrl,
-    required this.socialMediaAccounts,
     this.wakatimeProfilePictureUrl,
   });
 }

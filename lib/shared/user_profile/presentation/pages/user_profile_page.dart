@@ -59,6 +59,7 @@ class UserProfilePage extends StatelessWidget {
                   following: 0,
                   followers: 0,
                   isOwnProfile: true,
+                  currentUser: state.user,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),
