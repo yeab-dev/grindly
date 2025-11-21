@@ -26,6 +26,7 @@ import 'package:grindly/shared/data/repository/local/secure_storage_repository_i
 import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -157,5 +158,9 @@ void setupLocator() {
       repository: getIt<WakatimeLeadersRepository>(),
       storageRepository: getIt<SecureStorageRepository>(),
     ),
+  );
+
+  getIt.registerFactory<LeaderProfileCubit>(
+    () => LeaderProfileCubit(repository: getIt<UserRepository>()),
   );
 }
