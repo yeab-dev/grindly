@@ -9,7 +9,25 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel?> getUser(String uid) async {
     final doc = await firestore.collection('users').doc(uid).get();
-    return doc.exists ? UserModel.fromMap(doc.data()!) : null;
+    final userModel = doc.exists ? UserModel.fromMap(doc.data()!) : null;
+    final followersSnap = await firestore
+        .collection('users')
+        .doc(uid)
+        .collection('followers')
+        .get();
+    final followingSnap = await firestore
+        .collection('users')
+        .doc(uid)
+        .collection('following')
+        .get();
+    final followingIDs = followingSnap.docs.map((data) => data.id).toList();
+    final followersIDs = followersSnap.docs.map((data) => data.id).toList();
+
+    final updateUserModel = userModel?.copyWith(
+      followers: followersIDs,
+      following: followingIDs,
+    );
+    return updateUserModel;
   }
 
   @override
@@ -24,24 +42,43 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> follow({
-    required String followingUserId,
-    required String followedUserId,
+    required String followingUserID,
+    required String userBeingFollowedID,
   }) async {
-    final followingUser = await getUser(followingUserId);
-    final userBeingFollowed = await getUser(followedUserId);
-    if (followingUser != null && userBeingFollowed != null) {
+    await firestore
+        .collection('users')
+        .doc(followingUserID)
+        .collection('following')
+        .doc(userBeingFollowedID)
+        .set({'followedAt': Timestamp.now()});
+    await firestore
+        .collection('users')
+        .doc(userBeingFollowedID)
+        .collection('followers')
+        .doc(followingUserID)
+        .set({"followedAt": Timestamp.now()});
+  }
+
+  @override
+  Future<void> unfollow({
+    required String unfollowingUserID,
+    required String userBeingUnfollowedID,
+  }) async {
+    final followingUser = await getUser(unfollowingUserID);
+    final userBeingUnfollowed = await getUser(userBeingUnfollowedID);
+    if (followingUser != null && userBeingUnfollowed != null) {
       await firestore
           .collection('users')
-          .doc(followingUserId)
+          .doc(unfollowingUserID)
           .collection('following')
-          .doc(followedUserId)
-          .set(userBeingFollowed.toMap());
+          .doc(userBeingUnfollowedID)
+          .delete();
       await firestore
           .collection('users')
-          .doc(followedUserId)
+          .doc(userBeingUnfollowedID)
           .collection('followers')
-          .doc(followingUserId)
-          .set(followingUser.toMap());
+          .doc(unfollowingUserID)
+          .delete();
     }
   }
 }

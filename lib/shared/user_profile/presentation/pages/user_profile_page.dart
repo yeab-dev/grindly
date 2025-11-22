@@ -56,10 +56,11 @@ class UserProfilePage extends StatelessWidget {
                   ),
                 ),
                 NetworkAndStreakInfoWidget(
-                  following: 0,
-                  followers: 0,
+                  following: state.user.following.length,
+                  followers: state.user.followers.length,
                   isOwnProfile: true,
                   currentUser: state.user,
+                  followsThem: false,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: height * 0.02),

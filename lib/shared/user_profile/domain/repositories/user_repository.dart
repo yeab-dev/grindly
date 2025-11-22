@@ -5,7 +5,11 @@ abstract class UserRepository {
   Future<UserModel?> getUser(String uid);
   Future<void> updateUser(UserModel user);
   Future<void> follow({
-    required String followingUserId,
-    required String followedUserId,
+    required String followingUserID,
+    required String userBeingFollowedID,
+  });
+  Future<void> unfollow({
+    required String unfollowingUserID,
+    required String userBeingUnfollowedID,
   });
 }

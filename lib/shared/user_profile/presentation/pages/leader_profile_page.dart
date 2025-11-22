@@ -46,10 +46,13 @@ class LeaderProfilePage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: height * 0.03),
                   child: NetworkAndStreakInfoWidget(
-                    following: 0,
-                    followers: 0,
-                    isOwnProfile: false,
+                    following: state.user?.following.length ?? 0,
+                    followers: state.user?.followers.length ?? 0,
+                    isOwnProfile: currentUser.uid == state.user?.uid,
                     currentUser: currentUser,
+                    followsThem:
+                        state.user?.followers.contains(currentUser.uid) ??
+                        false,
                   ),
                 ),
                 Padding(

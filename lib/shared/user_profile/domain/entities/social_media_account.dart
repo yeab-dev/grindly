@@ -1,3 +1,5 @@
+import 'package:grindly/shared/user_profile/data/models/social_media_account.model.dart';
+
 class SocialMediaAccount {
   final String url;
   final String platformLogo;
@@ -8,4 +10,8 @@ class SocialMediaAccount {
     required this.platformLogo,
     required this.url,
   });
+
+  SocialMediaAccountModel toModel() {
+    return SocialMediaAccountModel(platformName: platformName, url: url);
+  }
 }

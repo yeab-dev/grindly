@@ -3,25 +3,46 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
 
-class NetworkAndStreakInfoWidget extends StatelessWidget {
+class NetworkAndStreakInfoWidget extends StatefulWidget {
   final int following;
   final int followers;
   final bool isOwnProfile;
   final User currentUser;
+  final bool followsThem;
   const NetworkAndStreakInfoWidget({
     super.key,
     required this.following,
     required this.followers,
     required this.isOwnProfile,
     required this.currentUser,
+    required this.followsThem,
   });
+
+  @override
+  State<NetworkAndStreakInfoWidget> createState() =>
+      _NetworkAndStreakInfoWidgetState();
+}
+
+class _NetworkAndStreakInfoWidgetState
+    extends State<NetworkAndStreakInfoWidget> {
+  late bool followsThem;
+  @override
+  void initState() {
+    followsThem = widget.followsThem;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    return BlocBuilder<LeaderProfileCubit, LeaderProfileState>(
+    return BlocConsumer<LeaderProfileCubit, LeaderProfileState>(
+      listener: (context, state) {
+        if (state.user != null && state is LeaderProfileFailure) {
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(followsThem? )))
+        }
+      },
       builder: (context, state) {
         return Center(
           child: Container(
@@ -39,7 +60,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$following',
+                          '${widget.following}',
                           style: theme.textTheme.headlineLarge!.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -61,7 +82,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$followers',
+                          '${widget.followers}',
                           style: theme.textTheme.headlineLarge!.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -94,7 +115,7 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (!isOwnProfile)
+                if (!widget.isOwnProfile)
                   Row(
                     children: [
                       Expanded(
@@ -102,19 +123,39 @@ class NetworkAndStreakInfoWidget extends StatelessWidget {
                           height: height * 0.053,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: theme.colorScheme.onPrimary,
-                              backgroundColor: theme.colorScheme.primary,
+                              elevation: 0,
+                              foregroundColor: followsThem
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.onPrimary,
+                              backgroundColor: followsThem
+                                  ? theme.colorScheme.surface
+                                  : theme.colorScheme.primary,
                               shape: RoundedRectangleBorder(
+                                side: followsThem
+                                    ? BorderSide(
+                                        color: theme.colorScheme.primary,
+                                      )
+                                    : BorderSide.none,
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
                             onPressed: () {
-                              context.read<LeaderProfileCubit>().follow(
-                                followingUserID: currentUser.uid,
-                                followedUserID: state.user!.uid,
-                              );
+                              if (followsThem) {
+                                context.read<LeaderProfileCubit>().unfollow(
+                                  unfollowingUserID: widget.currentUser.uid,
+                                  userBeingUnfollowed: state.user!.uid,
+                                );
+                              } else {
+                                context.read<LeaderProfileCubit>().follow(
+                                  followingUserID: widget.currentUser.uid,
+                                  followedUserID: state.user!.uid,
+                                );
+                              }
+                              setState(() {
+                                followsThem = !followsThem;
+                              });
                             },
-                            child: Text("Follow"),
+                            child: Text(followsThem ? "Unfollow" : "Follow"),
                           ),
                         ),
                       ),

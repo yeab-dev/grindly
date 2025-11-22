@@ -22,8 +22,8 @@ class User {
   final String? wakatimeId;
   final Country? country;
   final WakatimeUser? wakatimeAccount;
-  final List<User> followers;
-  final List<User> following;
+  final List<String> followers;
+  final List<String> following;
 
   const User({
     required this.uid,
