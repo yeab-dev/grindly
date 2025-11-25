@@ -66,8 +66,13 @@ class WakatimeLeadersRepositoryImpl implements WakatimeLeadersRepository {
   @override
   Future<void> saveLeaderToFirestore({required Leader leader}) async {
     final id = getIt<FirebaseAuth>().currentUser!.uid;
+    final user = await firestore.collection('users').doc(id).get();
+    final photoUrl = user.data()?['photo_url'];
     final ref = firestore.collection('leaders').doc(id);
     await ref.set(leader.toModel().toMap());
+    if (photoUrl != null) {
+      await ref.update({'photo_url': photoUrl});
+    }
   }
 
   @override
