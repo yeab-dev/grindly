@@ -74,99 +74,118 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                       LeaderboardFilteringWidget(lastFilter: state.index),
                       // SizedBox(height: height * 0.05),
                       Expanded(
-                        child: ListView.builder(
-                          controller: scrollController,
-                          itemCount: state.index == 0
-                              ? state.globalLeaders.length
-                              : state.index == 1
-                              ? state.countryLeaders.length
-                              : state.grindlyLeaders.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: height * 0.01,
-                              ),
-                              child:
-                                  BlocBuilder<
-                                    LeaderProfileCubit,
-                                    LeaderProfileState
-                                  >(
-                                    builder: (context, leaderProfileState) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          if (scrollTargetIndex != null &&
-                                              leaders[index].grindlyID !=
-                                                  null) {
-                                            context
-                                                .read<LeaderProfileCubit>()
-                                                .getUser(
-                                                  grindlyID: state
-                                                      .grindlyLeaders[index]
-                                                      .grindlyID!,
-                                                );
-                                            context.push(
-                                              Routes.leaderProfilePage,
-                                              extra: widget.grindlyUser,
-                                            );
-                                          }
-                                        },
-                                        child: LeaderProfileWidget(
-                                          wakatimeId: state.index == 0
-                                              ? state
-                                                    .globalLeaders[index]
-                                                    .wakatimeID
-                                              : state.index == 1
-                                              ? state
-                                                    .countryLeaders[index]
-                                                    .wakatimeID
-                                              : state
-                                                    .grindlyLeaders[index]
-                                                    .wakatimeID,
-                                          rank: state.index == 0
-                                              ? state.globalLeaders[index].rank
-                                              : state.index == 1
-                                              ? state.countryLeaders[index].rank
-                                              : index + 1,
-                                          imgUrl: state.index == 0
-                                              ? state
-                                                    .globalLeaders[index]
-                                                    .photoUrl
-                                              : state.index == 1
-                                              ? state
-                                                    .countryLeaders[index]
-                                                    .photoUrl
-                                              : state
-                                                    .grindlyLeaders[index]
-                                                    .photoUrl,
-                                          displayName: state.index == 0
-                                              ? state
-                                                    .globalLeaders[index]
-                                                    .displayName
-                                              : state.index == 1
-                                              ? state
-                                                    .countryLeaders[index]
-                                                    .displayName
-                                              : state
-                                                    .grindlyLeaders[index]
-                                                    .displayName,
-                                          durationInSeconds: state.index == 0
-                                              ? state
-                                                    .globalLeaders[index]
-                                                    .totalHoursInSeconds
-                                              : state.index == 1
-                                              ? state
-                                                    .countryLeaders[index]
-                                                    .totalHoursInSeconds
-                                              : state
-                                                    .grindlyLeaders[index]
-                                                    .totalHoursInSeconds,
-                                          currentUser: widget.grindlyUser,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                            );
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            state.index == 0
+                                ? await context
+                                      .read<WakatimeLeadersCubit>()
+                                      .getGlobalLeaders(reload: true)
+                                : state.index == 1
+                                ? await context
+                                      .read<WakatimeLeadersCubit>()
+                                      .getCountryLeaders(reload: true)
+                                : await context
+                                      .read<WakatimeLeadersCubit>()
+                                      .getGrindlyLeaders(reload: true);
                           },
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: state.index == 0
+                                ? state.globalLeaders.length
+                                : state.index == 1
+                                ? state.countryLeaders.length
+                                : state.grindlyLeaders.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.01,
+                                ),
+                                child:
+                                    BlocBuilder<
+                                      LeaderProfileCubit,
+                                      LeaderProfileState
+                                    >(
+                                      builder: (context, leaderProfileState) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            if (scrollTargetIndex != null &&
+                                                leaders[index].grindlyID !=
+                                                    null) {
+                                              context
+                                                  .read<LeaderProfileCubit>()
+                                                  .getUser(
+                                                    grindlyID: state
+                                                        .grindlyLeaders[index]
+                                                        .grindlyID!,
+                                                  );
+                                              context.push(
+                                                Routes.leaderProfilePage,
+                                                extra: widget.grindlyUser,
+                                              );
+                                            }
+                                          },
+                                          child: LeaderProfileWidget(
+                                            wakatimeId: state.index == 0
+                                                ? state
+                                                      .globalLeaders[index]
+                                                      .wakatimeID
+                                                : state.index == 1
+                                                ? state
+                                                      .countryLeaders[index]
+                                                      .wakatimeID
+                                                : state
+                                                      .grindlyLeaders[index]
+                                                      .wakatimeID,
+                                            rank: state.index == 0
+                                                ? state
+                                                      .globalLeaders[index]
+                                                      .rank
+                                                : state.index == 1
+                                                ? state
+                                                      .countryLeaders[index]
+                                                      .rank
+                                                : index + 1,
+                                            imgUrl: state.index == 0
+                                                ? state
+                                                      .globalLeaders[index]
+                                                      .photoUrl
+                                                : state.index == 1
+                                                ? state
+                                                      .countryLeaders[index]
+                                                      .photoUrl
+                                                : state
+                                                      .grindlyLeaders[index]
+                                                      .photoUrl,
+                                            displayName: state.index == 0
+                                                ? state
+                                                      .globalLeaders[index]
+                                                      .displayName
+                                                : state.index == 1
+                                                ? state
+                                                      .countryLeaders[index]
+                                                      .displayName
+                                                : state
+                                                      .grindlyLeaders[index]
+                                                      .displayName,
+                                            durationInSeconds: state.index == 0
+                                                ? state
+                                                      .globalLeaders[index]
+                                                      .totalHoursInSeconds
+                                                : state.index == 1
+                                                ? state
+                                                      .countryLeaders[index]
+                                                      .totalHoursInSeconds
+                                                : state
+                                                      .grindlyLeaders[index]
+                                                      .totalHoursInSeconds,
+                                            currentUser: widget.grindlyUser,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],

@@ -56,11 +56,13 @@ class _LeaderboardFilteringWidgetState
                     _selectedFilters[i] = i == index;
                   }
                   if (index == 0) {
-                    context.read<WakatimeLeadersCubit>().getGlobalLeaders();
+                    context.read<WakatimeLeadersCubit>().getGlobalLeaders(
+                      reload: false,
+                    );
                   } else if (index == 1) {
                     if (state.currentUsersCountry != null) {
                       context.read<WakatimeLeadersCubit>().getCountryLeaders(
-                        countryCode: state.currentUsersCountry!.countryCode,
+                        reload: false,
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +74,9 @@ class _LeaderboardFilteringWidgetState
                       );
                     }
                   } else {
-                    context.read<WakatimeLeadersCubit>().getGrindlyLeaders();
+                    context.read<WakatimeLeadersCubit>().getGrindlyLeaders(
+                      reload: false,
+                    );
                   }
                 });
               },

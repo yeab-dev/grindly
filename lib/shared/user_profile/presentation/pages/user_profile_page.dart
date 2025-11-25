@@ -28,158 +28,178 @@ class UserProfilePage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is UserProfileSuccess) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProfilePictureWidget(imgSource: state.user.photoUrl!),
-                Padding(
-                  padding: EdgeInsets.only(top: 18.0),
-                  child: Center(
-                    child: Text(
-                      state.user.displayName,
-                      style: theme.textTheme.headlineSmall,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      GoRouter.of(
-                        context,
-                      ).push(Routes.editProfilePage, extra: state.user);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Text('edit profile'),
-                    ),
-                  ),
-                ),
-                NetworkInfoWidget(
-                  following: state.user.following.length,
-                  followers: state.user.followers.length,
-                  isOwnProfile: true,
-                  currentUser: state.user,
-                  followsThem: false,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                  child: SocialMediaWidget(
-                    xLink:
-                        state.user.socialMediaAccounts.any(
-                          (account) => account.platformName == "X",
-                        )
-                        ? state.user.socialMediaAccounts
-                              .firstWhere(
-                                (account) => account.platformName == "X",
-                              )
-                              .url
-                        : null,
-                    telegramLink:
-                        state.user.socialMediaAccounts.any(
-                          (account) => account.platformName == "Telegram",
-                        )
-                        ? state.user.socialMediaAccounts
-                              .firstWhere(
-                                (account) => account.platformName == "Telegram",
-                              )
-                              .url
-                        : null,
-                  ),
-                ),
-                SizedBox(height: height * 0.05),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: width * 0.03),
-                    child: Text(
-                      'Summary',
-                      style: theme.textTheme.headlineLarge!.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 28,
-                      ),
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: width * 0.03,
-                    top: height * 0.03,
-                    right: width * 0.03,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SummaryCard(
-                            title: state
-                                .user
-                                .wakatimeAccount!
-                                .bestLanguageWithDuration['name'],
-                            description: 'top language',
-                            iconImage: SizedBox(
-                              width: width * 0.07,
-                              child: Image.asset('assets/icons/lang-icon.png'),
+            return RefreshIndicator(
+              onRefresh: () async =>
+                  await context.read<UserProfileCubit>().getUser(),
+              child: SizedBox(
+                height: height,
+                child: ListView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfilePictureWidget(imgSource: state.user.photoUrl!),
+                        Padding(
+                          padding: EdgeInsets.only(top: 18.0),
+                          child: Center(
+                            child: Text(
+                              state.user.displayName,
+                              style: theme.textTheme.headlineSmall,
                             ),
                           ),
-                          SummaryCard(
-                            title: formatDuration(
-                              state.user.wakatimeAccount!.totalTime,
-                            ),
-                            description: 'total time',
-                            iconImage: SizedBox(
-                              width: width * 0.05,
-                              child: Image.asset(
-                                'assets/icons/total-time-icon.png',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: height * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SummaryCard(
-                              title: state
-                                  .user
-                                  .wakatimeAccount!
-                                  .bestWeekDayWithDuration['name'],
-                              description: 'most active day',
-                              iconImage: SizedBox(
-                                width: width * 0.058,
-                                child: Image.asset(
-                                  'assets/icons/active-day-icon.png',
-                                ),
-                              ),
-                            ),
-                            SummaryCard(
-                              title:
-                                  (state
-                                              .user
-                                              .wakatimeAccount!
-                                              .bestProjectWithDuration['project']
-                                          as Project)
-                                      .name,
-                              description: 'top Project',
-                              iconImage: SizedBox(
-                                width: width * 0.06,
-                                child: Image.asset(
-                                  'assets/icons/project-icon.png',
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
-                    ],
-                  ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              GoRouter.of(
+                                context,
+                              ).push(Routes.editProfilePage, extra: state.user);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 15.0),
+                              child: Text('edit profile'),
+                            ),
+                          ),
+                        ),
+                        NetworkInfoWidget(
+                          following: state.user.following.length,
+                          followers: state.user.followers.length,
+                          isOwnProfile: true,
+                          currentUser: state.user,
+                          followsThem: false,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: height * 0.02,
+                          ),
+                          child: SocialMediaWidget(
+                            xLink:
+                                state.user.socialMediaAccounts.any(
+                                  (account) => account.platformName == "X",
+                                )
+                                ? state.user.socialMediaAccounts
+                                      .firstWhere(
+                                        (account) =>
+                                            account.platformName == "X",
+                                      )
+                                      .url
+                                : null,
+                            telegramLink:
+                                state.user.socialMediaAccounts.any(
+                                  (account) =>
+                                      account.platformName == "Telegram",
+                                )
+                                ? state.user.socialMediaAccounts
+                                      .firstWhere(
+                                        (account) =>
+                                            account.platformName == "Telegram",
+                                      )
+                                      .url
+                                : null,
+                          ),
+                        ),
+                        SizedBox(height: height * 0.05),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: width * 0.03),
+                            child: Text(
+                              'Summary',
+                              style: theme.textTheme.headlineLarge!.copyWith(
+                                color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: width * 0.03,
+                            top: height * 0.03,
+                            right: width * 0.03,
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SummaryCard(
+                                    title: state
+                                        .user
+                                        .wakatimeAccount!
+                                        .bestLanguageWithDuration['name'],
+                                    description: 'top language',
+                                    iconImage: SizedBox(
+                                      width: width * 0.07,
+                                      child: Image.asset(
+                                        'assets/icons/lang-icon.png',
+                                      ),
+                                    ),
+                                  ),
+                                  SummaryCard(
+                                    title: formatDuration(
+                                      state.user.wakatimeAccount!.totalTime,
+                                    ),
+                                    description: 'total time',
+                                    iconImage: SizedBox(
+                                      width: width * 0.05,
+                                      child: Image.asset(
+                                        'assets/icons/total-time-icon.png',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: height * 0.02),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SummaryCard(
+                                      title: state
+                                          .user
+                                          .wakatimeAccount!
+                                          .bestWeekDayWithDuration['name'],
+                                      description: 'most active day',
+                                      iconImage: SizedBox(
+                                        width: width * 0.058,
+                                        child: Image.asset(
+                                          'assets/icons/active-day-icon.png',
+                                        ),
+                                      ),
+                                    ),
+                                    SummaryCard(
+                                      title:
+                                          (state
+                                                      .user
+                                                      .wakatimeAccount!
+                                                      .bestProjectWithDuration['project']
+                                                  as Project)
+                                              .name,
+                                      description: 'top Project',
+                                      iconImage: SizedBox(
+                                        width: width * 0.06,
+                                        child: Image.asset(
+                                          'assets/icons/project-icon.png',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
             );
           } else if (state is UserProfileInProgress) {
             return Padding(

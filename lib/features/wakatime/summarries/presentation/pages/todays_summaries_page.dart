@@ -21,17 +21,34 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
     final height = MediaQuery.sizeOf(context).height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         BlocBuilder<WakatimeSummariesCubit, WakatimeSummariesState>(
           builder: (context, state) {
             if (state is WakatimeSummariesSuccess) {
-              return Center(
-                child: TotalTimeWorkedTodayCard(
-                  duration: state.summarries.totalTimeWorkedToday,
+              return RefreshIndicator(
+                onRefresh: () async => await context
+                    .read<WakatimeSummariesCubit>()
+                    .getTodaysSummary(),
+                child: SizedBox(
+                  height: height * 0.45,
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: [
+                      Center(
+                        child: TotalTimeWorkedTodayCard(
+                          duration: state.summarries.totalTimeWorkedToday,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else if (state is WakatimeSummariesInProgress) {
-              SizedBox(height: height * 0.1);
+              return SizedBox(
+                height: height * 0.4,
+                child: Center(child: CircularProgressIndicator()),
+              );
             }
             return SizedBox.shrink();
           },

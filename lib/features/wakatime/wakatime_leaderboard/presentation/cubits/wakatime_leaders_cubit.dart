@@ -22,8 +22,8 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
          ),
        );
 
-  Future<void> getGlobalLeaders() async {
-    if (state.globalLeaders.isNotEmpty) {
+  Future<void> getGlobalLeaders({required bool reload}) async {
+    if (state.globalLeaders.isNotEmpty && !reload) {
       emit(
         WakatimeLeadersSuccess(
           index: 0,
@@ -39,7 +39,7 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
       WakatimeLeadersInProgress(
         index: 0,
         globalLeaders: state.globalLeaders,
-        countryLeaders: state.globalLeaders,
+        countryLeaders: state.countryLeaders,
         grindlyLeaders: state.grindlyLeaders,
       ),
     );
@@ -72,8 +72,8 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
     }
   }
 
-  Future<void> getCountryLeaders({required String countryCode}) async {
-    if (state.countryLeaders.isNotEmpty) {
+  Future<void> getCountryLeaders({required bool reload}) async {
+    if (state.countryLeaders.isNotEmpty && !reload) {
       emit(
         WakatimeLeadersSuccess(
           index: 1,
@@ -122,8 +122,8 @@ class WakatimeLeadersCubit extends Cubit<WakatimeLeadersState> {
     }
   }
 
-  Future<void> getGrindlyLeaders() async {
-    if (state.grindlyLeaders.isNotEmpty) {
+  Future<void> getGrindlyLeaders({required bool reload}) async {
+    if (state.grindlyLeaders.isNotEmpty && !reload) {
       emit(
         WakatimeLeadersSuccess(
           index: 2,

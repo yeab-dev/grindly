@@ -28,7 +28,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context) => getIt<UserProfileCubit>()..getUser()),
         BlocProvider(
           create: (context) =>
-              getIt<WakatimeLeadersCubit>()..getGlobalLeaders(),
+              getIt<WakatimeLeadersCubit>()..getGlobalLeaders(reload: false),
         ),
         BlocProvider(create: (context) => getIt<LeaderProfileCubit>()),
       ],
