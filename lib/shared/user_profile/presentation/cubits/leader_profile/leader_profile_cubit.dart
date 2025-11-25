@@ -39,7 +39,7 @@ class LeaderProfileCubit extends Cubit<LeaderProfileState> {
   }) async {
     try {
       _debounce?.cancel();
-      _debounce = Timer(const Duration(seconds: 1), () async {
+      _debounce = Timer(const Duration(milliseconds: 300), () async {
         await repository.follow(
           followingUserID: followingUserID,
           userBeingFollowedID: followedUserID,
@@ -57,7 +57,7 @@ class LeaderProfileCubit extends Cubit<LeaderProfileState> {
   }) async {
     try {
       _debounce?.cancel();
-      _debounce = Timer(const Duration(seconds: 1), () async {
+      _debounce = Timer(const Duration(milliseconds: 300), () async {
         await repository.unfollow(
           unfollowingUserID: unfollowingUserID,
           userBeingUnfollowedID: userBeingUnfollowed,

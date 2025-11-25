@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
-import 'package:grindly/shared/user_profile/presentation/widgets/network_and_streak_info_widget.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/network_info_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
@@ -45,7 +45,7 @@ class LeaderProfilePage extends StatelessWidget {
 
                 Padding(
                   padding: EdgeInsets.only(bottom: height * 0.03),
-                  child: NetworkAndStreakInfoWidget(
+                  child: NetworkInfoWidget(
                     following: state.user?.following.length ?? 0,
                     followers: state.user?.followers.length ?? 0,
                     isOwnProfile: currentUser.uid == state.user?.uid,

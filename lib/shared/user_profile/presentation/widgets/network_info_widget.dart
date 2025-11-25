@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
 
-class NetworkAndStreakInfoWidget extends StatefulWidget {
+class NetworkInfoWidget extends StatefulWidget {
   final int following;
   final int followers;
   final bool isOwnProfile;
   final User currentUser;
   final bool followsThem;
-  const NetworkAndStreakInfoWidget({
+  const NetworkInfoWidget({
     super.key,
     required this.following,
     required this.followers,
@@ -19,12 +19,10 @@ class NetworkAndStreakInfoWidget extends StatefulWidget {
   });
 
   @override
-  State<NetworkAndStreakInfoWidget> createState() =>
-      _NetworkAndStreakInfoWidgetState();
+  State<NetworkInfoWidget> createState() => _NetworkInfoWidgetState();
 }
 
-class _NetworkAndStreakInfoWidgetState
-    extends State<NetworkAndStreakInfoWidget> {
+class _NetworkInfoWidgetState extends State<NetworkInfoWidget> {
   late bool followsThem;
   @override
   void initState() {
@@ -104,7 +102,11 @@ class _NetworkAndStreakInfoWidgetState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '938',
+                          formatDuration(
+                            widget.isOwnProfile
+                                ? widget.currentUser.wakatimeAccount!.totalTime
+                                : state.user!.wakatimeAccount!.totalTime,
+                          ),
                           style: theme.textTheme.headlineLarge!.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.bold,
@@ -167,5 +169,11 @@ class _NetworkAndStreakInfoWidgetState
         );
       },
     );
+  }
+
+  String formatDuration(Duration duration) {
+    final durationList = duration.toString().split(':');
+    final int hours = int.parse(durationList[0]);
+    return "$hours";
   }
 }
