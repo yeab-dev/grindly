@@ -127,31 +127,33 @@ class UserProfilePage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SummaryCard(
-                                    title: state
-                                        .user
-                                        .wakatimeAccount!
-                                        .bestLanguageWithDuration['name'],
-                                    description: 'top language',
-                                    iconImage: SizedBox(
-                                      width: width * 0.07,
-                                      child: Image.asset(
-                                        'assets/icons/lang-icon.png',
+                                  if (state.user.wakatimeAccount != null)
+                                    SummaryCard(
+                                      title: state
+                                          .user
+                                          .wakatimeAccount!
+                                          .bestLanguageWithDuration['name'],
+                                      description: 'top language',
+                                      iconImage: SizedBox(
+                                        width: width * 0.07,
+                                        child: Image.asset(
+                                          'assets/icons/lang-icon.png',
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SummaryCard(
-                                    title: formatDuration(
-                                      state.user.wakatimeAccount!.totalTime,
-                                    ),
-                                    description: 'total time',
-                                    iconImage: SizedBox(
-                                      width: width * 0.05,
-                                      child: Image.asset(
-                                        'assets/icons/total-time-icon.png',
+                                  if (state.user.wakatimeAccount != null)
+                                    SummaryCard(
+                                      title: formatDuration(
+                                        state.user.wakatimeAccount!.totalTime,
+                                      ),
+                                      description: 'total time',
+                                      iconImage: SizedBox(
+                                        width: width * 0.05,
+                                        child: Image.asset(
+                                          'assets/icons/total-time-icon.png',
+                                        ),
                                       ),
                                     ),
-                                  ),
                                 ],
                               ),
                               Padding(
@@ -160,35 +162,37 @@ class UserProfilePage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SummaryCard(
-                                      title: state
-                                          .user
-                                          .wakatimeAccount!
-                                          .bestWeekDayWithDuration['name'],
-                                      description: 'most active day',
-                                      iconImage: SizedBox(
-                                        width: width * 0.058,
-                                        child: Image.asset(
-                                          'assets/icons/active-day-icon.png',
+                                    if (state.user.wakatimeAccount != null)
+                                      SummaryCard(
+                                        title: state
+                                            .user
+                                            .wakatimeAccount!
+                                            .bestWeekDayWithDuration['name'],
+                                        description: 'most active day',
+                                        iconImage: SizedBox(
+                                          width: width * 0.058,
+                                          child: Image.asset(
+                                            'assets/icons/active-day-icon.png',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SummaryCard(
-                                      title:
-                                          (state
-                                                      .user
-                                                      .wakatimeAccount!
-                                                      .bestProjectWithDuration['project']
-                                                  as Project)
-                                              .name,
-                                      description: 'top Project',
-                                      iconImage: SizedBox(
-                                        width: width * 0.06,
-                                        child: Image.asset(
-                                          'assets/icons/project-icon.png',
+                                    if (state.user.wakatimeAccount != null)
+                                      SummaryCard(
+                                        title:
+                                            (state
+                                                        .user
+                                                        .wakatimeAccount!
+                                                        .bestProjectWithDuration['project']
+                                                    as Project)
+                                                .name,
+                                        description: 'top Project',
+                                        iconImage: SizedBox(
+                                          width: width * 0.06,
+                                          child: Image.asset(
+                                            'assets/icons/project-icon.png',
+                                          ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),

@@ -24,7 +24,7 @@ class WakatimeProfileRepositoryImpl implements WakatimeProfileRepository {
     required this.firestore,
   });
   @override
-  Future<WakatimeUser> getUserData() async {
+  Future<WakatimeUser?> getUserData() async {
     final basicInfo = await basicInfoDataSource.getBasicUserInfo();
 
     final allTimeSinceToday = await allTimeSinceTodayDataSource

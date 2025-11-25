@@ -60,7 +60,8 @@ class _LeaderboardFilteringWidgetState
                       reload: false,
                     );
                   } else if (index == 1) {
-                    if (state.currentUsersCountry != null) {
+                    if (state.currentUsersCountry != null &&
+                        state.currentUsersCountry?.countryCode != "NW") {
                       context.read<WakatimeLeadersCubit>().getCountryLeaders(
                         reload: false,
                       );

@@ -37,20 +37,22 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       await repository.updateUser(grindlyUser);
       await storageRepository.write(
         key: "country_code",
-        value: wakatimeAccount.country != null
-            ? wakatimeAccount.country!.countryCode
+        value: wakatimeAccount?.country != null
+            ? wakatimeAccount!.country!.countryCode
             : "NW",
       );
       await storageRepository.write(
         key: "country_name",
-        value: wakatimeAccount.country != null
-            ? wakatimeAccount.country!.countryName
+        value: wakatimeAccount?.country != null
+            ? wakatimeAccount!.country!.countryName
             : "Nowhere",
       );
-      await storageRepository.write(
-        key: "wakatime_id",
-        value: wakatimeAccount.id,
-      );
+      if (wakatimeAccount != null) {
+        await storageRepository.write(
+          key: "wakatime_id",
+          value: wakatimeAccount.id,
+        );
+      }
       emit(UserProfileSuccess(user: grindlyUser.toEntity()));
     } catch (e) {
       emit(
