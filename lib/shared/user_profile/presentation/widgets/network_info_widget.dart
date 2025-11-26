@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
 
@@ -54,40 +56,57 @@ class _NetworkInfoWidgetState extends State<NetworkInfoWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${widget.following}',
-                          style: theme.textTheme.headlineLarge!.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: () {
+                        context.push(Routes.friendsListPage);
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: width * 0.2,
+                                child: Text(
+                                  '${widget.following}',
+                                  style: theme.textTheme.headlineLarge!
+                                      .copyWith(
+                                        color: theme.colorScheme.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ),
+                              Text('Following'),
+                            ],
                           ),
-                        ),
-                        Text('Following'),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: width * 0.05,
-                        vertical: height * 0.02,
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: width * 0.05,
+                              vertical: height * 0.02,
+                            ),
+                            height: height * 0.05,
+                            color: theme.colorScheme.secondaryContainer,
+                            child: SizedBox(width: width * 0.005),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: width * 0.2,
+                                child: Text(
+                                  '${widget.followers}',
+                                  style: theme.textTheme.headlineLarge!
+                                      .copyWith(
+                                        color: theme.colorScheme.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ),
+                              Text('Followers'),
+                            ],
+                          ),
+                        ],
                       ),
-                      height: height * 0.05,
-                      color: theme.colorScheme.secondaryContainer,
-                      child: SizedBox(width: width * 0.005),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${widget.followers}',
-                          style: theme.textTheme.headlineLarge!.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text('Followers'),
-                      ],
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(
