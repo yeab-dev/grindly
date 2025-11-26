@@ -7,6 +7,9 @@ import 'package:get_it/get_it.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
+import 'package:grindly/features/friends/data/repositories/friends_repository_imp.dart';
+import 'package:grindly/features/friends/domain/repositories/friends_repository.dart';
+import 'package:grindly/features/friends/presentation/cubit/friends_cubit.dart';
 import 'package:grindly/features/wakatime/summarries/data/repositories/wakatime_summaries_repository_impl.dart';
 import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
@@ -90,8 +93,11 @@ void setupLocator() {
     ),
   );
 
-  //data sources
+  getIt.registerLazySingleton<FriendsRepository>(
+    () => FriendsRepositoryImp(firestore: getIt<FirebaseFirestore>()),
+  );
 
+  //data sources
   getIt.registerLazySingleton<WakatimeAllTimeSinceTodayDataSource>(
     () => WakatimeAllTimeSinceTodayDataSource(
       dio: getIt<Dio>(),
@@ -162,5 +168,11 @@ void setupLocator() {
 
   getIt.registerFactory<LeaderProfileCubit>(
     () => LeaderProfileCubit(repository: getIt<UserRepository>()),
+  );
+  getIt.registerFactory<FriendsCubit>(
+    () => FriendsCubit(
+      friendsRepository: getIt<FriendsRepository>(),
+      userRepository: getIt<UserRepository>(),
+    ),
   );
 }
