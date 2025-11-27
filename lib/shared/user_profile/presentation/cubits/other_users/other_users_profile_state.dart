@@ -1,4 +1,4 @@
-part of 'other_users_cubit.dart';
+part of 'other_users_profile_cubit.dart';
 
 class OtherUsersProfileState {
   // capturing the user data to allow partial user data loading

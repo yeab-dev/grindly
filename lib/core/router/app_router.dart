@@ -66,7 +66,8 @@ List<GoRoute> _appRoutes() {
     ),
     GoRoute(
       path: Routes.friendsListPage,
-      builder: (context, state) => FriendsListPage(),
+      builder: (context, state) =>
+          FriendsListPage(currentUser: state.extra as grindly.User),
     ),
   ];
 }

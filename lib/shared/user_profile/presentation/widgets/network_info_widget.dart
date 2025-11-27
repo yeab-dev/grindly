@@ -65,7 +65,10 @@ class _NetworkInfoWidgetState extends State<NetworkInfoWidget> {
                             context.read<FriendsCubit>().getUserNetwork(
                               userId: state.user?.uid ?? widget.currentUser.uid,
                             );
-                            context.push(Routes.friendsListPage);
+                            context.push(
+                              Routes.friendsListPage,
+                              extra: widget.currentUser,
+                            );
                           },
                           child: Row(
                             children: [

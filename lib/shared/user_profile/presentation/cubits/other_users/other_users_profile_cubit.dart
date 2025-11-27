@@ -13,9 +13,7 @@ class OtherUsersProfileCubit extends Cubit<OtherUsersProfileState> {
     : super(OtherUsersProfileInitial(null));
 
   Future<void> getUser({required String grindlyID}) async {
-    if (state.user == null) {
-      emit(OtherUsersProfileInProgress(state.user));
-    }
+    emit(OtherUsersProfileInProgress(null));
     try {
       final user = await repository.getUser(grindlyID);
       if (user != null) {
@@ -24,13 +22,17 @@ class OtherUsersProfileCubit extends Cubit<OtherUsersProfileState> {
         emit(
           OtherUsersProfileFailure(
             state.user,
-            errorMessage: 'couldn\'t get user information',
+            errorMessage: 'locationcouldn\'t get user information',
           ),
         );
       }
     } catch (e) {
       emit(OtherUsersProfileFailure(state.user, errorMessage: e.toString()));
     }
+  }
+
+  refresh() {
+    emit(OtherUsersProfileInitial(null));
   }
 
   Future<void> follow({

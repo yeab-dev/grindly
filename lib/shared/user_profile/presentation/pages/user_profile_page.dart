@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
-import 'package:grindly/shared/user_profile/presentation/widgets/network_info_widget.dart';
+import 'package:grindly/shared/user_profile/presentation/widgets/current_user_network_info_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
@@ -62,12 +62,9 @@ class UserProfilePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        NetworkInfoWidget(
+                        CurrentUserNetworkInfoWidget(
                           following: state.user.following.length,
                           followers: state.user.followers.length,
-                          isOwnProfile: true,
-                          currentUser: state.user,
-                          followsThem: false,
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
