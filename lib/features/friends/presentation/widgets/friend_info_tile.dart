@@ -58,15 +58,15 @@ class _FriendInfoTileState extends State<FriendInfoTile> {
                   ),
                 ),
                 SizedBox(
-                  width: width * 0.17,
+                  width: width * 0.2,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
                         height: height * 0.025,
                         child: Image.asset('assets/icons/total-time-icon.png'),
                       ),
-                      Text('900+'),
+                      Text(_formatHoursBucket(widget.totalHours)),
                     ],
                   ),
                 ),
@@ -110,5 +110,13 @@ class _FriendInfoTileState extends State<FriendInfoTile> {
         ),
       ],
     );
+  }
+
+  String _formatHoursBucket(Duration duration) {
+    final hours = duration.inHours;
+    if (hours <= 49) return '>50';
+    final bucket = (hours ~/ 50) * 50;
+    final adjusted = bucket == 0 ? 50 : bucket;
+    return '$adjusted+';
   }
 }

@@ -6,6 +6,7 @@ import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/auth/presentation/pages/email_verification_page.dart';
 import 'package:grindly/features/auth/presentation/pages/login.dart';
 import 'package:grindly/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:grindly/features/friends/presentation/pages/friends_list_page.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/todays_summaries_page.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/pages/wakatime_auth_page.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/pages/leader_board_page.dart';
@@ -62,6 +63,10 @@ List<GoRoute> _appRoutes() {
       path: Routes.leaderProfilePage,
       builder: (context, state) =>
           LeaderProfilePage(currentUser: state.extra as grindly.User),
+    ),
+    GoRoute(
+      path: Routes.friendsListPage,
+      builder: (context, state) => FriendsListPage(),
     ),
   ];
 }
