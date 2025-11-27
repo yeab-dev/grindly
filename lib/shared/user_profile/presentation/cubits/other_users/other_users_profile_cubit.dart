@@ -4,32 +4,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
 
-part 'leader_profile_state.dart';
+part 'other_users_profile_state.dart';
 
-class LeaderProfileCubit extends Cubit<LeaderProfileState> {
+class OtherUsersProfileCubit extends Cubit<OtherUsersProfileState> {
   final UserRepository repository;
   Timer? _debounce;
-  LeaderProfileCubit({required this.repository})
-    : super(LeaderProfileInitial(null));
+  OtherUsersProfileCubit({required this.repository})
+    : super(OtherUsersProfileInitial(null));
 
   Future<void> getUser({required String grindlyID}) async {
     if (state.user == null) {
-      emit(LeaderProfileInProgress(state.user));
+      emit(OtherUsersProfileInProgress(state.user));
     }
     try {
       final user = await repository.getUser(grindlyID);
       if (user != null) {
-        emit(LeaderProfileSuccess(user.toEntity()));
+        emit(OtherUsersProfileSuccess(user.toEntity()));
       } else {
         emit(
-          LeaderProfileFailure(
+          OtherUsersProfileFailure(
             state.user,
             errorMessage: 'couldn\'t get user information',
           ),
         );
       }
     } catch (e) {
-      emit(LeaderProfileFailure(state.user, errorMessage: e.toString()));
+      emit(OtherUsersProfileFailure(state.user, errorMessage: e.toString()));
     }
   }
 
@@ -47,7 +47,7 @@ class LeaderProfileCubit extends Cubit<LeaderProfileState> {
         await getUser(grindlyID: followedUserID);
       });
     } catch (e) {
-      emit(LeaderProfileFailure(state.user, errorMessage: "error"));
+      emit(OtherUsersProfileFailure(state.user, errorMessage: "error"));
     }
   }
 
@@ -65,7 +65,7 @@ class LeaderProfileCubit extends Cubit<LeaderProfileState> {
         await getUser(grindlyID: userBeingUnfollowed);
       });
     } catch (e) {
-      emit(LeaderProfileFailure(state.user, errorMessage: "error"));
+      emit(OtherUsersProfileFailure(state.user, errorMessage: "error"));
     }
   }
 }

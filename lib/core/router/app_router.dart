@@ -13,7 +13,7 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/page
 import 'package:grindly/shared/user_profile/domain/entities/user.dart'
     as grindly;
 import 'package:grindly/shared/user_profile/presentation/pages/edit_profile_page.dart';
-import 'package:grindly/shared/user_profile/presentation/pages/leader_profile_page.dart';
+import 'package:grindly/shared/user_profile/presentation/pages/other_users_profile_page.dart';
 import 'package:grindly/shared/user_profile/presentation/pages/user_profile_page.dart';
 
 List<GoRoute> _appRoutes() {
@@ -60,9 +60,9 @@ List<GoRoute> _appRoutes() {
     ),
 
     GoRoute(
-      path: Routes.leaderProfilePage,
+      path: Routes.otherUsersProfilePage,
       builder: (context, state) =>
-          LeaderProfilePage(currentUser: state.extra as grindly.User),
+          OtherUsersProfilePage(currentUser: state.extra as grindly.User),
     ),
     GoRoute(
       path: Routes.friendsListPage,

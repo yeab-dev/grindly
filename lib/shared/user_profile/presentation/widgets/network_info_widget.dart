@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/features/friends/presentation/cubit/friends_cubit.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
-import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/other_users/other_users_profile_cubit.dart';
 
 class NetworkInfoWidget extends StatefulWidget {
   final int following;
@@ -38,9 +38,9 @@ class _NetworkInfoWidgetState extends State<NetworkInfoWidget> {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
-    return BlocConsumer<LeaderProfileCubit, LeaderProfileState>(
+    return BlocConsumer<OtherUsersProfileCubit, OtherUsersProfileState>(
       listener: (context, state) {
-        if (state.user != null && state is LeaderProfileFailure) {
+        if (state.user != null && state is OtherUsersProfileFailure) {
           // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(followsThem? )))
         }
       },
@@ -171,12 +171,12 @@ class _NetworkInfoWidgetState extends State<NetworkInfoWidget> {
                             ),
                             onPressed: () {
                               if (followsThem) {
-                                context.read<LeaderProfileCubit>().unfollow(
+                                context.read<OtherUsersProfileCubit>().unfollow(
                                   unfollowingUserID: widget.currentUser.uid,
                                   userBeingUnfollowed: state.user!.uid,
                                 );
                               } else {
-                                context.read<LeaderProfileCubit>().follow(
+                                context.read<OtherUsersProfileCubit>().follow(
                                   followingUserID: widget.currentUser.uid,
                                   followedUserID: state.user!.uid,
                                 );

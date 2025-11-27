@@ -7,6 +7,6 @@ class Routes {
   static const String profilePage = '/profilePage';
   static const String editProfilePage = '/editProfile';
   static const String leaderboard = '/leaderboard';
-  static const String leaderProfilePage = '/leaderProfile';
+  static const String otherUsersProfilePage = '/otherUsersProfile';
   static const String friendsListPage = '/friends';
 }

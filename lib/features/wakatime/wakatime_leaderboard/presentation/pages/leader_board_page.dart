@@ -7,7 +7,7 @@ import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/cubi
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leader_profile_widget.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/widgets/leaderboard_filtering_widget.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
-import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/other_users/other_users_profile_cubit.dart';
 
 class LeaderBoardPage extends StatefulWidget {
   final User grindlyUser;
@@ -102,8 +102,8 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                 ),
                                 child:
                                     BlocBuilder<
-                                      LeaderProfileCubit,
-                                      LeaderProfileState
+                                      OtherUsersProfileCubit,
+                                      OtherUsersProfileState
                                     >(
                                       builder: (context, leaderProfileState) {
                                         return GestureDetector(
@@ -112,14 +112,16 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                                 leaders[index].grindlyID !=
                                                     null) {
                                               context
-                                                  .read<LeaderProfileCubit>()
+                                                  .read<
+                                                    OtherUsersProfileCubit
+                                                  >()
                                                   .getUser(
                                                     grindlyID: state
                                                         .grindlyLeaders[index]
                                                         .grindlyID!,
                                                   );
                                               context.push(
-                                                Routes.leaderProfilePage,
+                                                Routes.otherUsersProfilePage,
                                                 extra: widget.grindlyUser,
                                               );
                                             }
