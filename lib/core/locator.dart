@@ -129,7 +129,7 @@ void setupLocator() {
   getIt.registerFactory<SignUpCubit>(
     () => SignUpCubit(
       authRepository: getIt<AuthRepository>(),
-      userRemoteRepository: getIt<UserRepositoryImpl>(),
+      userRemoteRepository: getIt<UserRepository>(),
     ),
   );
   getIt.registerFactory(
