@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grindly/shared/domain/entities/project.dart';
 import 'package:grindly/shared/user_profile/domain/entities/user.dart';
-import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/other_users/other_users_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/network_info_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/profile_picture_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/social_media_widget.dart';
 import 'package:grindly/shared/user_profile/presentation/widgets/summary_card.dart';
 
-class LeaderProfilePage extends StatelessWidget {
+class OtherUsersProfilePage extends StatelessWidget {
   final User currentUser;
-  const LeaderProfilePage({super.key, required this.currentUser});
+  const OtherUsersProfilePage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +18,21 @@ class LeaderProfilePage extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      body: BlocConsumer<LeaderProfileCubit, LeaderProfileState>(
+      body: BlocConsumer<OtherUsersProfileCubit, OtherUsersProfileState>(
         listener: (context, state) {
-          if (state is LeaderProfileFailure) {
+          if (state is OtherUsersProfileFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('user: ${state.errorMessage}')),
             );
           }
         },
         builder: (context, state) {
-          if (state is LeaderProfileSuccess) {
+          if (state is OtherUsersProfileSuccess) {
             return SizedBox(
               height: height,
               child: RefreshIndicator(
                 onRefresh: () async => await context
-                    .read<LeaderProfileCubit>()
+                    .read<OtherUsersProfileCubit>()
                     .getUser(grindlyID: state.user!.uid),
                 child: ListView(
                   children: [
@@ -213,7 +213,7 @@ class LeaderProfilePage extends StatelessWidget {
                 ),
               ),
             );
-          } else if (state is LeaderProfileInProgress) {
+          } else if (state is OtherUsersProfileInProgress) {
             return Padding(
               padding: EdgeInsets.only(top: height * 0.4),
               child: Center(child: CircularProgressIndicator()),

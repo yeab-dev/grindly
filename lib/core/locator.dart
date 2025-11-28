@@ -7,6 +7,9 @@ import 'package:get_it/get_it.dart';
 import 'package:grindly/features/auth/data/repository/auth_repository.dart';
 import 'package:grindly/features/auth/presentation/cubits/sign_in/sign_in_cubit.dart';
 import 'package:grindly/features/auth/presentation/cubits/signup/sign_up_cubit.dart';
+import 'package:grindly/features/friends/data/repositories/friends_repository_imp.dart';
+import 'package:grindly/features/friends/domain/repositories/friends_repository.dart';
+import 'package:grindly/features/friends/presentation/cubit/friends_cubit.dart';
 import 'package:grindly/features/wakatime/summarries/data/repositories/wakatime_summaries_repository_impl.dart';
 import 'package:grindly/features/wakatime/summarries/domain/repositories/wakatime_summarries_repository.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/cubit/wakatime_summaries_cubit.dart';
@@ -26,7 +29,7 @@ import 'package:grindly/shared/data/repository/local/secure_storage_repository_i
 import 'package:grindly/shared/user_profile/data/repositories/user_repository_impl.dart';
 import 'package:grindly/shared/domain/repositories/secure_storage_repository.dart';
 import 'package:grindly/shared/user_profile/domain/repositories/user_repository.dart';
-import 'package:grindly/shared/user_profile/presentation/cubits/leader_profile/leader_profile_cubit.dart';
+import 'package:grindly/shared/user_profile/presentation/cubits/other_users/other_users_profile_cubit.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -90,8 +93,11 @@ void setupLocator() {
     ),
   );
 
-  //data sources
+  getIt.registerLazySingleton<FriendsRepository>(
+    () => FriendsRepositoryImp(firestore: getIt<FirebaseFirestore>()),
+  );
 
+  //data sources
   getIt.registerLazySingleton<WakatimeAllTimeSinceTodayDataSource>(
     () => WakatimeAllTimeSinceTodayDataSource(
       dio: getIt<Dio>(),
@@ -160,7 +166,13 @@ void setupLocator() {
     ),
   );
 
-  getIt.registerFactory<LeaderProfileCubit>(
-    () => LeaderProfileCubit(repository: getIt<UserRepository>()),
+  getIt.registerFactory<OtherUsersProfileCubit>(
+    () => OtherUsersProfileCubit(repository: getIt<UserRepository>()),
+  );
+  getIt.registerFactory<FriendsCubit>(
+    () => FriendsCubit(
+      friendsRepository: getIt<FriendsRepository>(),
+      userRepository: getIt<UserRepository>(),
+    ),
   );
 }
