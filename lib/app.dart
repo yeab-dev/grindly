@@ -37,7 +37,7 @@ class App extends StatelessWidget {
       child: FutureBuilder<Object>(
         future: route(secureStorage: getIt<FlutterSecureStorage>()),
         builder: (context, snapshot) {
-          /// 🌞 LIGHT THEME
+          /// LIGHT THEME
           final lightTheme = ThemeData(
             useMaterial3: true,
             appBarTheme: const AppBarTheme(

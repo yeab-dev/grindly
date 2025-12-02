@@ -193,6 +193,20 @@ class UserProfilePage extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              if (state.user.wakatimeAccount == null)
+                                SizedBox(
+                                  height: height * 0.25,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          'couldn\'t read your wakatime data',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                             ],
                           ),
                         ),
