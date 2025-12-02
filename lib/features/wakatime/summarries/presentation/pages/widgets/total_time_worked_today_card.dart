@@ -48,7 +48,7 @@ class TotalTimeWorkedTodayCard extends StatelessWidget {
                     triggerMode: TooltipTriggerMode.tap,
                     message: state is WakatimeSummariesFailure
                         ? "couldn't load your wakatime data"
-                        : "You haven't read your WakaTime account",
+                        : "You haven't worked on any projects today",
                     decoration: BoxDecoration(
                       color: Colors.grey[900],
                       borderRadius: BorderRadius.circular(8),

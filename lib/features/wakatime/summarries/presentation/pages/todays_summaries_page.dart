@@ -100,13 +100,18 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
               if (state.summarries.projectsWorkedOnToday.isEmpty) {
                 return Center(
                   child: SizedBox(
-                    height: height * 0.15,
-                    child: Text(
-                      'You havent worked on a project today!',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontSize: 18,
-                      ),
+                    height: height * 0.3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'You havent worked on a project today!',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.secondary,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );

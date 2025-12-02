@@ -44,7 +44,7 @@ class WakatimeAuthPage extends StatelessWidget {
                     context,
                   ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
                 } else if (state is WakatimeAuthSuccess) {
-                  context.go(Routes.todaysSummary);
+                  context.go(Routes.splashScreen);
                 }
               },
               builder: (context, state) {

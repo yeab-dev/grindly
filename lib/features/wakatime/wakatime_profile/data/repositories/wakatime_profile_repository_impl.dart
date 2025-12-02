@@ -25,29 +25,33 @@ class WakatimeProfileRepositoryImpl implements WakatimeProfileRepository {
   });
   @override
   Future<WakatimeUser?> getUserData() async {
-    final basicInfo = await basicInfoDataSource.getBasicUserInfo();
+    try {
+      final basicInfo = await basicInfoDataSource.getBasicUserInfo();
 
-    final allTimeSinceToday = await allTimeSinceTodayDataSource
-        .getAllTimeWorkDuration();
+      final allTimeSinceToday = await allTimeSinceTodayDataSource
+          .getAllTimeWorkDuration();
 
-    final projectsWithHoursSpent = await statsDataSource
-        .getProjectsWithTimeSpent();
+      final projectsWithHoursSpent = await statsDataSource
+          .getProjectsWithTimeSpent();
 
-    final languagesWithHoursSpent = await statsDataSource
-        .getLanguagesWithTimeSpent();
+      final languagesWithHoursSpent = await statsDataSource
+          .getLanguagesWithTimeSpent();
 
-    final weekdaysWithHoursSpent = await insightDataSource
-        .getTotalTimeSpentOnWeekDays();
+      final weekdaysWithHoursSpent = await insightDataSource
+          .getTotalTimeSpentOnWeekDays();
 
-    final userModel = WakatimeUserModel.fromJson({
-      "basic_info": basicInfo,
-      "total_time": allTimeSinceToday,
-      "languages_with_hours_spent": languagesWithHoursSpent,
-      "projects_with_hours_spent": projectsWithHoursSpent,
-      "weekdays_with_hours_spent": weekdaysWithHoursSpent,
-    });
-    await _saveUserInfoToFirestore(userModel);
-    return userModel.toEntity();
+      final userModel = WakatimeUserModel.fromJson({
+        "basic_info": basicInfo,
+        "total_time": allTimeSinceToday,
+        "languages_with_hours_spent": languagesWithHoursSpent,
+        "projects_with_hours_spent": projectsWithHoursSpent,
+        "weekdays_with_hours_spent": weekdaysWithHoursSpent,
+      });
+      await _saveUserInfoToFirestore(userModel);
+      return userModel.toEntity();
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> _saveUserInfoToFirestore(WakatimeUserModel userModel) async {

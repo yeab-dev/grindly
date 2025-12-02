@@ -59,7 +59,13 @@ class UserModel extends Equatable {
                 ? CountryModel.fromJson(map['country'])
                 : null
           : null,
-      wakatimeAccount: WakatimeUserModel.fromMap(map).toEntity(),
+      wakatimeAccount:
+          map.containsKey('total_time') &&
+              map.containsKey('best_language') &&
+              map.containsKey('best_weekday') &&
+              map.containsKey('best_project')
+          ? WakatimeUserModel.fromMap(map).toEntity()
+          : null,
     );
   }
 
