@@ -13,67 +13,66 @@ class TotalTimeWorkedTodayCard extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: height * 0.1),
-      child: SizedBox(
-        width: width,
-        child: Container(
-          width: width * 0.4,
-          height: height * 0.2,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: theme.colorScheme.primary,
-              width: width * 0.03,
-            ),
+      child: Container(
+        width: width * 0.4,
+        height: height * 0.2,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: theme.colorScheme.primary,
+            width: width * 0.03,
           ),
-          child: BlocConsumer<WakatimeSummariesCubit, WakatimeSummariesState>(
-            listener: (context, state) {
-              if (state is WakatimeSummariesFailure) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-              }
-            },
-            builder: (context, state) {
-              final dur = duration.toString().split(':');
-              if (duration == Duration.zero) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${dur[0]}:${dur[1]}',
-                      style: theme.textTheme.headlineLarge!.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w500,
-                      ),
+        ),
+        child: BlocConsumer<WakatimeSummariesCubit, WakatimeSummariesState>(
+          listener: (context, state) {
+            if (state is WakatimeSummariesFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            }
+          },
+          builder: (context, state) {
+            final dur = duration.toString().split(':');
+            if (duration == Duration.zero) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${dur[0]}:${dur[1]}',
+                    style: theme.textTheme.headlineLarge!.copyWith(
+                      color: theme.colorScheme.tertiary,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Tooltip(
-                      triggerMode: TooltipTriggerMode.tap,
-                      message: "You haven't worked on a project today",
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      textStyle: const TextStyle(color: Colors.white),
-                      child: const Icon(Icons.warning, color: Colors.amber),
+                  ),
+                  Tooltip(
+                    triggerMode: TooltipTriggerMode.tap,
+                    message: state is WakatimeSummariesFailure
+                        ? "couldn't load your wakatime data"
+                        : "You haven't read your WakaTime account",
+                    decoration: BoxDecoration(
+                      color: Colors.grey[900],
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ],
-                );
-              }
-              return Center(
-                child: Stack(
-                  children: [
-                    Text(
-                      '${dur[0]}:${dur[1]}',
-                      style: theme.textTheme.headlineLarge!.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
+                    textStyle: const TextStyle(color: Colors.white),
+                    child: const Icon(Icons.warning, color: Colors.amber),
+                  ),
+                ],
               );
-            },
-          ),
+            }
+            return Center(
+              child: Stack(
+                children: [
+                  Text(
+                    '${dur[0]}:${dur[1]}',
+                    style: theme.textTheme.headlineLarge!.copyWith(
+                      color: theme.colorScheme.tertiary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

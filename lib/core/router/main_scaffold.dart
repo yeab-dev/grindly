@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grindly/core/locator.dart';
 import 'package:grindly/core/router/routes.dart';
 import 'package:grindly/shared/user_profile/presentation/cubits/user_profile/user_profile_cubit.dart';
 
@@ -24,7 +26,23 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title ?? "")),
+      appBar: AppBar(
+        title: Text(widget.title ?? ""),
+        centerTitle: widget.title == "leaderboard",
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              context.go(Routes.login);
+              await getIt<FirebaseAuth>().signOut();
+            },
+            icon: Icon(Icons.logout_rounded),
+            label: Text('logout'),
+            style: TextButton.styleFrom(
+              foregroundColor: theme.appBarTheme.iconTheme?.color,
+            ),
+          ),
+        ],
+      ),
       body: widget.child,
       bottomNavigationBar: widget.currentIndex != null
           ? BlocBuilder<UserProfileCubit, UserProfileState>(

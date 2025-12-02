@@ -32,7 +32,7 @@ List<GoRoute> _appRoutes() {
     GoRoute(
       path: Routes.todaysSummary,
       builder: (context, state) => MainScaffold(
-        title: "summary",
+        title: "Today's summary",
         currentIndex: 0,
         child: TodaysSummariesPage(),
       ),
@@ -82,7 +82,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
   final hasToken = await secureStorage.containsKey(key: 'access_token');
   final initial = (!isUserSignedIn && !hasToken)
       ? Routes.login
-      : Routes.splashScreen;
+      : Routes.todaysSummary;
 
   if (!isUserSignedIn && !hasToken) {
     return GoRouter(initialLocation: initial, routes: _appRoutes());

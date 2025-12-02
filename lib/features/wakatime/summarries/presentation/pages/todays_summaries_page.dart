@@ -21,7 +21,7 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
     final height = MediaQuery.sizeOf(context).height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         BlocBuilder<WakatimeSummariesCubit, WakatimeSummariesState>(
           builder: (context, state) {
@@ -151,7 +151,10 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
                 );
               }
             } else if (state is WakatimeSummariesFailure) {
-              return Center(child: Text('couldn\'t read your wakatime data'));
+              return Padding(
+                padding: EdgeInsets.only(top: height * 0.15),
+                child: Center(child: Text('couldn\'t read your wakatime data')),
+              );
             } else {
               return SizedBox.shrink();
             }
