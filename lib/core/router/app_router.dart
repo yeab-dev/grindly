@@ -7,6 +7,7 @@ import 'package:grindly/features/auth/presentation/pages/email_verification_page
 import 'package:grindly/features/auth/presentation/pages/login.dart';
 import 'package:grindly/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:grindly/features/friends/presentation/pages/friends_list_page.dart';
+import 'package:grindly/features/splash/presentation/pages/splash_screen.dart';
 import 'package:grindly/features/wakatime/summarries/presentation/pages/todays_summaries_page.dart';
 import 'package:grindly/features/wakatime/wakatime_auth/presentation/pages/wakatime_auth_page.dart';
 import 'package:grindly/features/wakatime/wakatime_leaderboard/presentation/pages/leader_board_page.dart';
@@ -69,6 +70,10 @@ List<GoRoute> _appRoutes() {
       builder: (context, state) =>
           FriendsListPage(currentUser: state.extra as grindly.User),
     ),
+    GoRoute(
+      path: Routes.splashScreen,
+      builder: (context, state) => SplashScreen(),
+    ),
   ];
 }
 
@@ -77,7 +82,7 @@ Future<GoRouter> route({required FlutterSecureStorage secureStorage}) async {
   final hasToken = await secureStorage.containsKey(key: 'access_token');
   final initial = (!isUserSignedIn && !hasToken)
       ? Routes.login
-      : Routes.todaysSummary;
+      : Routes.splashScreen;
 
   if (!isUserSignedIn && !hasToken) {
     return GoRouter(initialLocation: initial, routes: _appRoutes());

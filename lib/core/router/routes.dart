@@ -9,4 +9,5 @@ class Routes {
   static const String leaderboard = '/leaderboard';
   static const String otherUsersProfilePage = '/otherUsersProfile';
   static const String friendsListPage = '/friends';
+  static const String splashScreen = '/splash';
 }
