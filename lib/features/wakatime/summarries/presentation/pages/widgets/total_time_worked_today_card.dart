@@ -35,13 +35,41 @@ class TotalTimeWorkedTodayCard extends StatelessWidget {
             },
             builder: (context, state) {
               final dur = duration.toString().split(':');
+              if (duration == Duration.zero) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${dur[0]}:${dur[1]}',
+                      style: theme.textTheme.headlineLarge!.copyWith(
+                        color: theme.colorScheme.tertiary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      message: "You haven't worked on a project today",
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      textStyle: const TextStyle(color: Colors.white),
+                      child: const Icon(Icons.warning, color: Colors.amber),
+                    ),
+                  ],
+                );
+              }
               return Center(
-                child: Text(
-                  '${dur[0]}:${dur[1]}',
-                  style: theme.textTheme.headlineLarge!.copyWith(
-                    color: theme.colorScheme.tertiary,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Stack(
+                  children: [
+                    Text(
+                      '${dur[0]}:${dur[1]}',
+                      style: theme.textTheme.headlineLarge!.copyWith(
+                        color: theme.colorScheme.tertiary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },

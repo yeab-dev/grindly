@@ -49,6 +49,25 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
                 height: height * 0.4,
                 child: Center(child: CircularProgressIndicator()),
               );
+            } else if (state is WakatimeSummariesFailure) {
+              return RefreshIndicator(
+                onRefresh: () async => await context
+                    .read<WakatimeSummariesCubit>()
+                    .getTodaysSummary(),
+                child: SizedBox(
+                  height: height * 0.45,
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: [
+                      Center(
+                        child: TotalTimeWorkedTodayCard(
+                          duration: Duration.zero,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
             return SizedBox.shrink();
           },
@@ -78,6 +97,20 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
         BlocBuilder<WakatimeSummariesCubit, WakatimeSummariesState>(
           builder: (context, state) {
             if (state is WakatimeSummariesSuccess) {
+              if (state.summarries.projectsWorkedOnToday.isEmpty) {
+                return Center(
+                  child: SizedBox(
+                    height: height * 0.15,
+                    child: Text(
+                      'You havent worked on a project today!',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.secondary,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                );
+              }
               if (viewProjectsInListView) {
                 return Expanded(
                   child: GridView.builder(
@@ -117,6 +150,8 @@ class _TodaysSummariesPageState extends State<TodaysSummariesPage> {
                   ),
                 );
               }
+            } else if (state is WakatimeSummariesFailure) {
+              return Center(child: Text('couldn\'t read your wakatime data'));
             } else {
               return SizedBox.shrink();
             }
