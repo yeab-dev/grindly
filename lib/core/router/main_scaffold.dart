@@ -25,21 +25,33 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title ?? ""),
         centerTitle: widget.title == "leaderboard",
         actions: [
-          TextButton.icon(
-            onPressed: () async {
-              context.go(Routes.login);
-              await getIt<FirebaseAuth>().signOut();
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 'logout') {
+                context.go(Routes.login);
+                getIt<FirebaseAuth>().signOut();
+              }
             },
-            icon: Icon(Icons.logout_rounded),
-            label: Text('logout'),
-            style: TextButton.styleFrom(
-              foregroundColor: theme.appBarTheme.iconTheme?.color,
-            ),
+            itemBuilder: (context) => [
+              PopupMenuItem<String>(
+                height: height * 0.02,
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout_rounded, size: 15),
+                    SizedBox(width: 8),
+                    Text('logout'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),

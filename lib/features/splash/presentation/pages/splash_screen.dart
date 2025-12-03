@@ -17,6 +17,11 @@ class SplashScreen extends StatelessWidget {
           if (state is UserProfileSuccess) {
             context.go(Routes.todaysSummary);
           }
+          if (state is UserProfileFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+          }
         },
         builder: (context, state) => Column(
           mainAxisAlignment: MainAxisAlignment.center,
