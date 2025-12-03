@@ -42,6 +42,7 @@ class _FriendInfoTileState extends State<FriendInfoTile> {
     return BlocBuilder<OtherUsersProfileCubit, OtherUsersProfileState>(
       builder: (context, state) {
         return GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {
             if (widget.currentUser.uid != widget.userID) {
               context.read<OtherUsersProfileCubit>().getUser(
@@ -62,43 +63,37 @@ class _FriendInfoTileState extends State<FriendInfoTile> {
                 radius: height * 0.03,
                 backgroundImage: NetworkImage(widget.photoUrl),
               ),
-              SizedBox(
-                height: height * 0.065,
-                child: Padding(
-                  padding: EdgeInsets.only(left: height * 0.015),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: width * 0.5,
-                        child: Text(
-                          widget.displayName.length <= 18
-                              ? widget.displayName
-                              : "${widget.displayName.substring(0, 15)}...",
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18,
-                          ),
-                        ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.displayName.length <= 18
+                          ? widget.displayName
+                          : "${widget.displayName.substring(0, 15)}...",
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 18,
                       ),
-                      SizedBox(
-                        width: width * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                              height: height * 0.025,
-                              child: Image.asset(
-                                'assets/icons/total-time-icon.png',
-                              ),
+                    ),
+                    SizedBox(
+                      width: width * 0.2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            height: height * 0.025,
+                            child: Image.asset(
+                              'assets/icons/total-time-icon.png',
                             ),
-                            Text(_formatHoursBucket(widget.totalHours)),
-                          ],
-                        ),
+                          ),
+                          Text(_formatHoursBucket(widget.totalHours)),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Spacer(),

@@ -111,19 +111,26 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                                             if (scrollTargetIndex != null &&
                                                 leaders[index].grindlyID !=
                                                     null) {
-                                              context
-                                                  .read<
-                                                    OtherUsersProfileCubit
-                                                  >()
-                                                  .getUser(
-                                                    grindlyID: state
-                                                        .grindlyLeaders[index]
-                                                        .grindlyID!,
-                                                  );
-                                              context.push(
-                                                Routes.otherUsersProfilePage,
-                                                extra: widget.grindlyUser,
-                                              );
+                                              if (leaders[index].grindlyID ==
+                                                  widget.grindlyUser.uid) {
+                                                context.push(
+                                                  Routes.profilePage,
+                                                );
+                                              } else {
+                                                context
+                                                    .read<
+                                                      OtherUsersProfileCubit
+                                                    >()
+                                                    .getUser(
+                                                      grindlyID: state
+                                                          .grindlyLeaders[index]
+                                                          .grindlyID!,
+                                                    );
+                                                context.push(
+                                                  Routes.otherUsersProfilePage,
+                                                  extra: widget.grindlyUser,
+                                                );
+                                              }
                                             }
                                           },
                                           child: LeaderProfileWidget(
