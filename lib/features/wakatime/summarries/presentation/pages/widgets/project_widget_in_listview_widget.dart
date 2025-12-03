@@ -17,7 +17,7 @@ class ProjectWidgetInListviewWidget extends StatelessWidget {
     return Center(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-        margin: EdgeInsets.symmetric(vertical: height * 0.02),
+        margin: EdgeInsets.symmetric(vertical: height * 0.007),
         height: height * 0.09,
         width: width * 0.9,
         decoration: BoxDecoration(
