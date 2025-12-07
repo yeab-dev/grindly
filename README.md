@@ -70,11 +70,6 @@ Make sure to configure:
 
 Contributions, issues, and feature requests are welcome!
 Feel free to open an issue or submit a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
+___
 
 If you enjoy using Grindly, consider giving the repo a ⭐ to support the project!
