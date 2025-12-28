@@ -1,6 +1,12 @@
-# Grindly
+# <p align="center">Grindly</p>
+## <p align="center">A progress tracking app that actually works!</p>
 
-Grindly is a social platform that helps developers stay motivated by visualizing their coding activity through WakaTime data. Track your daily progress, compete on leaderboards, and connect with fellow developers on the grind.
+<p align="center">
+  <a href="https://wakatime.com/badge/user/b44460fe-e604-4278-8b55-297afad6cb79/project/7e05aa79-1688-4946-abd5-23aaf366b770">
+    <img src="https://wakatime.com/badge/user/b44460fe-e604-4278-8b55-297afad6cb79/project/7e05aa79-1688-4946-abd5-23aaf366b770.svg" alt="wakatime"/>
+  </a>
+</p>
+Grindly is a social platform that helps developers stay motivated by visualizing their coding activity through WakaTime data. Track your daily progress, compete on leaderboards, and connect with fellow developers on the grind.<br>
 
 ## 🚀 Features
 
