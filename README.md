@@ -41,7 +41,7 @@ Grindly is a social platform that helps developers stay motivated by visualizing
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/grindly.git
+   git clone https://github.com/yeab-dev/grindly.git
    cd grindly
    ```
 
